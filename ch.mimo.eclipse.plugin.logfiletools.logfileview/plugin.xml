@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension point="org.eclipse.ui.views">
+      <category name="Logfile Tools" id="logfiletools"/>
+      <view
+            name="%logfileview.plugin.name"
+            icon="icons/logfileviewer.gif"
+            category="logfiletools"
+            class="ch.mimo.eclipse.plugin.logfiletools.LogFileView"
+            id="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+      point = "org.eclipse.ui.preferencePages">
+       <page id="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1"
+	    class="ch.mimo.eclipse.plugin.logfiletools.preferences.LogFileToolPreferences"
+            name="%logfileview.properties.main.page.title">
+       </page>
+       <page id="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1.3"
+        class="ch.mimo.eclipse.plugin.logfiletools.preferences.color.ColorPreferencePage"
+            name="%logfileview.properties.coloring.page.title"
+            category="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1">
+       </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%logfileview.actionset.name"
+            visible="true"
+            id="ch.mimo.eclipse.plugin.logfiletools.actionset">
+         <action
+               toolbarPath="Normal/additions"
+               label="%logfileview.action.openfile.name"
+               icon="icons/logfileviewer.gif"
+               tooltip="Open the logfile view in the current workbench page"
+               class="ch.mimo.eclipse.plugin.logfiletools.action.FileOpenWorkbenchAction"
+               style="push"
+               menubarPath="File/content"
+               id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen"/>
+      </actionSet>
+   </extension>
+</plugin>

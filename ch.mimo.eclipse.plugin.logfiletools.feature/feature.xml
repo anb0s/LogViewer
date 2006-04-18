@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ch.mimo.eclipse.plugin.logfiletools.feature"
+      label="ch.mimo.eclipse.plugin.logfiletools.feature"
+      version="1.1.1"
+      provider-name="Michael Mimo Moratti"
+      colocation-affinity="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%licenseUrl">
+      %license
+   </copyright>
+
+   <license url="%licenseUrl">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://www.mimo.ch/update"/>
+      <discovery label="%updateSiteName" url="http://www.mimo.ch/update"/>
+   </url>
+
+   <plugin
+         id="ch.mimo.eclipse.plugin.logfiletools.Logfileview"
+         download-size="0"
+         install-size="0"
+         version="1.1.1"
+         unpack="false"/>
+
+</feature>
