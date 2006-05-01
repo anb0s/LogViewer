@@ -5,7 +5,7 @@
 	<!-- # properties                                                       # -->
 	<!-- #################################################################### -->
 	
-	<property name="version" 			value="1.1.1"/>
+	<property name="version" 			value="1.2.0"/>
 	
 	<property name="jar.name" 		value="ch.mimo.eclipse.plugin.logfiletools.Logfileview"/>
 	
@@ -60,7 +60,7 @@
 	
 	<target name="-compile">
 		<echo message="using: ${eclipse.lib} as the plugin reference home directory"/>
-		<javac srcdir="${src.java}" destdir="${build.classes}" debug="on" classpathref="classpath" source="1.4" target="1.4">
+		<javac srcdir="${src.java}" destdir="${build.classes}" debug="on" classpathref="classpath" source="1.2" target="1.2">
 			<compilerarg value="-Xlint:deprecation"/>
 		</javac>
 	</target>

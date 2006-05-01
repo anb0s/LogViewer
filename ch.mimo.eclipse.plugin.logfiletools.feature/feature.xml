@@ -2,7 +2,7 @@
 <feature
       id="ch.mimo.eclipse.plugin.logfiletools.feature"
       label="ch.mimo.eclipse.plugin.logfiletools.feature"
-      version="1.1.1"
+      version="1.2.0"
       provider-name="Michael Mimo Moratti"
       colocation-affinity="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
 
@@ -27,7 +27,7 @@
          id="ch.mimo.eclipse.plugin.logfiletools.Logfileview"
          download-size="0"
          install-size="0"
-         version="1.1.1"
+         version="1.2.0"
          unpack="false"/>
 
 </feature>
