@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<project name="logfile tools update site" default="build" basedir=".">
+	
+	<!-- #################################################################### -->
+	<!-- # properties                                                       # -->
+	<!-- #################################################################### -->
+	
+	<property name="version" 			value="1.2.0"/>
+	
+	<property name="jar.name" 		value="Logfileview"/>
+	
+	<property name="feature"			value="${basedir}/features/ch.mimo.eclipse.plugin.logfiletools.feature_${version}.jar"/>
+	<property name="plugin"				value="${basedir}/plugins/ch.mimo.eclipse.plugin.logfiletools.Logfileview_${version}.jar"/>
+	
+	<property name="build"				value="${basedir}/build"/>
+	
+	<property name="target"				value="${basedir}/sourceforge"/>
+	
+	<!-- #################################################################### -->
+	<!-- # targets                                                          # -->
+	<!-- #################################################################### -->
+	
+	<target name="-init">
+		<delete dir="${build}"/>
+		<mkdir dir="${build}"/>
+	</target>
+	
+	<target name="-jar">
+		<mkdir dir="${build}/eclipse"/>
+		<mkdir dir="${build}/eclipse/features"/>
+		<mkdir dir="${build}/eclipse/plugins"/>
+		<copy file="${feature}" todir="${build}/eclipse/features"/>
+		<copy file="${plugin}" todir="${build}/eclipse/plugins"/>
+		<jar destfile="${target}/${jar.name}_${version}.zip">
+			<fileset dir="${build}"/>
+		</jar>
+	</target>
+		
+	<target name="build" depends="-init,-jar"/>
+</project>
