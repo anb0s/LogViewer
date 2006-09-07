@@ -6,8 +6,8 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.CursorLinePainter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewerExtension2;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Color;
@@ -39,7 +39,7 @@ public class LogFileViewer {
 
 	// Attribute ---------------------------------------------------------------
 	
-	private TextViewer viewer;
+	private SourceViewer viewer;
 	
 	private IDocument document;
 	
@@ -52,7 +52,7 @@ public class LogFileViewer {
 	
 	public LogFileViewer(Composite parent,int style) {
 		store = LogFileViewPlugin.getDefault().getPreferenceStore();
-		viewer = new TextViewer(parent,style);
+		viewer = new SourceViewer(parent,null,style);
 		FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogFileViewConstants.PREF_EDITOR_FONT_STYLE);
 		if(fontData == null) {
 			fontData = JFaceResources.getDefaultFont().getFontData();
@@ -74,7 +74,7 @@ public class LogFileViewer {
 		return document;
 	}
 	
-	public TextViewer getActualViewer() {
+	public SourceViewer getActualViewer() {
 		return viewer;
 	}
 	

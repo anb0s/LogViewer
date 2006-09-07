@@ -13,6 +13,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -29,9 +30,11 @@ import ch.mimo.eclipse.plugin.logfiletools.action.CopyToClipboardAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.FileCloseViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.FileEncondingViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.FileOpenViewAction;
+import ch.mimo.eclipse.plugin.logfiletools.action.FindReplaceAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.RefreshCurrentFileViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.StartTailOnCurrentFileViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.StopTailOnCurrentFileViewAction;
+import ch.mimo.eclipse.plugin.logfiletools.action.TabRenameAction;
 import ch.mimo.eclipse.plugin.logfiletools.file.document.LogDocument;
 import ch.mimo.eclipse.plugin.logfiletools.ui.menu.LocalPullDownMenu;
 import ch.mimo.eclipse.plugin.logfiletools.viewer.LogFileViewer;
@@ -74,6 +77,8 @@ public class LogFileView extends ViewPart {
     private StopTailOnCurrentFileViewAction stopTailOnCurrentFile;
     private FileEncondingViewAction fileEncodingAction;
     private CopyToClipboardAction copyAction;
+    private FindReplaceAction findReplaceAction;
+    private TabRenameAction tabRenameAction;
     
     // Constructor -------------------------------------------------------------
     
@@ -118,6 +123,7 @@ public class LogFileView extends ViewPart {
             fileEncodingAction.setEnabled(false);
             startTailOnCurrentFile.setEnabled(false);
             stopTailOnCurrentFile.setEnabled(false);
+            tabRenameAction.setEnabled(false);
         } else
             if(index == 0) {
                 tabfolder.setSelection(0);
@@ -141,6 +147,7 @@ public class LogFileView extends ViewPart {
 	        fileEncodingAction.setEnabled(false);
 	        startTailOnCurrentFile.setEnabled(false);
 	        stopTailOnCurrentFile.setEnabled(false);  
+	        tabRenameAction.setEnabled(false);
     	}
     }
     
@@ -200,6 +207,7 @@ public class LogFileView extends ViewPart {
                 fileEncodingAction.setEnabled(true);
                 fileCloseAction.setEnabled(true);
                 closeAllFilesAction.setEnabled(true);
+                tabRenameAction.setEnabled(true);
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
                 LogFileViewPlugin.getDefault().showErrorMessage(LogFileViewPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
@@ -233,6 +241,30 @@ public class LogFileView extends ViewPart {
     
     public LogFileViewer getViewer() {
     	return viewer;
+    }
+    
+    /**
+     * makes shure that the correct find/replace target is returned.
+     * the actual viewer is returned if an adapter of type 
+     * FindReplaceTarget is searched
+     */
+    public Object getAdapter(Class adapter) {
+    	Object object = super.getAdapter(adapter);
+    	if(object != null) {
+    		return object;
+    	}
+    	if(adapter.equals(IFindReplaceTarget.class)) {
+    		return viewer.getActualViewer().getFindReplaceTarget();
+    	}
+    	return null;
+    }
+    
+    public String getCurrentLogFileTabName() {
+    	return getSelectedTab().getItem().getText();
+    }
+    
+    public void setCurrentLogFileTabName(String name) {
+    	getSelectedTab().getItem().setText(name);
     }
     
     // Private -----------------------------------------------------------------
@@ -270,6 +302,8 @@ public class LogFileView extends ViewPart {
 		menu.addSeparator();
 		menu.addAction(fileEncodingAction);
 		menu.addSeparator();
+		menu.addAction(tabRenameAction);
+		menu.addSeparator();
 		menu.addAction(fileCloseAction);
 		menu.addAction(closeAllFilesAction);
 		menu.finalize();
@@ -280,12 +314,15 @@ public class LogFileView extends ViewPart {
 		manager.add(new Separator());
 		manager.add(fileEncodingAction);
 		manager.add(new Separator());
+		manager.add(findReplaceAction);
+		manager.add(copyAction);
+		manager.add(new Separator());
 		manager.add(startTailOnCurrentFile);
 		manager.add(stopTailOnCurrentFile);
 		manager.add(new Separator());
-		manager.add(fileCloseAction);
+		manager.add(tabRenameAction);
 		manager.add(new Separator());
-		manager.add(copyAction);
+		manager.add(fileCloseAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
@@ -358,6 +395,12 @@ public class LogFileView extends ViewPart {
        // copy action
     		copyAction = new CopyToClipboardAction(this,parent.getShell());
     		copyAction.setEnabled(true);
+    		// findreplace action
+    		findReplaceAction = new FindReplaceAction(this,parent.getShell());
+    		findReplaceAction.setEnabled(true);
+    		// tab rename action
+    		tabRenameAction = new TabRenameAction(this,parent.getShell());
+    		tabRenameAction.setEnabled(false);
     }
 	
 	// Inner Class -------------------------------------------------------------
