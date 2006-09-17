@@ -6,6 +6,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.CursorLinePainter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewerExtension2;
+import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -39,7 +40,7 @@ public class LogFileViewer {
 
 	// Attribute ---------------------------------------------------------------
 	
-	private SourceViewer viewer;
+	private TextViewer viewer;
 	
 	private IDocument document;
 	
@@ -74,7 +75,7 @@ public class LogFileViewer {
 		return document;
 	}
 	
-	public SourceViewer getActualViewer() {
+	public TextViewer getActualViewer() {
 		return viewer;
 	}
 	

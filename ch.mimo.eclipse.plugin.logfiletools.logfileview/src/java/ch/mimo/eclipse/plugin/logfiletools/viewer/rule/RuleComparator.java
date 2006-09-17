@@ -1,5 +1,7 @@
 package ch.mimo.eclipse.plugin.logfiletools.viewer.rule;
 
+import java.util.Comparator;
+
 /*
  * Copyright (c) 2006 by Michael Mimo Moratti
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -15,10 +17,28 @@ package ch.mimo.eclipse.plugin.logfiletools.viewer.rule;
  * and limitations under the License.
  */
 
-public interface ILogFileToolColoringRule {
-	
-	/**
-	 * returns the actual priority of the given rule
-	 */
-	public int getPriority();
+public class RuleComparator implements Comparator {
+
+	public int compare(Object arg0, Object arg1) {
+		if(!(arg0 instanceof ILogFileToolColoringRule)) {
+			return -1;
+		}
+		if(!(arg1 instanceof ILogFileToolColoringRule)) {
+			return -1;
+		}
+		ILogFileToolColoringRule rule0 = (ILogFileToolColoringRule)arg0;
+		ILogFileToolColoringRule rule1 = (ILogFileToolColoringRule)arg1;
+		
+		if(rule0.getPriority() > rule1.getPriority()) {
+			return 1;
+		}
+		if(rule0.getPriority() == rule1.getPriority()) {
+			return 0;
+		}
+		if(rule0.getPriority() < rule1.getPriority()) {
+			return -1;
+		}
+		return -1;
+	}
+
 }

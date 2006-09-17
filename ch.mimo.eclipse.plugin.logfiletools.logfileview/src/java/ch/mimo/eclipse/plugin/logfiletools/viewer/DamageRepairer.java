@@ -1,9 +1,5 @@
 package ch.mimo.eclipse.plugin.logfiletools.viewer;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
 import org.eclipse.jface.text.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
@@ -48,7 +44,6 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
     private ITokenScanner scanner;
     private TextAttribute defaultTextAttribute;
     private IDocument document;
-    private List coloredRanges;
 
     // Constructor ------------------------------------------------------------------
     
@@ -56,7 +51,6 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
         logger = LogFileViewPlugin.getDefault().getLogger();
         Assert.isNotNull(scanner);
         this.scanner = scanner;
-        coloredRanges = new Vector();
         defaultTextAttribute = new TextAttribute(null);
     }
     
@@ -90,41 +84,29 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
         }
         return partition;
     }
-
+     
     public void createPresentation(TextPresentation presentation, ITypedRegion region) {
-        int lastStart= region.getOffset();
+        int start= region.getOffset();
         int length= 0;
         boolean firstToken= true;
-        IToken lastToken= Token.UNDEFINED;
-        int lastPriority = 0;
-        TextAttribute lastAttribute= getTokenTextAttribute(lastToken);
+        TextAttribute attribute = getTokenTextAttribute(Token.UNDEFINED);
 
-        scanner.setRange(document,lastStart,region.getLength());
+        scanner.setRange(document,start,region.getLength());
 
         while (true) {
-            IToken token= scanner.nextToken();
-            if (token.isEOF()) {
+            IToken resultToken = scanner.nextToken();
+            if (resultToken.isEOF()) {
                 break;
             }
-
-            TextAttribute attribute= getTokenTextAttribute(token);
-            int priority = getTokenPriority(token);
-            if (lastAttribute != null && lastAttribute.equals(attribute)) {
-                length += scanner.getTokenLength();
-                firstToken = false;
-            } else {
-                if (!firstToken) {
-                    addRange(presentation,lastStart,length,lastAttribute,true,lastPriority);
-                }
-                firstToken= false;
-                lastToken= token;
-                lastAttribute= attribute;
-                lastStart= scanner.getTokenOffset();
-                length= scanner.getTokenLength();
-                lastPriority = priority;
+            if (!firstToken) {
+            	addRange(presentation,start,length,attribute,true,0);
             }
+            firstToken= false;
+            attribute = getTokenTextAttribute(resultToken);
+            start = scanner.getTokenOffset();
+            length = scanner.getTokenLength();
         }
-        addRange(presentation,lastStart,length,lastAttribute,true,lastPriority);
+        addRange(presentation,start,length,attribute,true,0);
     }
     
     // Private ----------------------------------------------------------------------
@@ -169,14 +151,6 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
         return defaultTextAttribute;
     }
     
-    private int getTokenPriority(IToken token) {
-        Object data= token.getData();
-        if(data instanceof TokenData) {
-            return ((TokenData)data).getPriority();
-        }
-        return 0;
-    }
-    
     /**
      * Adds style information to the given text presentation.
      *
@@ -199,102 +173,10 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
                 } catch (BadLocationException e) {
                 }
             }
-            Range range = new Range(priority,offset,length);
-            if(isCurrentRangePriorityHigherThanAllreadyExistingRange(presentation,range)) {
-                coloredRanges.add(range);
-                StyleRange styleRange = new StyleRange(offset,length,attr.getForeground(),attr.getBackground(),fontStyle);
-                styleRange.strikeout = (style & TextAttribute.STRIKETHROUGH) != 0;
-                styleRange.underline = (style & TextAttribute.UNDERLINE) != 0;
-                presentation.addStyleRange(styleRange);
-            }
+            StyleRange styleRange = new StyleRange(offset,length,attr.getForeground(),attr.getBackground(),fontStyle);
+            styleRange.strikeout = (style & TextAttribute.STRIKETHROUGH) != 0;
+            styleRange.underline = (style & TextAttribute.UNDERLINE) != 0;
+            presentation.addStyleRange(styleRange);
         }
     }
-    
-    /**
-     * this method evaluates all already applied ranges against the new range that is to be 
-     * applied. If the priority of the to be applied range is lower than an allready existing
-     * range than the return value will be false.
-     * 
-     * @param presentation
-     * @param range
-     * @return boolean true if the to be check range has a hihger priority than an existing
-     * range.
-     */
-    private boolean isCurrentRangePriorityHigherThanAllreadyExistingRange(TextPresentation presentation, Range range) {
-        if(presentation.getDenumerableRanges() == 0) {
-            coloredRanges.clear();
-            return true;
-        }
-        Iterator rangeIterator = coloredRanges.iterator();
-        while(rangeIterator.hasNext()) {
-            Range storedRange = (Range)rangeIterator.next();
-            if(range.equals(storedRange)) {
-            	return range.isHigherPriorityThan(storedRange);
-            }
-        }
-        return true;
-    }
-    
-    // Inner Class ------------------------------------------------------------------
-    
-    private class Range {
-        
-        // Attribute --------------------------------------------------
-        
-        private int priority;
-        private int offset;
-        private int length;
-        
-        // Constructor ------------------------------------------------
-        
-        public Range(int priority, int offset, int length) {
-            this.priority = priority;
-            this.offset = offset;
-            this.length = length;
-        }
-        
-        // Public -----------------------------------------------------
-        
-        /**
-         * @return Returns the length.
-         */
-        public int getLength() {
-            return length;
-        }
-
-        /**
-         * @return Returns the offset.
-         */
-        public int getOffset() {
-            return offset;
-        }
-
-        /**
-         * @return Returns the priority.
-         */
-        public int getPriority() {
-            return priority;
-        }
-        
-        /**
-         * this method does not consider the priorty!
-         */
-        public boolean equals(Object object) {
-            if(!(object instanceof Range)) {
-                return false;
-            }
-            Range range = (Range)object;
-            if(range.getOffset() == this.getOffset() & range.getLength() == this.getLength()) {
-                return true;
-            }
-            return false;
-        }
-        
-        /**
-         * higher priority means: 0 wins over 1
-         */
-        public boolean isHigherPriorityThan(Range range) {
-            return this.getPriority() < range.getPriority();
-        }
-     }
 }

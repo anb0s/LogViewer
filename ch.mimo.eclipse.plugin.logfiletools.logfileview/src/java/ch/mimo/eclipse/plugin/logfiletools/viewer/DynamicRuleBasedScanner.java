@@ -1,5 +1,6 @@
 package ch.mimo.eclipse.plugin.logfiletools.viewer;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -17,6 +18,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import ch.mimo.eclipse.plugin.logfiletools.ILogFileViewConstants;
 import ch.mimo.eclipse.plugin.logfiletools.LogFileViewPlugin;
 import ch.mimo.eclipse.plugin.logfiletools.preferences.PreferenceValueConverter;
+import ch.mimo.eclipse.plugin.logfiletools.viewer.rule.RuleComparator;
 
 /*
  * Copyright (c) 2006 by Michael Mimo Moratti
@@ -140,22 +142,24 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
      */
     public IToken nextToken() {
 		IToken token;
-		while (true) {
-			tokenOffset = offset;
-			column = UNDEFINED;
-			Iterator ruleIterator = rules.iterator();
-			while(ruleIterator.hasNext()) {
-			    IRule rule = (IRule)ruleIterator.next();
-			    token = rule.evaluate(this);
-			    if(!token.isUndefined()) {
-			        return token;
-			    }
-			}
-			if (read() == EOF) {
-				return Token.EOF;
-			} else {
-				return defaultToken;
-			}
+		tokenOffset = offset;
+		column = UNDEFINED;
+		Iterator ruleIterator = rules.iterator();
+		while(ruleIterator.hasNext()) {
+		    IRule rule = (IRule)ruleIterator.next();
+		    token = rule.evaluate(this);
+		    if(!token.isUndefined()) {
+		        return token;
+		    }
+		    if(ruleIterator.hasNext()) {
+		    	offset = tokenOffset;
+		    }
+		}
+		if (read() == EOF) {
+			return Token.EOF;
+		} else {
+			unread();
+			return defaultToken;
 		}
     }
 
@@ -181,7 +185,8 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
     private void loadRules(String newRules) {
 		List newRulesList = PreferenceValueConverter.asRuleArray(newRules);
 		rules.clear();
-		rules.addAll(newRulesList);    	
+		rules.addAll(newRulesList); 
+		Collections.sort(rules,new RuleComparator());
     }
     
 	// Inner classes ----------------------------------------------------------------

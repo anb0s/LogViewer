@@ -31,12 +31,14 @@ public class RegExpRule implements IPredicateRule, ILogFileToolColoringRule {
 
 	private RE regexp;
 	private Token successToken;
+	private int priority;
 	
 	// Constructor -------------------------------------------------------------
 	
 	public RegExpRule(int priority, String ruleValue, Color backgroundColor, Color foregroundColor) {
 		regexp = REUtil.createRE(ruleValue);
 		successToken = new Token(new TokenData(new TextAttribute(foregroundColor,backgroundColor,SWT.NORMAL),priority));
+		this.priority = priority;
 	}
 	
 	// Static ------------------------------------------------------------------
@@ -62,6 +64,10 @@ public class RegExpRule implements IPredicateRule, ILogFileToolColoringRule {
 		return evaluate(scanner,false);
 	}
 	
+	public int getPriority() {
+		return priority;
+	}
+	
 	// Private -----------------------------------------------------------------
 	
 	private String returnNextCompleteLine(ICharacterScanner scanner) {
@@ -72,7 +78,6 @@ public class RegExpRule implements IPredicateRule, ILogFileToolColoringRule {
 		StringBuffer buffer = new StringBuffer();
 		while((c = scanner.read()) != ICharacterScanner.EOF) {
 			if(isEOLCharacter(c,lineDelimiters)) {
-				scanner.unread();
 				return buffer.toString();
 			}
 			buffer.append((char)c);

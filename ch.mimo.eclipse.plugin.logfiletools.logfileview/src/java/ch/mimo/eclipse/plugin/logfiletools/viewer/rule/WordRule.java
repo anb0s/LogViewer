@@ -25,13 +25,20 @@ public class WordRule extends WordPatternRule implements ILogFileToolColoringRul
 
 	// Attribute ---------------------------------------------------------------
 	
+	private int priority;
+	
 	// Constructor -------------------------------------------------------------
 	
 	public WordRule(int priority, String ruleValue, Color backgroundColor, Color foregroundColor) {
 		super(new WordDetector(ruleValue),ruleValue.substring(0,1),ruleValue.substring(ruleValue.length() - 1,ruleValue.length()),new Token(new TokenData(new TextAttribute(foregroundColor,backgroundColor,SWT.NORMAL),priority)));
+		this.priority = priority;
 	}
 	
 	// Static ------------------------------------------------------------------
 	
 	// Public ------------------------------------------------------------------
+	
+	public int getPriority() {
+		return priority;
+	}
 }

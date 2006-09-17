@@ -73,6 +73,7 @@ public class ColorStore {
     }
     
     public ColorPreferenceData getPreviousElement(ColorPreferenceData data) {
+    	sort();
         for(int i = 0 ; i < items.size() ; i++) {
             ColorPreferenceData item = (ColorPreferenceData)items.get(i);
             if(item.equals(data)) {
@@ -87,6 +88,7 @@ public class ColorStore {
     }
     
     public ColorPreferenceData getNextElement(ColorPreferenceData data) {
+    	sort();
         for(int i = 0 ; i < items.size() ; i++) {
             ColorPreferenceData item = (ColorPreferenceData)items.get(i);
             if(item.equals(data)) {

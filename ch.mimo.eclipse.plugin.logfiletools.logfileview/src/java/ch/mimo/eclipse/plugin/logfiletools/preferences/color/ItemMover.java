@@ -28,7 +28,6 @@ public class ItemMover implements SelectionListener {
 	private ColorStore store;
 	
 	private ColorPreferenceData currentSelection;
-//	private int currentIndex;
 	
 	// Constructor -------------------------------------------------------------
 	
@@ -52,15 +51,6 @@ public class ItemMover implements SelectionListener {
 		int oldPosition = currentSelection.getPosition();
 		previousElement.setPosition(oldPosition);
 		currentSelection.setPosition(newPosition);		
-//		decrementIndex();
-//		ColorPreferenceData itemAboveSelection = getData(currentIndex);
-//		if(itemAboveSelection == null) {
-//			return;
-//		}
-//		int newPosition = itemAboveSelection.getPosition();
-//		int oldPosition = currentSelection.getPosition();
-//		itemAboveSelection.setPosition(oldPosition);
-//		currentSelection.setPosition(newPosition);
 	}
 	
 	public void moveCurrentSelectionDown() {
@@ -75,22 +65,12 @@ public class ItemMover implements SelectionListener {
 		int oldPosition = currentSelection.getPosition();
 		nextElement.setPosition(oldPosition);
 		currentSelection.setPosition(newPosition);
-//		incrementIndex();
-//		ColorPreferenceData itemBelowSelection = getData(currentIndex);
-//		if(itemBelowSelection == null) {
-//			return;
-//		}
-//		int newPosition = itemBelowSelection.getPosition();
-//		int oldPosition = currentSelection.getPosition();
-//		itemBelowSelection.setPosition(oldPosition);
-//		currentSelection.setPosition(newPosition);
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {	
 	}
 
 	public void widgetSelected(SelectionEvent e) {
-//		currentIndex = table.getSelectionIndex();
 		TableItem item = null;
 		try {
 			item = table.getSelection()[0];
@@ -108,31 +88,4 @@ public class ItemMover implements SelectionListener {
 	
 	
 	// Private -----------------------------------------------------------------
-	
-//	private void incrementIndex() {
-//		if(currentIndex <= table.getItemCount()) {
-//			currentIndex++;
-//		}
-//	}
-//	
-//	private void decrementIndex() {
-//		if(currentIndex > 0) {
-//			currentIndex--;
-//		}
-//	}
-//	
-//	private ColorPreferenceData getData(int index) {
-//		try {
-//			TableItem item = table.getItem(index);
-//			if(item == null) {
-//				return null;
-//			}
-//			if(!(item.getData() instanceof ColorPreferenceData)) {
-//				return null;
-//			}
-//			return (ColorPreferenceData)item.getData();
-//		} catch(Throwable t) {
-//			return null;
-//		}
-//	}
 }
