@@ -98,15 +98,18 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
             if (resultToken.isEOF()) {
                 break;
             }
-            if (!firstToken) {
-            	addRange(presentation,start,length,attribute,true,0);
+            if(resultToken.equals(Token.UNDEFINED)) {
+            	continue;
             }
-            firstToken= false;
+            if (!firstToken) {
+            	addRange(presentation,start,length,attribute,true);
+            }
+            firstToken = false;
             attribute = getTokenTextAttribute(resultToken);
             start = scanner.getTokenOffset();
             length = scanner.getTokenLength();
         }
-        addRange(presentation,start,length,attribute,true,0);
+        addRange(presentation,start,length,attribute,true);
     }
     
     // Private ----------------------------------------------------------------------
@@ -160,7 +163,7 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
      * @param attr the attribute describing the style of the range to be styled
      * @param wholeLine the boolean switch to declare that the whole line should be colored
      */
-    private void addRange(TextPresentation presentation, int offset, int length, TextAttribute attr, boolean wholeLine, int priority) {
+    private void addRange(TextPresentation presentation, int offset, int length, TextAttribute attr, boolean wholeLine) {
         if (attr != null) {
             int style= attr.getStyle();
             int fontStyle= style & (SWT.ITALIC | SWT.BOLD | SWT.NORMAL);

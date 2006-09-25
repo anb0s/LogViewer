@@ -58,14 +58,11 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
     public DynamicRuleBasedScanner(String rulesPreferenceString) {
     	LogFileViewPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(new PropertyChangeListener());
         rules = new Vector();
-        loadRules(rulesPreferenceString);        
+        loadRules(rulesPreferenceString);  
+        defaultToken= Token.UNDEFINED;
     }
     
     // Public -----------------------------------------------------------------------
-    
-    public void setDefaultToken(IToken defaultToken) {
-        this.defaultToken = defaultToken;
-    }
     
     /* (non-Javadoc)
      * @see org.eclipse.jface.text.rules.ITokenScanner#setRange(org.eclipse.jface.text.IDocument, int, int)
@@ -78,11 +75,8 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 		
 		String[] delimiters= this.document.getLegalLineDelimiters();
 		this.delimiter = new char[delimiters.length][];
-		for (int i= 0; i < delimiters.length; i++)
+		for (int i= 0; i < delimiters.length; i++) {
 			this.delimiter[i]= delimiters[i].toCharArray();
-			
-		if (this.defaultToken == null) {
-			this.defaultToken= new Token(null);
 		}
     }
     
