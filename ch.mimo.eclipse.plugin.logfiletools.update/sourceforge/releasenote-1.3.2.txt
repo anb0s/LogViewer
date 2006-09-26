@@ -3,9 +3,9 @@ Release Notes Logfiletools version 1.3.1
 bugfix release:
 
 bug: 1561961 Hang on
+bug: 1565615 Syntax Coloring does not work at all
 
 note:
 
 we had massive performance issues due to the refactoring of the main coloring reconciler.
-We also had a problem with the actual coloring under windows while it worked fine
-under mac osx and linux.
+We also had a problem with the actual syntax coloring. The issues are now fixed.
