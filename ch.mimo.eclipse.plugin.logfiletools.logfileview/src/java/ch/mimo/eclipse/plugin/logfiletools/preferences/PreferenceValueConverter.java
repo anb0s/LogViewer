@@ -9,6 +9,7 @@ import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
+import ch.mimo.eclipse.plugin.logfiletools.LogFile;
 import ch.mimo.eclipse.plugin.logfiletools.LogFileViewPlugin;
 import ch.mimo.eclipse.plugin.logfiletools.preferences.color.ColorPreferenceData;
 import ch.mimo.eclipse.plugin.logfiletools.viewer.rule.ILogFileToolColoringRule;
@@ -138,6 +139,36 @@ public class PreferenceValueConverter {
 		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
 			files.add(asHistoryFile(token));
+		}
+		return files;
+	}
+	
+	public static String asString(LogFile logFile) {
+		return logFile.getFileName();
+	}
+	
+	public static String asLogFileListString(List logFiles) {
+		Iterator it = logFiles.iterator();
+		StringBuffer buffer = new StringBuffer();
+		while(it.hasNext()) {
+			LogFile logFile = (LogFile)it.next();
+			buffer.append(asString(logFile));
+			buffer.append(ITEM_DELIMITER);
+		}
+		return buffer.toString();
+	}
+	
+	public static LogFile asLogFile(String value) {
+		LogFile logFile = new LogFile(value);
+		return logFile;
+	}
+	
+	public static List asLogFileList(String logFileList) {
+		List files = new Vector();
+		StringTokenizer tokenizer = new StringTokenizer(logFileList,ITEM_DELIMITER);
+		while(tokenizer.hasMoreTokens()) {
+			String token = tokenizer.nextToken();
+			files.add(asLogFile(token));
 		}
 		return files;
 	}

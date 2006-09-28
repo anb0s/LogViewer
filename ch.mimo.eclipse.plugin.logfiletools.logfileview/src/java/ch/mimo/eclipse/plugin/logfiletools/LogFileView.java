@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -36,6 +38,7 @@ import ch.mimo.eclipse.plugin.logfiletools.action.StartTailOnCurrentFileViewActi
 import ch.mimo.eclipse.plugin.logfiletools.action.StopTailOnCurrentFileViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.TabRenameAction;
 import ch.mimo.eclipse.plugin.logfiletools.file.document.LogDocument;
+import ch.mimo.eclipse.plugin.logfiletools.preferences.PreferenceValueConverter;
 import ch.mimo.eclipse.plugin.logfiletools.ui.menu.LocalPullDownMenu;
 import ch.mimo.eclipse.plugin.logfiletools.viewer.LogFileViewer;
 
@@ -104,6 +107,7 @@ public class LogFileView extends ViewPart {
         makeActions();
         hookContextMenu();
         contributeToActionBars();
+        openAllLastOpenFiles();
     }
     
     public void closeCurrentLogFile() {
@@ -267,6 +271,11 @@ public class LogFileView extends ViewPart {
     	getSelectedTab().getItem().setText(name);
     }
     
+    public void dispose() {
+    	storeAllCurrentlyOpenFiles();
+    	super.dispose();
+    }
+    
     // Private -----------------------------------------------------------------
     
 	private void hookContextMenu() {
@@ -401,6 +410,27 @@ public class LogFileView extends ViewPart {
     		// tab rename action
     		tabRenameAction = new TabRenameAction(this,parent.getShell());
     		tabRenameAction.setEnabled(false);
+    }
+    
+    private void storeAllCurrentlyOpenFiles() {
+    	List fileList = new Vector();
+    	Iterator keyIterator = logTab.keySet().iterator();
+    	while(keyIterator.hasNext()) {
+    		Object key = keyIterator.next();
+    		LogFileTab tab = (LogFileTab)logTab.get(key);
+    		LogFile logFile = tab.getDocument().getFile();
+    		fileList.add(logFile);
+    	}
+    	LogFileViewPlugin.getDefault().getPreferenceStore().setValue(ILogFileViewConstants.PREF_LAST_OPEN_FILES,PreferenceValueConverter.asLogFileListString(fileList));
+    }
+    
+    private void openAllLastOpenFiles() {
+    	List logFiles = PreferenceValueConverter.asLogFileList(LogFileViewPlugin.getDefault().getPreferenceStore().getString(ILogFileViewConstants.PREF_LAST_OPEN_FILES));
+    	Iterator it = logFiles.iterator();
+    	while(it.hasNext()) {
+    		LogFile logFile = (LogFile)it.next();
+    		openLogFile(logFile);
+    	}
     }
 	
 	// Inner Class -------------------------------------------------------------

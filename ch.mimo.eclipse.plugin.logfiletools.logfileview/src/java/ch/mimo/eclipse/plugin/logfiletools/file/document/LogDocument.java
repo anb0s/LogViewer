@@ -169,6 +169,10 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
         }
 	}
 	
+	public LogFile getFile() {
+		return file;
+	}
+	
 	// Private -----------------------------------------------------------------
 	
 	/**
