@@ -1,0 +1,7 @@
+Release Notes Logfiletools version 1.3.2
+
+features:
+
+1. 	we now actively store all currently open files in order to restart with the 
+	files allready opened. the scope for the file storage is the workspace.
+
