@@ -5,3 +5,8 @@ features:
 1. 	we now actively store all currently open files in order to restart with the 
 	files allready opened. the scope for the file storage is the workspace.
 
+Bugs:
+
+Bug: #1561961 Hang on was not fixed sucessfuly in the previous release I have 
+fixed it now. the problem was that if there where no coloring rules defined.the
+reader was not reading the file it was looping indefinetly.
