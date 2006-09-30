@@ -149,6 +149,9 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 		    	offset = tokenOffset;
 		    }
 		}
+		if(rules.size() <= 0) {
+			read();
+		}
 		if (read() == EOF) {
 			return Token.EOF;
 		} else {
