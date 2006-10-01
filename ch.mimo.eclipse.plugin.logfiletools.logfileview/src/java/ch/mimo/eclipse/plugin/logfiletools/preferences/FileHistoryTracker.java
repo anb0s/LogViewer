@@ -68,17 +68,6 @@ public class FileHistoryTracker {
 		return files;
 	}
 	
-//	public void openingFile(HistoryFile file) {
-//		containsThenIncrement(file.getPath());
-//        LogFileViewPlugin.getDefault().getPreferenceStore().setValue(ILogFileViewConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
-//	}
-	
-//	public void openingFile(String path) {
-//		containsThenIncrement(path);
-//		LogFileViewPlugin.getDefault().getPreferenceStore().setValue(ILogFileViewConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
-//		
-//	}
-	
 	// Private -----------------------------------------------------------------
 	
 	private void init() {

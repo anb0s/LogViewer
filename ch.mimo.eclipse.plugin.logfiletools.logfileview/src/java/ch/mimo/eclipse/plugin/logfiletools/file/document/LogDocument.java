@@ -191,14 +191,6 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		}
 	}
 	
-//	private void truncateLines() {
-//		int amount = getTracker().getNumberOfLines();
-//		for(int i = 0 ; i < amount ; i++) {
-//			IRegion region = getTracker().getLineInformation(i);
-//			region.
-//		}
-//	}
-	
 	// Inner classes ----------------------------------------------------------------
 	
 	private class PropertyChangeListener implements IPropertyChangeListener {

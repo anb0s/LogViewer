@@ -99,14 +99,6 @@ public class ColorDialog extends StatusDialog {
     
     protected void okPressed() {
         int position = -1;
-//        try {
-//            position = Integer.parseInt(priority.getText());
-//        } catch (NumberFormatException e) {
-//        	MessageDialog.openError(getShell(),
-//        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
-//        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.error.priority.text")); //$NON-NLS-1$
-//            return;
-//        }
 
         if(ruleTypeCombo.getText() == null || ruleTypeCombo.getText().length() <= 0) {
         	MessageDialog.openError(getShell(),
@@ -130,21 +122,6 @@ public class ColorDialog extends StatusDialog {
     }
     
     // Private ----------------------------------------------------------------------
-    
-//    private void createPriorityText(Composite parent) {
-//        // draw label
-//        Label comboLabel = new Label(parent,SWT.LEFT);
-//        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-//        comboLabel.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.priority.label"));    //$NON-NLS-1$
-//        // draw textfield
-//        priority = new Text(parent,SWT.BORDER);
-//        priority.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//        if(edit) {
-//            priority.setText(Integer.toString(this.data.getPosition()));
-//        } else {
-//            priority.setText("0"); //$NON-NLS-1$
-//        }
-//    }
     
     private void createCheckBox(Composite parent) {
         // draw label

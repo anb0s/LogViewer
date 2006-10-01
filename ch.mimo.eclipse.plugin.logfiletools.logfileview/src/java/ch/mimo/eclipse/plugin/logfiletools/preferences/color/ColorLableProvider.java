@@ -37,13 +37,6 @@ public class ColorLableProvider extends LabelProvider implements ITableLabelProv
                 return data.getRule();
             case 1:
             	return data.getValue();
-//                return StringConverter.asString(data.getBackground());
-//            case 2:
-//                return StringConverter.asString(data.getForeground());
-//            case 3:
-//                return data.getValue();
-//            case 4:
-//                return Integer.toString(data.getPosition());
             default:
                 return ""; //$NON-NLS-1$
         }
