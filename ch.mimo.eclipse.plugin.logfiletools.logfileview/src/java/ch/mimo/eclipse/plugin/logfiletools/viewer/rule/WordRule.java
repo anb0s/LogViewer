@@ -21,24 +21,22 @@ import org.eclipse.swt.graphics.Color;
  * and limitations under the License.
  */
 
-public class WordRule extends WordPatternRule implements ILogFileToolColoringRule {
+/**
+ * I have decided to use the RegExpRule instead of the eclipse internal word
+ * matching magic due to the fact that the eclipse internal stuff rewindes the
+ * cursor all the time and that is posion for my rulebased scanner!
+ */
+public class WordRule extends RegExpRule {
 
 	// Attribute ---------------------------------------------------------------
-	
-	private int priority;
 	
 	// Constructor -------------------------------------------------------------
 	
 	public WordRule(int priority, String ruleValue, Color backgroundColor, Color foregroundColor) {
-		super(new WordDetector(ruleValue),ruleValue.substring(0,1),ruleValue.substring(ruleValue.length() - 1,ruleValue.length()),new Token(new TokenData(new TextAttribute(foregroundColor,backgroundColor,SWT.NORMAL),priority)));
-		this.priority = priority;
+		super(priority,ruleValue,backgroundColor,foregroundColor);
 	}
 	
 	// Static ------------------------------------------------------------------
 	
 	// Public ------------------------------------------------------------------
-	
-	public int getPriority() {
-		return priority;
-	}
 }
