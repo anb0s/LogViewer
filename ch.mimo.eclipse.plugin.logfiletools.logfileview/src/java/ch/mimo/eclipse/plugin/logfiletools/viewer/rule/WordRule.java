@@ -1,9 +1,5 @@
 package ch.mimo.eclipse.plugin.logfiletools.viewer.rule;
 
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.Token;
-import org.eclipse.jface.text.rules.WordPatternRule;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
 /*
