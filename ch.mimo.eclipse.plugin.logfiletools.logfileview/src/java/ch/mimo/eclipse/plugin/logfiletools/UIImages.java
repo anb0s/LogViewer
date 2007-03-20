@@ -75,11 +75,21 @@ public class UIImages {
         declareRegistryImage(ILogFileViewConstants.IMG_REFRESH_FILE_PASSIVE,	"passive/refresh_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_START_TAIL_ACTIVE,		"active/start_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_START_TAIL_PASSIVE,		"passive/start_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_START_ALL_TAIL_ACTIVE,	"active/start_all_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_START_ALL_TAIL_PASSIVE,	"passive/start_all_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_STOP_TAIL_ACTIVE,		"active/stop_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_STOP_TAIL_PASSIVE,		"passive/stop_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_STOP_ALL_TAIL_ACTIVE,	"active/stop_all_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_STOP_ALL_TAIL_PASSIVE,	"passive/stop_all_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_FILTER_ACTIVE,			"active/filter_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_FILTER_PASSIVE,			"passive/filter_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogFileViewConstants.IMG_ENCODING_ACTIVE,			"active/encoding_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_FIND_ACTIVE,				"active/find_obj_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_FIND_PASSIVE,			"passive/find_obj_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_RENAME_ACTIVE,			"active/rename_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_RENAME_PASSIVE,			"passive/rename_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_COPY_ACTIVE,				"active/copy_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogFileViewConstants.IMG_COPY_PASSIVE,			"active/copy_passive.gif"); //$NON-NLS-1$
         return imageRegistry;
     }
     

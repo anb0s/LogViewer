@@ -34,7 +34,9 @@ import ch.mimo.eclipse.plugin.logfiletools.action.FileEncondingViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.FileOpenViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.FindReplaceAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.RefreshCurrentFileViewAction;
+import ch.mimo.eclipse.plugin.logfiletools.action.StartTailOnAllFileViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.StartTailOnCurrentFileViewAction;
+import ch.mimo.eclipse.plugin.logfiletools.action.StopTailOnAllFileViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.StopTailOnCurrentFileViewAction;
 import ch.mimo.eclipse.plugin.logfiletools.action.TabRenameAction;
 import ch.mimo.eclipse.plugin.logfiletools.file.document.LogDocument;
@@ -78,6 +80,8 @@ public class LogFileView extends ViewPart {
     private RefreshCurrentFileViewAction refreshCurrentFileAction;
     private StartTailOnCurrentFileViewAction startTailOnCurrentFile;
     private StopTailOnCurrentFileViewAction stopTailOnCurrentFile;
+    private StartTailOnAllFileViewAction startTailOnAllFiles;
+    private StopTailOnAllFileViewAction stopTailOnAllFiles;
     private FileEncondingViewAction fileEncodingAction;
     private CopyToClipboardAction copyAction;
     private FindReplaceAction findReplaceAction;
@@ -127,6 +131,8 @@ public class LogFileView extends ViewPart {
             fileEncodingAction.setEnabled(false);
             startTailOnCurrentFile.setEnabled(false);
             stopTailOnCurrentFile.setEnabled(false);
+	        startTailOnAllFiles.setEnabled(false);
+	        stopTailOnAllFiles.setEnabled(false);
             tabRenameAction.setEnabled(false);
         } else
             if(index == 0) {
@@ -150,7 +156,9 @@ public class LogFileView extends ViewPart {
 	        refreshCurrentFileAction.setEnabled(false);
 	        fileEncodingAction.setEnabled(false);
 	        startTailOnCurrentFile.setEnabled(false);
-	        stopTailOnCurrentFile.setEnabled(false);  
+	        stopTailOnCurrentFile.setEnabled(false);
+	        startTailOnAllFiles.setEnabled(false);
+	        stopTailOnAllFiles.setEnabled(false);
 	        tabRenameAction.setEnabled(false);
     	}
     }
@@ -163,6 +171,28 @@ public class LogFileView extends ViewPart {
         } catch(Exception e) {
             logger.logError("unable to refresh the current tab's content",e); //$NON-NLS-1$
         }
+    }
+    
+    public void startTailOnAllDocuments() {
+    	Iterator keyIterator = logTab.keySet().iterator();
+    	while(keyIterator.hasNext()) {
+    		Object key = keyIterator.next();
+    		LogFileTab tab = (LogFileTab)logTab.get(key);
+    		tab.getDocument().setMonitor(true);
+    	}    	
+    	stopTailOnCurrentFile.setEnabled(true);
+    	startTailOnCurrentFile.setEnabled(false);
+    }
+    
+    public void stopTailOnAllDocuments() {
+    	Iterator keyIterator = logTab.keySet().iterator();
+    	while(keyIterator.hasNext()) {
+    		Object key = keyIterator.next();
+    		LogFileTab tab = (LogFileTab)logTab.get(key);
+    		tab.getDocument().setMonitor(false);
+    	}    	
+    	stopTailOnCurrentFile.setEnabled(false);
+    	startTailOnCurrentFile.setEnabled(true);
     }
     
     public void startTail() {
@@ -212,6 +242,8 @@ public class LogFileView extends ViewPart {
                 fileCloseAction.setEnabled(true);
                 closeAllFilesAction.setEnabled(true);
                 tabRenameAction.setEnabled(true);
+    	        startTailOnAllFiles.setEnabled(true);
+    	        stopTailOnAllFiles.setEnabled(true);
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
                 LogFileViewPlugin.getDefault().showErrorMessage(LogFileViewPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
@@ -307,6 +339,9 @@ public class LogFileView extends ViewPart {
 		menu.addAction(startTailOnCurrentFile);
 		menu.addAction(stopTailOnCurrentFile);
 		menu.addSeparator();
+		menu.addAction(startTailOnAllFiles);
+		menu.addAction(stopTailOnAllFiles);
+		menu.addSeparator();
 		menu.addAction(refreshCurrentFileAction);
 		menu.addSeparator();
 		menu.addAction(fileEncodingAction);
@@ -342,6 +377,9 @@ public class LogFileView extends ViewPart {
 		manager.add(stopTailOnCurrentFile);
 		manager.add(new Separator());
 		manager.add(refreshCurrentFileAction);
+		manager.add(new Separator());
+		manager.add(startTailOnAllFiles);
+		manager.add(stopTailOnAllFiles);
 		manager.add(new Separator());
 		manager.add(fileCloseAction);
 		manager.add(closeAllFilesAction);
@@ -398,6 +436,12 @@ public class LogFileView extends ViewPart {
 		// stop tail
     		stopTailOnCurrentFile = new StopTailOnCurrentFileViewAction(this,parent.getShell());
     		stopTailOnCurrentFile.setEnabled(false);
+    	// start all tail
+    	    startTailOnAllFiles = new StartTailOnAllFileViewAction(this,parent.getShell());
+    	    startTailOnAllFiles.setEnabled(false);
+    	// stop all tail
+    	    stopTailOnAllFiles = new StopTailOnAllFileViewAction(this,parent.getShell());
+    	    stopTailOnAllFiles.setEnabled(false);
 		// encoding action
     		fileEncodingAction = new FileEncondingViewAction(this,parent.getShell());
     		fileEncodingAction.setEnabled(false);

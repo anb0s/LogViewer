@@ -34,11 +34,21 @@ public interface ILogFileViewConstants {
 	public static final String IMG_REFRESH_FILE_PASSIVE		= "IMG_REFRESH_FILE_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_START_TAIL_ACTIVE		= "IMG_START_TAIL_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_START_TAIL_PASSIVE		= "IMG_START_TAIL_PASSIVE"; //$NON-NLS-1$
+	public static final String IMG_START_ALL_TAIL_ACTIVE	= "IMG_START_ALL_TAIL_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_START_ALL_TAIL_PASSIVE	= "IMG_START_ALL_TAIL_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_STOP_TAIL_ACTIVE			= "IMG_STOP_TAIL_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_STOP_TAIL_PASSIVE		= "IMG_STOP_TAIL_PASSIVE"; //$NON-NLS-1$
+	public static final String IMG_STOP_ALL_TAIL_ACTIVE		= "IMG_STOP_ALL_TAIL_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_STOP_ALL_TAIL_PASSIVE	= "IMG_STOP_ALL_TAIL_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_FILTER_ACTIVE			= "IMG_FILTER_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_FILTER_PASSIVE			= "IMG_FILTER_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_ENCODING_ACTIVE			= "IMG_ENCODING_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_FIND_ACTIVE				= "IMG_FIND_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_FIND_PASSIVE				= "IMG_FIND_PASSIVE"; //$NON-NLS-1$
+	public static final String IMG_RENAME_ACTIVE			= "IMG_RENAME_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_RENAME_PASSIVE			= "IMG_RENAME_PASSIVE"; //$NON-NLS-1$
+	public static final String IMG_COPY_ACTIVE				= "IMG_COPY_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_COPY_PASSIVE				= "IMG_COPY_PASSIVE"; //$NON-NLS-1$
 	
 	// Preferences -------------------------------------------------------------
 	

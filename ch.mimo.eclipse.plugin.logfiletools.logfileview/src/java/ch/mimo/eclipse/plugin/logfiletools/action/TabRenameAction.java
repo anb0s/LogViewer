@@ -2,8 +2,10 @@ package ch.mimo.eclipse.plugin.logfiletools.action;
 
 import org.eclipse.swt.widgets.Shell;
 
+import ch.mimo.eclipse.plugin.logfiletools.ILogFileViewConstants;
 import ch.mimo.eclipse.plugin.logfiletools.LogFileView;
 import ch.mimo.eclipse.plugin.logfiletools.LogFileViewPlugin;
+import ch.mimo.eclipse.plugin.logfiletools.UIImages;
 import ch.mimo.eclipse.plugin.logfiletools.action.delegate.TabRenameActionDelegate;
 
 /*
@@ -37,8 +39,8 @@ public class TabRenameAction extends AbstractViewAction {
     public void init() {
 		this.setText(LogFileViewPlugin.getResourceString("menu.tabrename.text")); //$NON-NLS-1$
 		this.setToolTipText(LogFileViewPlugin.getResourceString("menu.tabrename.tooltip")); //$NON-NLS-1$
-		// TODO organize tab rename icon
-//		this.setImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_ENCODING_ACTIVE));
+		this.setImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_RENAME_ACTIVE));
+		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_RENAME_PASSIVE));
     }
 
 }
