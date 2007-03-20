@@ -4,7 +4,7 @@ Release Notes Logfiletools version 1.5.0
 
 #1681337  Start, Stop and Suspend All?
 
--- additionals
+-- additional features
 
 1. added missing icons for the following features
 	- copy
