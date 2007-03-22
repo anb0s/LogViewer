@@ -10,3 +10,5 @@ Release Notes Logfiletools version 1.5.0
 	- copy
 	- rename tab
 	- find
+
+2. fixed minor naming issues on start and stop buttons
