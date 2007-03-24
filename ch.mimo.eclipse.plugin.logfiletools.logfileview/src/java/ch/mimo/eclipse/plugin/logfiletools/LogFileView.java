@@ -147,7 +147,12 @@ public class LogFileView extends ViewPart {
     	while(keyIterator.hasNext()) {
     		Object key = keyIterator.next();
     		LogFileTab tab = (LogFileTab)logTab.get(key);
-    		tab.getItem().dispose();
+    		try {
+				tab.close();
+				tab.getItem().dispose();
+			} catch (IOException e) {
+				logger.logError("unable to remove tab: " + tab.getDocument().getFile().getFileName()); //$NON-NLS-1$
+			}
     	}
     	logTab.clear();
     	if(tabfolder.getItemCount() == 0) {
