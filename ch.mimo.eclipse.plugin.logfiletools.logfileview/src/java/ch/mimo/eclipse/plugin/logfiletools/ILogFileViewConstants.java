@@ -76,6 +76,6 @@ public interface ILogFileViewConstants {
 	public static final String 	PREF_LAST_OPEN_FILES		= "LAST_OPEN_FILES"; //$NON-NLS-1$
 	
 	/* defines the maximum amount of files in the drop down history */
-	public static final int		MAX_FILES_IN_HISTORY		= 6;
+	public static final int		MAX_FILES_IN_HISTORY		= 10;
 	public static final String 	PREF_HISTORY_FILES			= "HISTORY_FILES"; //$NON-NLS-1$
 }
