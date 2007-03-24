@@ -1,15 +1,15 @@
 Release Notes Logfiletools version 1.5.0
 
--- Bugs
+------------------ Bugs ------------------
 
 #1687037 File handles(?) are not released
 			comment: A file handle cannot be released as long as a file is tailing!
 
--- features
+------------------ features ------------------
 
 #1681337  Start, Stop and Suspend All?
 
--- additional features and enhancements
+------------------ additional features and enhancements ------------------
 
 1. added missing icons for the following features
 	- copy
