@@ -30,5 +30,8 @@
    <feature url="features/ch.mimo.eclipse.plugin.logfiletools.feature_1.4.1.jar" id="ch.mimo.eclipse.plugin.logfiletools.feature" version="1.4.1">
       <category name="Logfile Tools"/>
    </feature>
+   <feature url="features/ch.mimo.eclipse.plugin.logfiletools.feature_1.5.0.jar" id="ch.mimo.eclipse.plugin.logfiletools.feature" version="1.5.0">
+      <category name="Logfile Tools"/>
+   </feature>
    <category-def name="Logfile Tools" label="Logfile Tools"/>
 </site>
