@@ -2,7 +2,7 @@
 <project name="logfile tools feature" default="build" basedir=".">
 	
 	<!-- properties -->
-	<property name="version" value="1.4.1"/>
+	<property name="version" value="1.5.0"/>
 	
 	<property name="jar.name" value="ch.mimo.eclipse.plugin.logfiletools.feature"/>
 	
