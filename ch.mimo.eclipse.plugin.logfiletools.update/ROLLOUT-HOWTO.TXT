@@ -1,0 +1,19 @@
+Here the necessary steps in order to ship a new version of the plugin.
+
+
+1. adapt the plugin.xml version.
+2. open the plugin.xml and export the plugin with the export function displayed.
+3. adapt the version in the feature.xml (check if the dependent plugin has the correct version)
+4. adapt the version in the feature build.xml
+5. run the feature build.xml "build" target.
+6. adapt the update site project build.xml version.
+7. run the update site project build.xml "build" target
+
+now we have all the necessary jars and zips for the update site and the sf distribution.
+
+8. adadpt the site.xml to the new version.
+9. ship the new plugin to the update-test folder on mimo.ch
+10. test the update site.
+11. ship the plugin to the update site
+12. ship the plugin to sourceforge.
+13. update all the plugin websites. (eclipseplugincentral.com,...)
