@@ -7,7 +7,7 @@
             name="%logfileview.plugin.name"
             icon="icons/logfileviewer.gif"
             category="logfiletools"
-            class="ch.mimo.eclipse.plugin.logfiletools.LogFileView"
+            class="de.anbos.eclipse.logviewer.plugin.LogFileView"
             id="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
       </view>
    </extension>
@@ -26,11 +26,11 @@
    <extension
       point = "org.eclipse.ui.preferencePages">
        <page id="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1"
-	    class="ch.mimo.eclipse.plugin.logfiletools.preferences.LogFileToolPreferences"
+	    class="de.anbos.eclipse.logviewer.plugin.preferences.LogFileToolPreferences"
             name="%logfileview.properties.main.page.title">
        </page>
        <page id="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1.3"
-        class="ch.mimo.eclipse.plugin.logfiletools.preferences.color.ColorPreferencePage"
+        class="de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferencePage"
             name="%logfileview.properties.coloring.page.title"
             category="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1">
        </page>
@@ -46,7 +46,7 @@
                label="%logfileview.action.openfile.name"
                icon="icons/logfileviewer.gif"
                tooltip="Open the logfile view in the current workbench page"
-               class="ch.mimo.eclipse.plugin.logfiletools.action.FileOpenWorkbenchAction"
+               class="de.anbos.eclipse.logviewer.plugin.action.FileOpenWorkbenchAction"
                style="push"
                menubarPath="File/content"
                id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen"/>
@@ -59,7 +59,7 @@
             id="ch.mimo.eclipse.plugin.logfiletools.logfileview.objectContribution1"
             objectClass="org.eclipse.core.runtime.IAdaptable">
          <action
-               class="ch.mimo.eclipse.plugin.logfiletools.action.FileOpenAction"
+               class="de.anbos.eclipse.logviewer.plugin.action.FileOpenAction"
                enablesFor="+"
                icon="icons/logfileviewer.gif"
                id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen.menu"
