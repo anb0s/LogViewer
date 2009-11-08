@@ -1,8 +1,0 @@
-Release Notes Logfiletools version 1.3.0
-
-We have introduced the following new features to the logfile viewer:
-
-1.	find dialog that allows to search for strings within the current
-	logfile.
-
-2.	tab rename function that allows to rename the currently active tab.
