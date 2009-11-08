@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 import de.anbos.eclipse.logviewer.plugin.LogFile;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferenceData;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.ILogFileToolColoringRule;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
@@ -51,7 +51,7 @@ public class PreferenceValueConverter {
     public static final String asString(ColorPreferenceData data) {
         String position = Base64.encode(Integer.toString(data.getPosition()));
         String checked = Base64.encode(Boolean.toString(data.isChecked()));
-        String rule = Base64.encode(LogFileViewPlugin.getResourceString(data.getRule()));
+        String rule = Base64.encode(LogViewerPlugin.getResourceString(data.getRule()));
         String background = Base64.encode(StringConverter.asString(data.getBackground()));
         String foreground = Base64.encode(StringConverter.asString(data.getForeground()));
         String value = Base64.encode(data.getValue());
@@ -75,7 +75,7 @@ public class PreferenceValueConverter {
         StringTokenizer tokenizer = new StringTokenizer(value,VALUE_DELIMITER);
         data.setPosition(Integer.parseInt(Base64.decode(tokenizer.nextToken())));
         data.setChecked(Boolean.valueOf(Base64.decode(tokenizer.nextToken())).booleanValue());
-        data.setRule(LogFileViewPlugin.getResourceString(Base64.decode(tokenizer.nextToken())));
+        data.setRule(LogViewerPlugin.getResourceString(Base64.decode(tokenizer.nextToken())));
         data.setBackground(StringConverter.asRGB(Base64.decode(tokenizer.nextToken())));
         data.setForeground(StringConverter.asRGB(Base64.decode(tokenizer.nextToken())));
         data.setValue(Base64.decode(tokenizer.nextToken()));

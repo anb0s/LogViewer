@@ -59,7 +59,7 @@ import de.anbos.eclipse.logviewer.plugin.viewer.LogFileViewer;
  * and limitations under the License.
  */
 
-public class LogFileView extends ViewPart {
+public class LogViewer extends ViewPart {
 
     // Attribute ---------------------------------------------------------------
     
@@ -89,8 +89,8 @@ public class LogFileView extends ViewPart {
     
     // Constructor -------------------------------------------------------------
     
-    public LogFileView() {
-        logger = LogFileViewPlugin.getDefault().getLogger();
+    public LogViewer() {
+        logger = LogViewerPlugin.getDefault().getLogger();
         logTab = new Hashtable();
     }
     
@@ -231,7 +231,7 @@ public class LogFileView extends ViewPart {
         String key = file.getFileName();
         if(!logTab.containsKey(key)) {
             try {
-            	String encoding = LogFileViewPlugin.getDefault().getPreferenceStore().getString(ILogFileViewConstants.PREF_ENCODING);
+            	String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
             	LogDocument document = new LogDocument(file,encoding);
                 File logFile = new File(file.getFileName());
                 TabItem item = new TabItem(tabfolder,0);
@@ -251,7 +251,7 @@ public class LogFileView extends ViewPart {
     	        stopTailOnAllFiles.setEnabled(true);
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
-                LogFileViewPlugin.getDefault().showErrorMessage(LogFileViewPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
+                LogViewerPlugin.getDefault().showErrorMessage(LogViewerPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
                 return;
             }
         }
@@ -470,11 +470,11 @@ public class LogFileView extends ViewPart {
     		LogFile logFile = tab.getDocument().getFile();
     		fileList.add(logFile);
     	}
-    	LogFileViewPlugin.getDefault().getPreferenceStore().setValue(ILogFileViewConstants.PREF_LAST_OPEN_FILES,PreferenceValueConverter.asLogFileListString(fileList));
+    	LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_LAST_OPEN_FILES,PreferenceValueConverter.asLogFileListString(fileList));
     }
     
     private void openAllLastOpenFiles() {
-    	List logFiles = PreferenceValueConverter.asLogFileList(LogFileViewPlugin.getDefault().getPreferenceStore().getString(ILogFileViewConstants.PREF_LAST_OPEN_FILES));
+    	List logFiles = PreferenceValueConverter.asLogFileList(LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_LAST_OPEN_FILES));
     	Iterator it = logFiles.iterator();
     	while(it.hasNext()) {
     		LogFile logFile = (LogFile)it.next();
@@ -523,7 +523,7 @@ public class LogFileView extends ViewPart {
 			if(tab == null || tab.getDocument() == null) {
 				return;
 			}
-			fileEncodingAction.setText(LogFileViewPlugin.getResourceString("menu.encodingchange.text",new Object[] {tab.getDocument().getEncoding()})); //$NON-NLS-1$
+			fileEncodingAction.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] {tab.getDocument().getEncoding()})); //$NON-NLS-1$
 			showDocument(tab.getDocument(),false);
 			startTailOnCurrentFile.setEnabled(!tab.getDocument().isMonitor());
 			stopTailOnCurrentFile.setEnabled(tab.getDocument().isMonitor());

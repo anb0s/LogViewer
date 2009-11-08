@@ -3,7 +3,7 @@ package de.anbos.eclipse.logviewer.plugin.action;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate;
 
 /*
@@ -26,12 +26,12 @@ public abstract class AbstractViewAction extends Action {
 	// Attribute --------------------------------------------------------------------
 	
 	protected ILogfileActionDelegate actionDelegate;
-	protected LogFileView view;
+	protected LogViewer view;
 	protected Shell shell;
 	
 	// Constructor ------------------------------------------------------------------
 	
-	public AbstractViewAction(LogFileView view, Shell shell, ILogfileActionDelegate actionDelegate) {
+	public AbstractViewAction(LogViewer view, Shell shell, ILogfileActionDelegate actionDelegate) {
 		super();
 		this.view = view;
 		this.shell = shell;

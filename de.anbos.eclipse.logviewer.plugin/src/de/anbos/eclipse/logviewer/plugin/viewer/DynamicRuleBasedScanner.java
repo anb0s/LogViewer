@@ -15,8 +15,8 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleComparator;
 
@@ -56,7 +56,7 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
     // Constructor ------------------------------------------------------------------
     
     public DynamicRuleBasedScanner(String rulesPreferenceString) {
-    	LogFileViewPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(new PropertyChangeListener());
+    	LogViewerPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(new PropertyChangeListener());
         rules = new Vector();
         loadRules(rulesPreferenceString);  
         defaultToken= Token.UNDEFINED;
@@ -194,7 +194,7 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
 		 */
 		public void propertyChange(PropertyChangeEvent event) {
-			if(event.getProperty().equals(ILogFileViewConstants.PREF_COLORING_ITEMS)) {
+			if(event.getProperty().equals(ILogViewerConstants.PREF_COLORING_ITEMS)) {
 				loadRules((String)event.getNewValue());
 			}
 		}

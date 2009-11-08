@@ -2,8 +2,8 @@ package de.anbos.eclipse.logviewer.plugin.action;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.HistoryFileOpenActionDelegate;
 import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
 
@@ -26,7 +26,7 @@ public class HistoryFileOpenViewAction extends AbstractViewAction {
 	
 	// Constructor -------------------------------------------------------------
 	
-	public HistoryFileOpenViewAction(HistoryFile file, LogFileView view, Shell shell) {
+	public HistoryFileOpenViewAction(HistoryFile file, LogViewer view, Shell shell) {
 		super(view,shell,new HistoryFileOpenActionDelegate(file));
 		this.setText(file.getFileName());
 	}
@@ -35,7 +35,7 @@ public class HistoryFileOpenViewAction extends AbstractViewAction {
 	
 	public void init() {
 		// TODO make this dynamic
-        this.setToolTipText(LogFileViewPlugin.getResourceString("menu.file.open.tooltip")); //$NON-NLS-1$
+        this.setToolTipText(LogViewerPlugin.getResourceString("menu.file.open.tooltip")); //$NON-NLS-1$
 
 	}
 

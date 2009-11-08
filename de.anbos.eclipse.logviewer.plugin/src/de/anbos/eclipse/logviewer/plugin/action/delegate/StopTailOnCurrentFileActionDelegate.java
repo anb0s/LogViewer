@@ -2,7 +2,7 @@ package de.anbos.eclipse.logviewer.plugin.action.delegate;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -24,9 +24,9 @@ public class StopTailOnCurrentFileActionDelegate implements ILogfileActionDelega
     // Public -----------------------------------------------------------------------
     
     /* (non-Javadoc)
-     * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogFileView, org.eclipse.swt.widgets.Shell)
+     * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
      */
-    public void run(LogFileView view, Shell shell) {
+    public void run(LogViewer view, Shell shell) {
         view.stopTail();
     }
 

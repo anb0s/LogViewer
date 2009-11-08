@@ -12,9 +12,9 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Display;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogFile;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener;
 import de.anbos.eclipse.logviewer.plugin.file.Tail;
 
@@ -52,9 +52,9 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		this.file = file;
 		this.encoding = encoding;
 		this.charset = Charset.forName(encoding);
-		IPreferenceStore store = LogFileViewPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = LogViewerPlugin.getDefault().getPreferenceStore();
 		store.addPropertyChangeListener(new PropertyChangeListener());
-		backlogLines = store.getInt(ILogFileViewConstants.PREF_BACKLOG);
+		backlogLines = store.getInt(ILogViewerConstants.PREF_BACKLOG);
 		setTextStore(new GapTextStore(50, 300));
 		setLineTracker(new DefaultLineTracker());
 		completeInitialization();
@@ -199,8 +199,8 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
 		 */
 		public void propertyChange(PropertyChangeEvent event) {
-			if(event.getProperty().equals(ILogFileViewConstants.PREF_CURSORLINE_COLOR)) {
-				backlogLines = LogFileViewPlugin.getDefault().getPreferenceStore().getInt(ILogFileViewConstants.PREF_BACKLOG);
+			if(event.getProperty().equals(ILogViewerConstants.PREF_CURSORLINE_COLOR)) {
+				backlogLines = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BACKLOG);
 			}
 		}
 	}

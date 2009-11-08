@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -72,7 +72,7 @@ public class TabRenameDialog extends Dialog {
 	 */
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(LogFileViewPlugin.getResourceString("dialog.tabrename.title")); //$NON-NLS-1$
+		shell.setText(LogViewerPlugin.getResourceString("dialog.tabrename.title")); //$NON-NLS-1$
 	}
 	
 	/*

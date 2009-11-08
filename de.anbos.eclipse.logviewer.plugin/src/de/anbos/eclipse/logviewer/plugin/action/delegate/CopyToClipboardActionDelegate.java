@@ -3,7 +3,7 @@ package de.anbos.eclipse.logviewer.plugin.action.delegate;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.viewer.LogFileViewer;
 
 /*
@@ -25,7 +25,7 @@ public class CopyToClipboardActionDelegate implements ILogfileActionDelegate {
 
 	// Public ------------------------------------------------------------------
 	
-	public void run(LogFileView view, Shell shell) {
+	public void run(LogViewer view, Shell shell) {
 		LogFileViewer viewer = view.getViewer();
 		StyledText text = viewer.getActualViewer().getTextWidget();
 		text.copy();

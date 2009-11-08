@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.ui.EncodingComboEditor;
 
 /*
@@ -37,7 +37,7 @@ import de.anbos.eclipse.logviewer.plugin.ui.EncodingComboEditor;
  * and limitations under the License.
  */
 
-public class LogFileToolPreferences extends PreferencePage implements IWorkbenchPreferencePage {
+public class LogViewerPreferences extends PreferencePage implements IWorkbenchPreferencePage {
 
 	// Attribute ---------------------------------------------------------------
 	
@@ -78,7 +78,7 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
         pageComponent.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,true));
 
 		Group tailGroup = new Group(pageComponent,SWT.NONE);
-		tailGroup.setText(LogFileViewPlugin.getResourceString("preferences.main.tailsettings.title")); //$NON-NLS-1$
+		tailGroup.setText(LogViewerPlugin.getResourceString("preferences.main.tailsettings.title")); //$NON-NLS-1$
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
@@ -89,7 +89,7 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
 		createReadWaitField(tailGroup);
 		
 		Group viewerGroup = new Group(pageComponent,SWT.NONE);
-		viewerGroup.setText(LogFileViewPlugin.getResourceString("preferences.main.viewersettings.title")); //$NON-NLS-1$
+		viewerGroup.setText(LogViewerPlugin.getResourceString("preferences.main.viewersettings.title")); //$NON-NLS-1$
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
@@ -107,7 +107,7 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
 	}
 	
 	protected IPreferenceStore doGetPreferenceStore() {
-		return LogFileViewPlugin.getDefault().getPreferenceStore();
+		return LogViewerPlugin.getDefault().getPreferenceStore();
 	}
 	
 	protected void performDefaults() {
@@ -139,41 +139,41 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
 		
 		
 		
-		backlogEditor = new IntegerFieldEditor(ILogFileViewConstants.PREF_BACKLOG,LogFileViewPlugin.getResourceString("preferences.backlog.label.text"),composite); //$NON-NLS-1$
+		backlogEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_BACKLOG,LogViewerPlugin.getResourceString("preferences.backlog.label.text"),composite); //$NON-NLS-1$
 
 		backlogEditor.setPreferenceStore(doGetPreferenceStore());
 		backlogEditor.setPage(this);
-		backlogEditor.setTextLimit(Integer.toString(ILogFileViewConstants.MAX_BACKLOG).length());
-		backlogEditor.setErrorMessage(LogFileViewPlugin.getResourceString("preferences.backlog.label.errortext",new Object[]{new Integer(ILogFileViewConstants.MAX_BACKLOG)})); //$NON-NLS-1$
+		backlogEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_BACKLOG).length());
+		backlogEditor.setErrorMessage(LogViewerPlugin.getResourceString("preferences.backlog.label.errortext",new Object[]{new Integer(ILogViewerConstants.MAX_BACKLOG)})); //$NON-NLS-1$
 		backlogEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
-		backlogEditor.setValidRange(0,ILogFileViewConstants.MAX_BACKLOG);
+		backlogEditor.setValidRange(0,ILogViewerConstants.MAX_BACKLOG);
 		backlogEditor.load();
 		backlogEditor.setPropertyChangeListener(validityChangeListener);
 	}
 	
 	private void createReadBufferField(Composite composite) {
 		
-		bufferEditor = new IntegerFieldEditor(ILogFileViewConstants.PREF_BUFFER,LogFileViewPlugin.getResourceString("preferences.buffer.label.text"),composite); //$NON-NLS-1$
+		bufferEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_BUFFER,LogViewerPlugin.getResourceString("preferences.buffer.label.text"),composite); //$NON-NLS-1$
 
 		bufferEditor.setPreferenceStore(doGetPreferenceStore());
 		bufferEditor.setPage(this);
-		bufferEditor.setTextLimit(Integer.toString(ILogFileViewConstants.MAX_TAIL_BUFFER_SIZE).length());
-		bufferEditor.setErrorMessage(LogFileViewPlugin.getResourceString("preferences.buffer.label.errortext",new Object[]{new Integer(ILogFileViewConstants.MAX_TAIL_BUFFER_SIZE)})); //$NON-NLS-1$
+		bufferEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_TAIL_BUFFER_SIZE).length());
+		bufferEditor.setErrorMessage(LogViewerPlugin.getResourceString("preferences.buffer.label.errortext",new Object[]{new Integer(ILogViewerConstants.MAX_TAIL_BUFFER_SIZE)})); //$NON-NLS-1$
 		bufferEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
-		bufferEditor.setValidRange(0,ILogFileViewConstants.MAX_TAIL_BUFFER_SIZE);
+		bufferEditor.setValidRange(0,ILogViewerConstants.MAX_TAIL_BUFFER_SIZE);
 		bufferEditor.load();
 		bufferEditor.setPropertyChangeListener(validityChangeListener);
 	}
 	
 	private void createReadWaitField(Composite composite) {
-		readWaitEditor = new IntegerFieldEditor(ILogFileViewConstants.PREF_READWAIT,LogFileViewPlugin.getResourceString("preferences.readwait.label.text"),composite); //$NON-NLS-1$
+		readWaitEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_READWAIT,LogViewerPlugin.getResourceString("preferences.readwait.label.text"),composite); //$NON-NLS-1$
 		
 		readWaitEditor.setPreferenceStore(doGetPreferenceStore());
 		readWaitEditor.setPage(this);
-		readWaitEditor.setTextLimit(Integer.toString(ILogFileViewConstants.MAX_READWAIT_SIZE).length());
-		readWaitEditor.setErrorMessage(LogFileViewPlugin.getResourceString("preferences.readwait.label.errortext",new Object[]{new Integer(ILogFileViewConstants.MAX_READWAIT_SIZE)})); //$NON-NLS-1$
+		readWaitEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_READWAIT_SIZE).length());
+		readWaitEditor.setErrorMessage(LogViewerPlugin.getResourceString("preferences.readwait.label.errortext",new Object[]{new Integer(ILogViewerConstants.MAX_READWAIT_SIZE)})); //$NON-NLS-1$
 		readWaitEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
-		readWaitEditor.setValidRange(0,ILogFileViewConstants.MAX_TAIL_BUFFER_SIZE);
+		readWaitEditor.setValidRange(0,ILogViewerConstants.MAX_TAIL_BUFFER_SIZE);
 		readWaitEditor.load();
 		readWaitEditor.setPropertyChangeListener(validityChangeListener);		
 	}
@@ -191,7 +191,7 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
 	}
 	
 	private void createEncodingCombo(Composite composite) {
-		encodingComboEditor = new EncodingComboEditor(ILogFileViewConstants.PREF_ENCODING,LogFileViewPlugin.getResourceString("preferences.contenteditor.combo.label.text"),composite); //$NON-NLS-1$
+		encodingComboEditor = new EncodingComboEditor(ILogViewerConstants.PREF_ENCODING,LogViewerPlugin.getResourceString("preferences.contenteditor.combo.label.text"),composite); //$NON-NLS-1$
 		
 		encodingComboEditor.setPreferenceStore(doGetPreferenceStore());
 		encodingComboEditor.setPage(this);
@@ -199,7 +199,7 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
 	}
 	
 	private void createColorChooser(Composite composite) {
-		colorFieldEditor = new ColorFieldEditor(ILogFileViewConstants.PREF_CURSORLINE_COLOR,LogFileViewPlugin.getResourceString("preferences.contenteditor.cursorline.color.chooser.text"),composite); //$NON-NLS-1$
+		colorFieldEditor = new ColorFieldEditor(ILogViewerConstants.PREF_CURSORLINE_COLOR,LogViewerPlugin.getResourceString("preferences.contenteditor.cursorline.color.chooser.text"),composite); //$NON-NLS-1$
 		
 		colorFieldEditor.setPreferenceStore(doGetPreferenceStore());
 		colorFieldEditor.setPage(this);
@@ -219,8 +219,8 @@ public class LogFileToolPreferences extends PreferencePage implements IWorkbench
         data.horizontalAlignment = SWT.CENTER;
 		panel.setLayoutData(data);
 		
-		fontTypeEditor = new FontFieldEditor(ILogFileViewConstants.PREF_EDITOR_FONT_STYLE,LogFileViewPlugin.getResourceString("preferences.contenteditor.font.style.text"),panel); //$NON-NLS-1$
-		fontTypeEditor.setChangeButtonText(LogFileViewPlugin.getResourceString("preferences.contenteditor.fontl.style.button.text")); //$NON-NLS-1$
+		fontTypeEditor = new FontFieldEditor(ILogViewerConstants.PREF_EDITOR_FONT_STYLE,LogViewerPlugin.getResourceString("preferences.contenteditor.font.style.text"),panel); //$NON-NLS-1$
+		fontTypeEditor.setChangeButtonText(LogViewerPlugin.getResourceString("preferences.contenteditor.fontl.style.button.text")); //$NON-NLS-1$
 		fontTypeEditor.setPreferenceStore(doGetPreferenceStore());
 		fontTypeEditor.setPage(this);
 		fontTypeEditor.load();

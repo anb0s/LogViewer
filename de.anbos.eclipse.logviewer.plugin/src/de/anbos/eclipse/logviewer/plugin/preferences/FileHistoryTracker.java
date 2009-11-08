@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -49,18 +49,18 @@ public class FileHistoryTracker {
 	public void storeFile(String path) {
 		init();
 		if(containsThenIncrement(path)) {
-            LogFileViewPlugin.getDefault().getPreferenceStore().setValue(ILogFileViewConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
+            LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
 			return;
 		}
 		HistoryFile file = new HistoryFile(path,0);
-		if(files.size() == ILogFileViewConstants.MAX_FILES_IN_HISTORY) {
-			files.remove(ILogFileViewConstants.MAX_FILES_IN_HISTORY - 1);
+		if(files.size() == ILogViewerConstants.MAX_FILES_IN_HISTORY) {
+			files.remove(ILogViewerConstants.MAX_FILES_IN_HISTORY - 1);
 			files.add(file);
 		} else {
 			files.add(file);		
 		}
 		Collections.sort(files,new HistoryFileComparator());
-		LogFileViewPlugin.getDefault().getPreferenceStore().setValue(ILogFileViewConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
+		LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
 	}
 	
 	public List getFiles() {
@@ -72,7 +72,7 @@ public class FileHistoryTracker {
 	
 	private void init() {
 		// initial load
-		String historyFilesPrefString = LogFileViewPlugin.getDefault().getPreferenceStore().getString(ILogFileViewConstants.PREF_HISTORY_FILES);
+		String historyFilesPrefString = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_HISTORY_FILES);
 		if(historyFilesPrefString != null && historyFilesPrefString.length() <= 0) {
 			files = new Vector();
 			return;

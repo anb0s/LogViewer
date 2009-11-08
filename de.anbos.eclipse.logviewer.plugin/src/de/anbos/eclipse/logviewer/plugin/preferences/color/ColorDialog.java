@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
 
 /*
@@ -58,9 +58,9 @@ public class ColorDialog extends StatusDialog {
         // set title
         String title = null;
         if(edit) {
-            title = LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.edit.title"); //$NON-NLS-1$
+            title = LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.edit.title"); //$NON-NLS-1$
         } else {
-            title = LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.new.title"); //$NON-NLS-1$
+            title = LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.new.title"); //$NON-NLS-1$
         }        
         setTitle(title);
     }
@@ -102,14 +102,14 @@ public class ColorDialog extends StatusDialog {
 
         if(ruleTypeCombo.getText() == null || ruleTypeCombo.getText().length() <= 0) {
         	MessageDialog.openError(getShell(),
-        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
-        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.error.rule.text")); //$NON-NLS-1$
+        			LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
+        			LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.error.rule.text")); //$NON-NLS-1$
             return;
         }
         if(text.getText() == null || text.getText().length() <= 0) {
         	MessageDialog.openError(getShell(),
-        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
-        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.error.value.text")); //$NON-NLS-1$
+        			LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
+        			LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.error.value.text")); //$NON-NLS-1$
             return;
         }
         data.setPosition(position);
@@ -127,7 +127,7 @@ public class ColorDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.active.label")); //$NON-NLS-1$
+        comboLabel.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.active.label")); //$NON-NLS-1$
         // draw checkbox
         status = new Button(parent,SWT.CHECK);
         if(edit) {
@@ -139,7 +139,7 @@ public class ColorDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.combo.label")); //$NON-NLS-1$
+        comboLabel.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.combo.label")); //$NON-NLS-1$
         // draw combo
         ruleTypeCombo = new CCombo(parent,SWT.BORDER);
         ruleTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -160,7 +160,7 @@ public class ColorDialog extends StatusDialog {
         // draw label
         Label label = new Label(parent,SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.background.label")); //$NON-NLS-1$
+        label.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.background.label")); //$NON-NLS-1$
         // draw selector
         backgroundColorSelector = new ColorSelector(parent);
         backgroundColorSelector.setColorValue(new RGB(255,255,255));
@@ -174,7 +174,7 @@ public class ColorDialog extends StatusDialog {
         // draw label
         Label label = new Label(parent,SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.foreground.label")); //$NON-NLS-1$
+        label.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.foreground.label")); //$NON-NLS-1$
         // draw selector
         foregroundColorSelector = new ColorSelector(parent);
         foregroundColorSelector.setColorValue(new RGB(0,0,0));
@@ -188,7 +188,7 @@ public class ColorDialog extends StatusDialog {
         // draw label
         Label label = new Label(parent,SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.dialog.value.label"));    //$NON-NLS-1$
+        label.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.dialog.value.label"));    //$NON-NLS-1$
         // draw textfield
         text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

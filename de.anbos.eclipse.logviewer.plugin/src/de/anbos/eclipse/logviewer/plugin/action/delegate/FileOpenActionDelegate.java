@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.anbos.eclipse.logviewer.plugin.LogFile;
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
 
@@ -44,9 +44,9 @@ public class FileOpenActionDelegate implements ILogfileActionDelegate {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.anbos.eclipse.logviewer.plugin.action.ILogfileAction#run(de.anbos.eclipse.logviewer.plugin.LogFileView, org.eclipse.swt.widgets.Shell)
+	 * @see de.anbos.eclipse.logviewer.plugin.action.ILogfileAction#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
 	 */
-	public void run(LogFileView view, Shell shell) {
+	public void run(LogViewer view, Shell shell) {
 		// opening file(s) in logfile view
 	    FileDialog dialog = new FileDialog(shell,SWT.OPEN|SWT.MULTI);
 	    String[] extensions = {

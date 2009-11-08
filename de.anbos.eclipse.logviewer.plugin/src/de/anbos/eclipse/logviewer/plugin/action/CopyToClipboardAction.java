@@ -2,9 +2,9 @@ package de.anbos.eclipse.logviewer.plugin.action;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.UIImages;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.CopyToClipboardActionDelegate;
 
@@ -26,16 +26,16 @@ import de.anbos.eclipse.logviewer.plugin.action.delegate.CopyToClipboardActionDe
 public class CopyToClipboardAction extends AbstractViewAction {
 	// Constructor ------------------------------------------------------------------
 	
-	public CopyToClipboardAction(LogFileView view, Shell shell) {
+	public CopyToClipboardAction(LogViewer view, Shell shell) {
 		super(view,shell,new CopyToClipboardActionDelegate());
 	}
 	
 	// Public -----------------------------------------------------------------------
 	
 	public void init() {
-		this.setText(LogFileViewPlugin.getResourceString("menu.content.copy.text")); //$NON-NLS-1$
-		this.setToolTipText(LogFileViewPlugin.getResourceString("menu.content.copy.tooltip")); //$NON-NLS-1$
-		this.setImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_COPY_ACTIVE));
-		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_COPY_PASSIVE));
+		this.setText(LogViewerPlugin.getResourceString("menu.content.copy.text")); //$NON-NLS-1$
+		this.setToolTipText(LogViewerPlugin.getResourceString("menu.content.copy.tooltip")); //$NON-NLS-1$
+		this.setImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_COPY_ACTIVE));
+		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_COPY_PASSIVE));
 	}
 }

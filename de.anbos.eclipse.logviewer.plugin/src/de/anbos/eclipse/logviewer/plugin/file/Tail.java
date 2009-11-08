@@ -12,8 +12,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.MalformedInputException;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 
 /*
@@ -52,11 +52,11 @@ public class Tail implements Runnable {
 	// Constructor -------------------------------------------------------------
 	
 	public Tail(String filePath, Charset charset, IFileChangedListener listener) {
-        logger = LogFileViewPlugin.getDefault().getLogger();
+        logger = LogViewerPlugin.getDefault().getLogger();
 		this.filePath = filePath;
 		this.listener = listener;
 		decoder = charset.newDecoder();
-		bufferCapacity = LogFileViewPlugin.getDefault().getPreferenceStore().getInt(ILogFileViewConstants.PREF_BUFFER);
+		bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
 	}
 	
 	// Public ------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class Tail implements Runnable {
 		isRunning = true;
         RandomAccessFile file = null;
 		try {
-			int readwait = LogFileViewPlugin.getDefault().getPreferenceStore().getInt(ILogFileViewConstants.PREF_READWAIT);
+			int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
 			file = openFile();
 			if(file == null) {
 				throw new ThreadInterruptedException("file was null"); //$NON-NLS-1$
@@ -94,7 +94,7 @@ public class Tail implements Runnable {
 		    logger.logError(tie);
 		} catch(MalformedInputException mie) { 
 		    logger.logError(mie);
-            listener.fileChanged(LogFileViewPlugin.getResourceString("tail.loading.file.encoding.error",new String[]{decoder.charset().displayName()}).toCharArray(),true);
+            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.encoding.error",new String[]{decoder.charset().displayName()}).toCharArray(),true);
 		} catch(IOException ioe) {
 		    logger.logError(ioe);
 		} catch(InterruptedException ie) {
@@ -121,7 +121,7 @@ public class Tail implements Runnable {
 				return file;
 			} catch(FileNotFoundException fnfe) {
 				try {
-					wait(ILogFileViewConstants.TAIL_FILEOPEN_ERROR_WAIT);
+					wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
 				} catch(InterruptedException ie) {
 					throw new ThreadInterruptedException(ie);
 				}
@@ -137,7 +137,7 @@ public class Tail implements Runnable {
 	 */
 	private void read(FileChannel channel) throws IOException {
 		if(isFirstTimeRead) {
-			listener.fileChanged(LogFileViewPlugin.getResourceString("tail.loading.file",new String[]{filePath}).toCharArray(),true);
+			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{filePath}).toCharArray(),true);
 			synchronized (channel) {
                  long startPosition = 0l;
                  long size = channel.size();
@@ -150,7 +150,7 @@ public class Tail implements Runnable {
 				channel.position(channel.size());
 				listener.fileChanged(mappedChars.array(),true);
 			}
-			bufferCapacity = LogFileViewPlugin.getDefault().getPreferenceStore().getInt(ILogFileViewConstants.PREF_BUFFER);
+			bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
 			isFirstTimeRead = false;
 			return;
 		}

@@ -28,7 +28,7 @@ import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferenceData;
 
 /*
@@ -130,7 +130,7 @@ public class ColorItemReadWriter {
 					Node node = nodes.item(n);
 					// rule
 					if(node.getNodeName().equals(NODE_RULE)) {
-						data.setRule(LogFileViewPlugin.getResourceString(extractStringValueFromNode(node)));
+						data.setRule(LogViewerPlugin.getResourceString(extractStringValueFromNode(node)));
 						fieldCounter++;
 						continue;
 					}
@@ -206,7 +206,7 @@ public class ColorItemReadWriter {
 				// rule
 				Node ruleNode = document.createElement(NODE_RULE);
 				itemNode.appendChild(ruleNode);
-				Text ruleValue = document.createTextNode(LogFileViewPlugin.getResourceString(item.getRule()));
+				Text ruleValue = document.createTextNode(LogViewerPlugin.getResourceString(item.getRule()));
 				ruleNode.appendChild(ruleValue);
 				// background
 				Node backgroundNode = document.createElement(NODE_BACKGROUND);

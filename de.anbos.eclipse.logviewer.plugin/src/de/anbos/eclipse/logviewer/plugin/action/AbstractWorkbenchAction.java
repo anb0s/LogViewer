@@ -8,8 +8,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate;
 
@@ -40,7 +40,7 @@ public abstract class AbstractWorkbenchAction implements IWorkbenchWindowActionD
 	// Constructor ------------------------------------------------------------------
 	
 	public AbstractWorkbenchAction(ILogfileActionDelegate actionDelegate) {
-	    logger = LogFileViewPlugin.getDefault().getLogger();
+	    logger = LogViewerPlugin.getDefault().getLogger();
 		this.actionDelegate = actionDelegate;
 	}
 	
@@ -68,7 +68,7 @@ public abstract class AbstractWorkbenchAction implements IWorkbenchWindowActionD
 			return;
 		}
 		Shell shell = window.getShell();
-		String viewId = LogFileViewPlugin.getDefault().getBundle().getSymbolicName();
+		String viewId = LogViewerPlugin.getDefault().getBundle().getSymbolicName();
 		IViewPart view = null;
 		try {
 				view = window.getActivePage().showView(viewId);
@@ -77,12 +77,12 @@ public abstract class AbstractWorkbenchAction implements IWorkbenchWindowActionD
 			return;
 		}
 		
-		if(!(view instanceof LogFileView) | shell == null) {
+		if(!(view instanceof LogViewer) | shell == null) {
 			logger.logError("unable to get current shell or log file view for that matter"); //$NON-NLS-1$
 			return;
 		}
 		// call abstract run
-		actionDelegate.run((LogFileView)view,shell);
+		actionDelegate.run((LogViewer)view,shell);
 	}
 	
 	/* (non-Javadoc)

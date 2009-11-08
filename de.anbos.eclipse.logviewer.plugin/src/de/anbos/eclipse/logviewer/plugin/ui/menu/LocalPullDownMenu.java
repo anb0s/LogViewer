@@ -10,7 +10,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.action.HistoryFileOpenViewAction;
 import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
@@ -40,13 +40,13 @@ public class LocalPullDownMenu implements IMenuListener {
 	// Attribute ---------------------------------------------------------------
 	
 	private IMenuManager menuManager;
-	private LogFileView view;
+	private LogViewer view;
 	private Shell shell;
 	private List actionList;
 	
 	// Constructor -------------------------------------------------------------
 	
-	public LocalPullDownMenu(IMenuManager menuManager, LogFileView view, Shell shell) {
+	public LocalPullDownMenu(IMenuManager menuManager, LogViewer view, Shell shell) {
 		this.menuManager = menuManager;
 		this.view = view;
 		this.shell = shell;

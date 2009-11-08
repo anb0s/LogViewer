@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 
 /*
@@ -51,7 +51,7 @@ public class EncodingDialog extends Dialog {
 	 */
 	public EncodingDialog(Shell parentShell, String currentEncoding) {
 		super(parentShell);
-        logger = LogFileViewPlugin.getDefault().getLogger();
+        logger = LogViewerPlugin.getDefault().getLogger();
 		this.oldValue = currentEncoding;
 	}
 	
@@ -81,7 +81,7 @@ public class EncodingDialog extends Dialog {
 	 */
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(LogFileViewPlugin.getResourceString("dialog.encoding.title")); //$NON-NLS-1$
+		shell.setText(LogViewerPlugin.getResourceString("dialog.encoding.title")); //$NON-NLS-1$
 	}
 	
 	/*

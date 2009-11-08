@@ -17,7 +17,7 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.TokenData;
 
@@ -48,7 +48,7 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
     // Constructor ------------------------------------------------------------------
     
     public DamageRepairer(ITokenScanner scanner) {
-        logger = LogFileViewPlugin.getDefault().getLogger();
+        logger = LogViewerPlugin.getDefault().getLogger();
         Assert.isNotNull(scanner);
         this.scanner = scanner;
         defaultTextAttribute = new TextAttribute(null);

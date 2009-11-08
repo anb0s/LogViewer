@@ -16,7 +16,7 @@ package de.anbos.eclipse.logviewer.plugin;
  * and limitations under the License.
  */
 
-public interface ILogFileViewConstants {
+public interface ILogViewerConstants {
 
 	// Tail settings -----------------------------------------------------------
 	

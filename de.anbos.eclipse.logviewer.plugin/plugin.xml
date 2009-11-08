@@ -2,13 +2,13 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension point="org.eclipse.ui.views">
-      <category name="Logfile Tools" id="logfiletools"/>
+      <category name="Log Viewer" id="logviewer"/>
       <view
-            name="%logfileview.plugin.name"
+            name="%logviewer.plugin.name"
             icon="icons/logfileviewer.gif"
-            category="logfiletools"
-            class="de.anbos.eclipse.logviewer.plugin.LogFileView"
-            id="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
+            category="logviewer"
+            class="de.anbos.eclipse.logviewer.plugin.LogViewer"
+            id="de.anbos.eclipse.logviewer.plugin.LogViewer">
       </view>
    </extension>
    <extension
@@ -19,53 +19,53 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
+               id="de.anbos.eclipse.logviewer.plugin.LogViewer">
          </view>
       </perspectiveExtension>
    </extension>
    <extension
       point = "org.eclipse.ui.preferencePages">
-       <page id="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1"
-	    class="de.anbos.eclipse.logviewer.plugin.preferences.LogFileToolPreferences"
-            name="%logfileview.properties.main.page.title">
+       <page id="de.anbos.eclipse.logviewer.plugin.LogViewer.page1"
+	    class="de.anbos.eclipse.logviewer.plugin.preferences.LogViewerPreferences"
+            name="%logviewer.properties.main.page.title">
        </page>
-       <page id="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1.3"
+       <page id="de.anbos.eclipse.logviewer.plugin.LogViewer.page1.3"
         class="de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferencePage"
-            name="%logfileview.properties.coloring.page.title"
-            category="ch.mimo.eclipse.plugin.logfiletools.Logfileview.page1">
+            name="%logviewer.properties.coloring.page.title"
+            category="de.anbos.eclipse.logviewer.plugin.LogViewer.page1">
        </page>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            label="%logfileview.actionset.name"
+            label="%logviewer.actionset.name"
             visible="true"
-            id="ch.mimo.eclipse.plugin.logfiletools.actionset">
+            id="de.anbos.eclipse.logviewer.plugin.actionset">
          <action
                toolbarPath="Normal/additions"
-               label="%logfileview.action.openfile.name"
+               label="%logviewer.action.openfile.name"
                icon="icons/logfileviewer.gif"
-               tooltip="Open the logfile view in the current workbench page"
+               tooltip="Open the Log Viewer in the current workbench page"
                class="de.anbos.eclipse.logviewer.plugin.action.FileOpenWorkbenchAction"
                style="push"
                menubarPath="File/content"
-               id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen"/>
+               id="de.anbos.eclipse.logviewer.plugin.action.fileopen"/>
       </actionSet>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="false"
-            id="ch.mimo.eclipse.plugin.logfiletools.logfileview.objectContribution1"
+            id="de.anbos.eclipse.logviewer.plugin.LogViewer.objectContribution1"
             objectClass="org.eclipse.core.runtime.IAdaptable">
          <action
                class="de.anbos.eclipse.logviewer.plugin.action.FileOpenAction"
                enablesFor="+"
                icon="icons/logfileviewer.gif"
-               id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen.menu"
-               label="%logfileview.action.openwith.name"
+               id="de.anbos.eclipse.logviewer.plugin.action.fileopen.menu"
+               label="%logviewer.action.openwith.name"
                menubarPath="additions"
-               tooltip="Open the logfile view for selected files">
+               tooltip="Open the Log Viewer for selected files">
          </action>
       </objectContribution>
    </extension>

@@ -2,7 +2,7 @@ package de.anbos.eclipse.logviewer.plugin.viewer.rule;
 
 import org.eclipse.swt.graphics.Color;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -24,8 +24,8 @@ public class RuleFactory {
 	// Constant ----------------------------------------------------------------
 	
 	private static final String[] RULES = new String[] {
-		LogFileViewPlugin.getResourceString(WordRule.class.getName()),
-		LogFileViewPlugin.getResourceString(RegExpRule.class.getName())
+		LogViewerPlugin.getResourceString(WordRule.class.getName()),
+		LogViewerPlugin.getResourceString(RegExpRule.class.getName())
 	};
 	
 	// Public ------------------------------------------------------------------

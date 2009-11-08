@@ -2,9 +2,9 @@ package de.anbos.eclipse.logviewer.plugin.action;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.UIImages;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.RefreshCurrentFileActionDelegate;
 
@@ -27,7 +27,7 @@ public class RefreshCurrentFileViewAction extends AbstractViewAction {
 
     // Constructor ------------------------------------------------------------------
     
-    public RefreshCurrentFileViewAction(LogFileView view, Shell shell) {
+    public RefreshCurrentFileViewAction(LogViewer view, Shell shell) {
         super(view,shell,new RefreshCurrentFileActionDelegate());
     }
     
@@ -37,10 +37,10 @@ public class RefreshCurrentFileViewAction extends AbstractViewAction {
      * @see de.anbos.eclipse.logviewer.plugin.action.AbstractViewAction#init()
      */
     public void init() {
-		this.setText(LogFileViewPlugin.getResourceString("menu.file.refresh.text")); //$NON-NLS-1$
-		this.setToolTipText(LogFileViewPlugin.getResourceString("menu.file.refresh.tooltip")); //$NON-NLS-1$
-		this.setImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_REFRESH_FILE_ACTIVE));
-		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_REFRESH_FILE_PASSIVE));
+		this.setText(LogViewerPlugin.getResourceString("menu.file.refresh.text")); //$NON-NLS-1$
+		this.setToolTipText(LogViewerPlugin.getResourceString("menu.file.refresh.tooltip")); //$NON-NLS-1$
+		this.setImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_REFRESH_FILE_ACTIVE));
+		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_REFRESH_FILE_PASSIVE));
     }
 
 }

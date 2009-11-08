@@ -2,7 +2,7 @@ package de.anbos.eclipse.logviewer.plugin.action.delegate;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.ui.EncodingDialog;
 import de.anbos.eclipse.logviewer.plugin.ui.TabRenameDialog;
 
@@ -25,7 +25,7 @@ public class TabRenameActionDelegate implements ILogfileActionDelegate {
 
 	// Public ------------------------------------------------------------------
 	
-	public void run(LogFileView view, Shell shell) {
+	public void run(LogViewer view, Shell shell) {
 		TabRenameDialog dialog = new TabRenameDialog(shell,view.getCurrentLogFileTabName());
 		dialog.setBlockOnOpen(true);
 		int retval = dialog.open();

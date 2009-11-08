@@ -3,7 +3,7 @@ package de.anbos.eclipse.logviewer.plugin.action.delegate;
 import org.eclipse.swt.widgets.Shell;
 
 import de.anbos.eclipse.logviewer.plugin.LogFile;
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
 
@@ -36,7 +36,7 @@ public class HistoryFileOpenActionDelegate implements ILogfileActionDelegate {
 	
 	// Public ------------------------------------------------------------------
 	
-	public void run(LogFileView view, Shell shell) {
+	public void run(LogViewer view, Shell shell) {
 		// opening file in logfile view
 	    LogFile file = new LogFile(this.file.getPath());
 	    if(this.file.getPath() != null && !view.hasLogFile(file)) {

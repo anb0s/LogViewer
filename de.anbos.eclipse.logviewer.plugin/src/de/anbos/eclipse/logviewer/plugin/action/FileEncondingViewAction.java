@@ -2,9 +2,9 @@ package de.anbos.eclipse.logviewer.plugin.action;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.UIImages;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.FileEncodingActionDelegate;
 
@@ -27,7 +27,7 @@ public class FileEncondingViewAction extends AbstractViewAction {
 
     // Constructor ------------------------------------------------------------------
     
-    public FileEncondingViewAction(LogFileView view, Shell shell) {
+    public FileEncondingViewAction(LogViewer view, Shell shell) {
         super(view,shell,new FileEncodingActionDelegate());
     }
     
@@ -36,17 +36,17 @@ public class FileEncondingViewAction extends AbstractViewAction {
     public void run() {
         super.run();
         FileEncodingActionDelegate delegate = (FileEncodingActionDelegate)super.actionDelegate;
-        this.setText(LogFileViewPlugin.getResourceString("menu.encodingchange.text",new Object[] { delegate.getEncoding()})); //$NON-NLS-1$
+        this.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] { delegate.getEncoding()})); //$NON-NLS-1$
     }
     
     /* (non-Javadoc)
      * @see de.anbos.eclipse.logviewer.plugin.action.AbstractViewAction#init()
      */
     public void init() {
-		String encoding = LogFileViewPlugin.getDefault().getPreferenceStore().getString(ILogFileViewConstants.PREF_ENCODING);
-		this.setText(LogFileViewPlugin.getResourceString("menu.encodingchange.text",new Object[] {encoding})); //$NON-NLS-1$
-		this.setToolTipText(LogFileViewPlugin.getResourceString("menu.encodingchange.tooltip")); //$NON-NLS-1$
-		this.setImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_ENCODING_ACTIVE));
+		String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
+		this.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] {encoding})); //$NON-NLS-1$
+		this.setToolTipText(LogViewerPlugin.getResourceString("menu.encodingchange.tooltip")); //$NON-NLS-1$
+		this.setImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_ENCODING_ACTIVE));
     }
 
 }

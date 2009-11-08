@@ -31,12 +31,12 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class LogFileViewPlugin extends AbstractUIPlugin {
+public class LogViewerPlugin extends AbstractUIPlugin {
 	
 	// Constant ---------------------------------------------------------------------
 	
 	//The shared instance.
-	private static LogFileViewPlugin plugin;
+	private static LogViewerPlugin plugin;
 	
 	// Attribute --------------------------------------------------------------------
 	
@@ -50,7 +50,7 @@ public class LogFileViewPlugin extends AbstractUIPlugin {
 	/**
 	 * The constructor.
 	 */
-	public LogFileViewPlugin() {
+	public LogViewerPlugin() {
 		super();
 		plugin = this;
 		try {
@@ -65,7 +65,7 @@ public class LogFileViewPlugin extends AbstractUIPlugin {
 	/**
 	 * Returns the shared instance.
 	 */
-	public static LogFileViewPlugin getDefault() {
+	public static LogViewerPlugin getDefault() {
 		return plugin;
 	}
 
@@ -74,7 +74,7 @@ public class LogFileViewPlugin extends AbstractUIPlugin {
 	 * or 'key' if not found.
 	 */
 	public static String getResourceString(String key) {
-		ResourceBundle bundle = LogFileViewPlugin.getDefault().getResourceBundle();
+		ResourceBundle bundle = LogViewerPlugin.getDefault().getResourceBundle();
 		try {
 			return (bundle != null) ? bundle.getString(key) : key;
 		} catch (MissingResourceException e) {
@@ -154,11 +154,11 @@ public class LogFileViewPlugin extends AbstractUIPlugin {
 	// Private ----------------------------------------------------------------------
 
     private void loadDefaultPluginPreferences(IPreferenceStore store) {
-		store.setDefault(ILogFileViewConstants.PREF_BACKLOG,ILogFileViewConstants.DEFAULT_BACKLOG);
-		store.setDefault(ILogFileViewConstants.PREF_BUFFER,ILogFileViewConstants.DEFAULT_BUFFER_CAPACITY);
-		store.setDefault(ILogFileViewConstants.PREF_READWAIT,ILogFileViewConstants.DEFAULT_READWAIT_SIZE);
-		store.setDefault(ILogFileViewConstants.PREF_ENCODING,System.getProperty("file.encoding")); //$NON-NLS-1$
-		PreferenceConverter.setValue(store,ILogFileViewConstants.PREF_CURSORLINE_COLOR,new RGB(233,233,235));
-		PreferenceConverter.setDefault(store,ILogFileViewConstants.PREF_EDITOR_FONT_STYLE,JFaceResources.getDefaultFont().getFontData());
+		store.setDefault(ILogViewerConstants.PREF_BACKLOG,ILogViewerConstants.DEFAULT_BACKLOG);
+		store.setDefault(ILogViewerConstants.PREF_BUFFER,ILogViewerConstants.DEFAULT_BUFFER_CAPACITY);
+		store.setDefault(ILogViewerConstants.PREF_READWAIT,ILogViewerConstants.DEFAULT_READWAIT_SIZE);
+		store.setDefault(ILogViewerConstants.PREF_ENCODING,System.getProperty("file.encoding")); //$NON-NLS-1$
+		PreferenceConverter.setValue(store,ILogViewerConstants.PREF_CURSORLINE_COLOR,new RGB(233,233,235));
+		PreferenceConverter.setDefault(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE,JFaceResources.getDefaultFont().getFontData());
 	}
 }

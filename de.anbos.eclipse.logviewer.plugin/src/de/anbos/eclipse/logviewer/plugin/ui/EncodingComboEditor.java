@@ -14,7 +14,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 
 /*
@@ -55,7 +55,7 @@ public class EncodingComboEditor extends FieldEditor {
 	// Constructor -------------------------------------------------------------
 	
 	public EncodingComboEditor(String name, String labelText, int width, Composite parent) {
-        logger = LogFileViewPlugin.getDefault().getLogger();
+        logger = LogViewerPlugin.getDefault().getLogger();
 		init(name, labelText);
 		widthInChars = width;
 		createControl(parent);

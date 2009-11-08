@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 import de.anbos.eclipse.logviewer.plugin.preferences.ColorItemReadWriter;
 
@@ -89,7 +89,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
     // Public -----------------------------------------------------------------------
     
     public void init(IWorkbench workbench) {
-        logger = LogFileViewPlugin.getDefault().getLogger();
+        logger = LogViewerPlugin.getDefault().getLogger();
     }
     
     public boolean performOk() {
@@ -127,11 +127,11 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         table.setFont(parent.getFont());
         
         TableColumn column1 = new TableColumn(table,SWT.LEFT);
-        column1.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.table.header.column0.title")); //$NON-NLS-1$
+        column1.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.table.header.column0.title")); //$NON-NLS-1$
         column1.setResizable(false);
 
         TableColumn column2 = new TableColumn(table,SWT.LEFT);
-        column2.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.table.header.column1.title")); //$NON-NLS-1$
+        column2.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.table.header.column1.title")); //$NON-NLS-1$
         column2.setResizable(false);     
         
         int availableRows = availableRows(pageComponent);
@@ -144,7 +144,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         tableViewer = new CheckboxTableViewer(table);
         tableViewer.setLabelProvider(new ColorLableProvider());
         tableViewer.setContentProvider(new ColorContentProvider());
-        store = new ColorStore(LogFileViewPlugin.getDefault().getPreferenceStore());
+        store = new ColorStore(LogViewerPlugin.getDefault().getPreferenceStore());
         store.load();
         tableViewer.setInput(store);
         tableViewer.setAllChecked(false);
@@ -203,7 +203,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         
         // buttons
         addButton = new Button(groupComponent, SWT.PUSH);
-        addButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.add")); //$NON-NLS-1$
+        addButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.add")); //$NON-NLS-1$
         addButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 add();
@@ -214,7 +214,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         setButtonLayoutData(addButton);
         
         editButton = new Button(groupComponent, SWT.PUSH);
-        editButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.edit")); //$NON-NLS-1$
+        editButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.edit")); //$NON-NLS-1$
         editButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 edit();
@@ -225,7 +225,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         setButtonLayoutData(editButton);
         
         removeButton = new Button(groupComponent, SWT.PUSH);
-        removeButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.remove")); //$NON-NLS-1$
+        removeButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.remove")); //$NON-NLS-1$
         removeButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 remove();
@@ -235,7 +235,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         setButtonLayoutData(removeButton);
         
         upButton = new Button(groupComponent, SWT.PUSH);
-        upButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.up")); //$NON-NLS-1$
+        upButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.up")); //$NON-NLS-1$
         upButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 up();
@@ -245,7 +245,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         setButtonLayoutData(upButton);
         
         downButton = new Button(groupComponent, SWT.PUSH);
-        downButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.down")); //$NON-NLS-1$
+        downButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.down")); //$NON-NLS-1$
         downButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 down();
@@ -255,7 +255,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         setButtonLayoutData(downButton);
         
         exportButton = new Button(groupComponent, SWT.PUSH);
-        exportButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.export")); //$NON-NLS-1$
+        exportButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.export")); //$NON-NLS-1$
         exportButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
             	export();
@@ -265,7 +265,7 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
         setButtonLayoutData(exportButton);
         
         importButton = new Button(groupComponent, SWT.PUSH);
-        importButton.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.button.import")); //$NON-NLS-1$
+        importButton.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.button.import")); //$NON-NLS-1$
         importButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 inport();
@@ -424,8 +424,8 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
     	IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
     	if(selection.isEmpty()) {
         	MessageDialog.openError(getShell(),
-        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.title"), //$NON-NLS-1$
-        			LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.select.items.text")); //$NON-NLS-1$
+        			LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.title"), //$NON-NLS-1$
+        			LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.select.items.text")); //$NON-NLS-1$
     		return;
     	}
     	Collection itemArray= new ArrayList();
@@ -435,9 +435,9 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
     
     private void export(ColorPreferenceData[] data) {
 		FileDialog dialog= new FileDialog(getShell(), SWT.SAVE);
-		dialog.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.title")); //$NON-NLS-1$
-		dialog.setFilterExtensions(new String[] {LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.extension")}); //$NON-NLS-1$
-		dialog.setFileName(LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.filename")); //$NON-NLS-1$
+		dialog.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.export.title")); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[] {LogViewerPlugin.getResourceString("preferences.coloringeditor.export.extension")}); //$NON-NLS-1$
+		dialog.setFileName(LogViewerPlugin.getResourceString("preferences.coloringeditor.export.filename")); //$NON-NLS-1$
 		String path= dialog.open();
 
 		if (path == null) {
@@ -447,15 +447,15 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
 		File file= new File(path);
 		
 		if (file.isHidden()) {
-			String title= LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.title"); //$NON-NLS-1$
-			String message= LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.hidden.text", new String[]{file.getAbsolutePath()}); //$NON-NLS-1$
+			String title= LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.title"); //$NON-NLS-1$
+			String message= LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.hidden.text", new String[]{file.getAbsolutePath()}); //$NON-NLS-1$
 			MessageDialog.openError(getShell(),title,message);
 			return;
 		}
 
 		if (file.exists() && !file.canWrite()) {
-			String title= LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.title"); //$NON-NLS-1$
-			String message= LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.cannotWrite.text", new String[]{file.getAbsolutePath()}); //$NON-NLS-1$
+			String title= LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.title"); //$NON-NLS-1$
+			String message= LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.cannotWrite.text", new String[]{file.getAbsolutePath()}); //$NON-NLS-1$
 			MessageDialog.openError(getShell(),title,message);
 			return;
 		}
@@ -482,8 +482,8 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
     
     private void inport() {
 		FileDialog dialog= new FileDialog(getShell());
-		dialog.setText(LogFileViewPlugin.getResourceString("preferences.coloringeditor.import.title")); //$NON-NLS-1$
-		dialog.setFilterExtensions(new String[] {LogFileViewPlugin.getResourceString("preferences.coloringeditor.import.extension")}); //$NON-NLS-1$
+		dialog.setText(LogViewerPlugin.getResourceString("preferences.coloringeditor.import.title")); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[] {LogViewerPlugin.getResourceString("preferences.coloringeditor.import.extension")}); //$NON-NLS-1$
 		String path= dialog.open();
 
 		if (path == null) {
@@ -526,25 +526,25 @@ public class ColorPreferencePage extends PreferencePage implements IWorkbenchPre
     
     private boolean askOverwriteImport() {
     	return MessageDialog.openQuestion(getShell(),
-    			LogFileViewPlugin.getResourceString("preferences.coloringeditor.import.dialog.overwrite.title"),
-    			LogFileViewPlugin.getResourceString("preferences.coloringeditor.import.dialog.overwrite.text"));
+    			LogViewerPlugin.getResourceString("preferences.coloringeditor.import.dialog.overwrite.title"),
+    			LogViewerPlugin.getResourceString("preferences.coloringeditor.import.dialog.overwrite.text"));
     }
     
 	private boolean confirmOverwrite(File file) {
 		return MessageDialog.openQuestion(getShell(),
-				LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.title"), //$NON-NLS-1$
-				LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.exists.text",new String[]{file.getAbsolutePath()})); //$NON-NLS-1$
+				LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.title"), //$NON-NLS-1$
+				LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.exists.text",new String[]{file.getAbsolutePath()})); //$NON-NLS-1$
 	}
 	
 	private void openWriteErrorDialog(Exception e) {
-		String title= LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.title"); //$NON-NLS-1$
-		String message= LogFileViewPlugin.getResourceString("preferences.coloringeditor.export.error.general.text"); //$NON-NLS-1$
+		String title= LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.title"); //$NON-NLS-1$
+		String message= LogViewerPlugin.getResourceString("preferences.coloringeditor.export.error.general.text"); //$NON-NLS-1$
 		MessageDialog.openError(getShell(),title,message);
 	}
 	
 	private void openReadErrorDialog(Exception e) {
-		String title= LogFileViewPlugin.getResourceString("preferences.coloringeditor.import.error.title"); //$NON-NLS-1$
-		String message= LogFileViewPlugin.getResourceString("preferences.coloringeditor.import.error.text"); //$NON-NLS-1$
+		String title= LogViewerPlugin.getResourceString("preferences.coloringeditor.import.error.title"); //$NON-NLS-1$
+		String message= LogViewerPlugin.getResourceString("preferences.coloringeditor.import.error.text"); //$NON-NLS-1$
 		MessageDialog.openError(getShell(),title,message);
 	}
 }

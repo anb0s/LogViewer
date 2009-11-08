@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.FindReplaceAction;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -27,8 +27,8 @@ public class FindReplaceActionDelegate implements ILogfileActionDelegate {
 
 	// Public ------------------------------------------------------------------
 	
-	public void run(LogFileView view, Shell shell) {
-		ResourceBundle bundle = LogFileViewPlugin.getDefault().getResourceBundle();
+	public void run(LogViewer view, Shell shell) {
+		ResourceBundle bundle = LogViewerPlugin.getDefault().getResourceBundle();
 		FindReplaceAction action = new FindReplaceAction(bundle,"dialog.findreplace.",view);
 		action.run();
 	}

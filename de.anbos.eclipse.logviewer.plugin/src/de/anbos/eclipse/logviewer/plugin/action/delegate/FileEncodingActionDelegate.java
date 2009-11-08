@@ -2,7 +2,7 @@ package de.anbos.eclipse.logviewer.plugin.action.delegate;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.ui.EncodingDialog;
 
 /*
@@ -29,9 +29,9 @@ public class FileEncodingActionDelegate implements ILogfileActionDelegate {
     // Public -----------------------------------------------------------------------
     
     /* (non-Javadoc)
-     * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogFileView, org.eclipse.swt.widgets.Shell)
+     * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
      */
-    public void run(LogFileView view, Shell shell) {
+    public void run(LogViewer view, Shell shell) {
 		EncodingDialog dialog = new EncodingDialog(shell,view.getCurrentDocument().getEncoding());
 		dialog.setBlockOnOpen(true);
 		int retval = dialog.open();

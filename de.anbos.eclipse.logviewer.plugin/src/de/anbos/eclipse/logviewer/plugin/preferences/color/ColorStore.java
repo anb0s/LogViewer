@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
 
 /*
@@ -131,11 +131,11 @@ public class ColorStore {
     }
     
     public void save() {
-        store.setValue(ILogFileViewConstants.PREF_COLORING_ITEMS,PreferenceValueConverter.asString(getAllColorDetails()));
+        store.setValue(ILogViewerConstants.PREF_COLORING_ITEMS,PreferenceValueConverter.asString(getAllColorDetails()));
     }
     
     public void loadDefault() { 
-        ColorPreferenceData[] items = PreferenceValueConverter.asColorPreferenceDataArray(store.getDefaultString(ILogFileViewConstants.PREF_COLORING_ITEMS));
+        ColorPreferenceData[] items = PreferenceValueConverter.asColorPreferenceDataArray(store.getDefaultString(ILogViewerConstants.PREF_COLORING_ITEMS));
         this.items.clear();
         for(int i = 0 ; i < items.length ; i++) {
             this.items.add(items[i]);
@@ -144,7 +144,7 @@ public class ColorStore {
     }
     
     public void load() {
-        ColorPreferenceData[] items = PreferenceValueConverter.asColorPreferenceDataArray(store.getString(ILogFileViewConstants.PREF_COLORING_ITEMS));
+        ColorPreferenceData[] items = PreferenceValueConverter.asColorPreferenceDataArray(store.getString(ILogViewerConstants.PREF_COLORING_ITEMS));
         this.items.clear();
         for(int i = 0 ; i < items.length ; i++) {
             this.items.add(items[i]);

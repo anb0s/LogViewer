@@ -2,9 +2,9 @@ package de.anbos.eclipse.logviewer.plugin.action;
 
 import org.eclipse.swt.widgets.Shell;
 
-import de.anbos.eclipse.logviewer.plugin.ILogFileViewConstants;
-import de.anbos.eclipse.logviewer.plugin.LogFileView;
-import de.anbos.eclipse.logviewer.plugin.LogFileViewPlugin;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.UIImages;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.StopTailOnCurrentFileActionDelegate;
 
@@ -27,7 +27,7 @@ public class StopTailOnCurrentFileViewAction extends AbstractViewAction {
 
     // Constructor ------------------------------------------------------------------
     
-    public StopTailOnCurrentFileViewAction(LogFileView view, Shell shell) {
+    public StopTailOnCurrentFileViewAction(LogViewer view, Shell shell) {
         super(view,shell,new StopTailOnCurrentFileActionDelegate());
     }
     
@@ -37,9 +37,9 @@ public class StopTailOnCurrentFileViewAction extends AbstractViewAction {
      * @see de.anbos.eclipse.logviewer.plugin.action.AbstractViewAction#init()
      */
     public void init() {
-		this.setText(LogFileViewPlugin.getResourceString("menu.file.stop.text")); //$NON-NLS-1$
-		this.setToolTipText(LogFileViewPlugin.getResourceString("menu.file.stop.tooltip")); //$NON-NLS-1$
-		this.setImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_STOP_TAIL_ACTIVE));
-		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogFileViewConstants.IMG_STOP_TAIL_PASSIVE));
+		this.setText(LogViewerPlugin.getResourceString("menu.file.stop.text")); //$NON-NLS-1$
+		this.setToolTipText(LogViewerPlugin.getResourceString("menu.file.stop.tooltip")); //$NON-NLS-1$
+		this.setImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_STOP_TAIL_ACTIVE));
+		this.setDisabledImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_STOP_TAIL_PASSIVE));
     }
 }
