@@ -1,5 +1,8 @@
 package ch.mimo.eclipse.plugin.logfiletools.action.delegate;
 
+import java.io.File;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -20,6 +23,10 @@ import ch.mimo.eclipse.plugin.logfiletools.preferences.FileHistoryTracker;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions
  * and limitations under the License.
+ *
+ *
+ * 2009.07.01, Andre Bossert, anb0s(at)freenet(dot)de
+ * 	BUG-ID 1681341: added support for multiple file selection and extension filters
  */
 
 public class FileOpenActionDelegate implements ILogfileActionDelegate {
@@ -28,13 +35,26 @@ public class FileOpenActionDelegate implements ILogfileActionDelegate {
 	 * @see ch.mimo.eclipse.plugin.logfiletools.action.ILogfileAction#run(ch.mimo.eclipse.plugin.logfiletools.LogFileView, org.eclipse.swt.widgets.Shell)
 	 */
 	public void run(LogFileView view, Shell shell) {
-		// opening file in logfile view
-	    FileDialog dialog = new FileDialog(shell);
+		// opening file(s) in logfile view
+	    FileDialog dialog = new FileDialog(shell,SWT.OPEN|SWT.MULTI);
+	    String[] extensions = {
+	    		"*.log;*.txt;*.er?",
+	    		"*.*"
+	    };
+	    dialog.setFilterExtensions(extensions);
+	    dialog.setFilterIndex(0);
 	    String path = dialog.open();
-	    LogFile file = new LogFile(path);
-	    if(path != null && !view.hasLogFile(file)) {
-	        view.openLogFile(file);
-            FileHistoryTracker.getInstance().storeFile(path);
+	    if (path != null) {
+	    	File tempFile = new File(path);
+	    	path = tempFile.isDirectory() ? tempFile.toString() : tempFile.getParent();
+	    	String selectedFiles[] = dialog.getFileNames();
+	    	for (int i=0;i<selectedFiles.length;i++) {
+	    	    LogFile file = new LogFile(path + File.separator + selectedFiles[i]);
+	    	    if(!view.hasLogFile(file)) {
+	    	        view.openLogFile(file);
+	                FileHistoryTracker.getInstance().storeFile(path);
+	    	    }
+	    	}
 	    }
 	}
 
