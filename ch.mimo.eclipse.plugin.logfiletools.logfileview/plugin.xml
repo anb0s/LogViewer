@@ -52,4 +52,21 @@
                id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen"/>
       </actionSet>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="ch.mimo.eclipse.plugin.logfiletools.logfileview.objectContribution1"
+            objectClass="org.eclipse.core.runtime.IAdaptable">
+         <action
+               class="ch.mimo.eclipse.plugin.logfiletools.action.FileOpenAction"
+               enablesFor="+"
+               icon="icons/logfileviewer.gif"
+               id="ch.mimo.eclipse.plugin.logfiletools.action.fileopen.menu"
+               label="%logfileview.action.openwith.name"
+               menubarPath="additions"
+               tooltip="Open the logfile view for selected files">
+         </action>
+      </objectContribution>
+   </extension>
 </plugin>

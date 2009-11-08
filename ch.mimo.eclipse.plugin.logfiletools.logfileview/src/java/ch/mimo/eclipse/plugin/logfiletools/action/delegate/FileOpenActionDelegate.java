@@ -1,6 +1,7 @@
 package ch.mimo.eclipse.plugin.logfiletools.action.delegate;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -9,6 +10,7 @@ import org.eclipse.swt.widgets.Shell;
 import ch.mimo.eclipse.plugin.logfiletools.LogFile;
 import ch.mimo.eclipse.plugin.logfiletools.LogFileView;
 import ch.mimo.eclipse.plugin.logfiletools.preferences.FileHistoryTracker;
+import ch.mimo.eclipse.plugin.logfiletools.preferences.HistoryFile;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -31,6 +33,16 @@ import ch.mimo.eclipse.plugin.logfiletools.preferences.FileHistoryTracker;
 
 public class FileOpenActionDelegate implements ILogfileActionDelegate {
 
+	private String parentPath = null;
+
+	public String getParentPath() {
+		return parentPath;
+	}
+
+	public void setParentPath(String parentPath) {
+		this.parentPath = parentPath;
+	}
+
 	/* (non-Javadoc)
 	 * @see ch.mimo.eclipse.plugin.logfiletools.action.ILogfileAction#run(ch.mimo.eclipse.plugin.logfiletools.LogFileView, org.eclipse.swt.widgets.Shell)
 	 */
@@ -41,6 +53,20 @@ public class FileOpenActionDelegate implements ILogfileActionDelegate {
 	    		"*.log;*.txt;*.er?",
 	    		"*.*"
 	    };
+	    if (parentPath == null) {
+	    	Object[] file_list = FileHistoryTracker.getInstance().getFiles().toArray();
+	    	if (file_list.length >= 1)
+	    	{
+	    		HistoryFile history_file = (HistoryFile)(file_list[file_list.length - 1]);
+	    		File file = new File(history_file.getPath());
+	    		if (file.isDirectory()) {
+	    			parentPath = file.toString();
+	    		} else {
+	    			parentPath = file.getParent();
+	    		}
+	    	}
+	    }
+	    dialog.setFilterPath(parentPath);
 	    dialog.setFilterExtensions(extensions);
 	    dialog.setFilterIndex(0);
 	    String path = dialog.open();
