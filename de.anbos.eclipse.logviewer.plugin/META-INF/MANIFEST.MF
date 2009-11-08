@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %logfileview.plugin.name
-Bundle-SymbolicName: ch.mimo.eclipse.plugin.logfiletools.Logfileview; singleton:=true
-Bundle-Version: 1.5.1
+Bundle-SymbolicName: de.anbos.eclipse.logviewer.plugin;singleton:=true
+Bundle-Version: 0.9.1
 Bundle-ClassPath: Logfileview.jar,
  lib/jakarta-regexp-1.3.jar
 Bundle-Activator: ch.mimo.eclipse.plugin.logfiletools.LogFileViewPlugin
@@ -12,6 +12,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor
 Eclipse-AutoStart: true
-Bundle-Vendor: Michael Mimo Moratti
+Bundle-Vendor: Andre Bossert
 Import-Package: org.eclipse.core.resources,
  org.eclipse.jdt.internal.core
