@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ch.mimo.eclipse.plugin.logfiletools.feature"
-      label="ch.mimo.eclipse.plugin.logfiletools.feature"
-      version="1.5.1"
-      provider-name="Michael Mimo Moratti"
-      plugin="ch.mimo.eclipse.plugin.logfiletools.Logfileview"
-      colocation-affinity="ch.mimo.eclipse.plugin.logfiletools.Logfileview">
+      id="de.anbos.eclipse.logviewer.feature"
+      label="de.anbos.eclipse.logviewer.feature"
+      version="0.9.1"
+      provider-name="Andre Bossert"
+      plugin="de.anbos.eclipse.logviewer.plugin">
 
    <description>
       %description
@@ -20,15 +19,14 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://www.mimo.ch/update"/>
-      <discovery label="%updateSiteName" url="http://www.mimo.ch/update"/>
+      <update label="%updateSiteName" url="http://eclipselogviewer.googlecode.com/svn/trunk/de.anbos.eclipse.logviewer.update/"/>
+      <discovery label="%updateSiteName" url="http://eclipselogviewer.googlecode.com/svn/trunk/de.anbos.eclipse.logviewer.update/"/>
    </url>
 
    <plugin
-         id="ch.mimo.eclipse.plugin.logfiletools.Logfileview"
+         id="de.anbos.eclipse.logviewer.plugin"
          download-size="0"
          install-size="0"
-         version="1.5.0"
-         unpack="false"/>
+         version="0.9.1"/>
 
 </feature>
