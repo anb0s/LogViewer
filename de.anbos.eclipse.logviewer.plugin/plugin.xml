@@ -42,14 +42,14 @@
             visible="true"
             id="de.anbos.eclipse.logviewer.plugin.actionset">
          <action
-               toolbarPath="Normal/additions"
-               label="%logviewer.action.openfile.name"
-               icon="icons/logfileviewer.gif"
-               tooltip="Open the Log Viewer in the current workbench page"
                class="de.anbos.eclipse.logviewer.plugin.action.FileOpenWorkbenchAction"
-               style="push"
+               icon="icons/logfileviewer.gif"
+               id="de.anbos.eclipse.logviewer.plugin.action.fileopen"
+               label="%logviewer.action.openfile.name"
                menubarPath="File/content"
-               id="de.anbos.eclipse.logviewer.plugin.action.fileopen"/>
+               style="push"
+               toolbarPath="Normal/additions"
+               tooltip="Open the Log Viewer in the current workbench page"/>
       </actionSet>
    </extension>
    <extension
@@ -68,5 +68,50 @@
                tooltip="Open the Log Viewer for selected files">
          </action>
       </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:de.anbos.eclipse.logviewer.plugin.LogViewer?after=additions">
+         <command
+               commandId="org.eclipse.ui.edit.findReplace"
+               disabledIcon="icons/passive/find_obj_passive.gif"
+               icon="icons/active/find_obj_active.gif"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.copy"
+               disabledIcon="icons/passive/copy_passive.gif"
+               icon="icons/active/copy_active.gif"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.anbos.eclipse.logviewer.plugin.commands.FindReplaceHandler"
+            commandId="org.eclipse.ui.edit.findReplace">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="de.anbos.eclipse.logviewer.plugin.LogViewer">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.anbos.eclipse.logviewer.plugin.commands.CopyToClipboardHandler"
+            commandId="org.eclipse.ui.edit.copy">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="de.anbos.eclipse.logviewer.plugin.LogViewer">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
 </plugin>

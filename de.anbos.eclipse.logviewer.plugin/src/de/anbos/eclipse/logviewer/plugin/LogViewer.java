@@ -28,11 +28,9 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
 import de.anbos.eclipse.logviewer.plugin.action.CloseAllFilesViewAction;
-import de.anbos.eclipse.logviewer.plugin.action.CopyToClipboardAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileCloseViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileEncondingViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileOpenViewAction;
-import de.anbos.eclipse.logviewer.plugin.action.FindReplaceAction;
 import de.anbos.eclipse.logviewer.plugin.action.RefreshCurrentFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StartTailOnAllFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StartTailOnCurrentFileViewAction;
@@ -83,8 +81,6 @@ public class LogViewer extends ViewPart {
     private StartTailOnAllFileViewAction startTailOnAllFiles;
     private StopTailOnAllFileViewAction stopTailOnAllFiles;
     private FileEncondingViewAction fileEncodingAction;
-    private CopyToClipboardAction copyAction;
-    private FindReplaceAction findReplaceAction;
     private TabRenameAction tabRenameAction;
     
     // Constructor -------------------------------------------------------------
@@ -363,9 +359,6 @@ public class LogViewer extends ViewPart {
 		manager.add(new Separator());
 		manager.add(fileEncodingAction);
 		manager.add(new Separator());
-		manager.add(findReplaceAction);
-		manager.add(copyAction);
-		manager.add(new Separator());
 		manager.add(startTailOnCurrentFile);
 		manager.add(stopTailOnCurrentFile);
 		manager.add(new Separator());
@@ -450,12 +443,6 @@ public class LogViewer extends ViewPart {
 		// encoding action
     		fileEncodingAction = new FileEncondingViewAction(this,parent.getShell());
     		fileEncodingAction.setEnabled(false);
-       // copy action
-    		copyAction = new CopyToClipboardAction(this,parent.getShell());
-    		copyAction.setEnabled(true);
-    		// findreplace action
-    		findReplaceAction = new FindReplaceAction(this,parent.getShell());
-    		findReplaceAction.setEnabled(true);
     		// tab rename action
     		tabRenameAction = new TabRenameAction(this,parent.getShell());
     		tabRenameAction.setEnabled(false);
