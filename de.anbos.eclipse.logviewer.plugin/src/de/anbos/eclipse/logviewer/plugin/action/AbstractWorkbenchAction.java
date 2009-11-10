@@ -11,7 +11,7 @@ import org.eclipse.ui.PartInitException;
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
-import de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate;
+import de.anbos.eclipse.logviewer.plugin.action.delegate.ILogViewerActionDelegate;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -35,11 +35,11 @@ public abstract class AbstractWorkbenchAction implements IWorkbenchWindowActionD
 	protected Logger logger; 
     
 	private IWorkbenchWindow window;
-	private ILogfileActionDelegate actionDelegate;
+	private ILogViewerActionDelegate actionDelegate;
 	
 	// Constructor ------------------------------------------------------------------
 	
-	public AbstractWorkbenchAction(ILogfileActionDelegate actionDelegate) {
+	public AbstractWorkbenchAction(ILogViewerActionDelegate actionDelegate) {
 	    logger = LogViewerPlugin.getDefault().getLogger();
 		this.actionDelegate = actionDelegate;
 	}
@@ -68,10 +68,10 @@ public abstract class AbstractWorkbenchAction implements IWorkbenchWindowActionD
 			return;
 		}
 		Shell shell = window.getShell();
-		String viewId = LogViewerPlugin.getDefault().getBundle().getSymbolicName();
+		String viewId = "de.anbos.eclipse.logviewer.plugin.LogViewer";
 		IViewPart view = null;
 		try {
-				view = window.getActivePage().showView(viewId);
+			view = window.getActivePage().showView(viewId);
 		} catch(PartInitException pie) {
             logger.logError(pie);
 			return;

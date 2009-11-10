@@ -19,12 +19,12 @@ import de.anbos.eclipse.logviewer.plugin.LogViewer;
  * and limitations under the License.
  */
 
-public class StartTailOnCurrentFileActionDelegate implements ILogfileActionDelegate {
+public class StartTailOnCurrentFileActionDelegate implements ILogViewerActionDelegate {
 
     // Public -----------------------------------------------------------------------
     
     /* (non-Javadoc)
-     * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
+     * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogViewerActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
      */
     public void run(LogViewer view, Shell shell) {
         view.startTail();

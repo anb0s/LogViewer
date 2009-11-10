@@ -19,7 +19,7 @@ import de.anbos.eclipse.logviewer.plugin.LogViewer;
  * and limitations under the License.
  */
 
-public interface ILogfileActionDelegate {
+public interface ILogViewerActionDelegate {
 
 	public void run(LogViewer view, Shell shell);
 }

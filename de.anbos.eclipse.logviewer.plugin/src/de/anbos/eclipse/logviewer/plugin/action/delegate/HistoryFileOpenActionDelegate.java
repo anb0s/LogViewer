@@ -22,7 +22,7 @@ import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
  * and limitations under the License.
  */
 
-public class HistoryFileOpenActionDelegate implements ILogfileActionDelegate {
+public class HistoryFileOpenActionDelegate implements ILogViewerActionDelegate {
 
 	// Attribute ---------------------------------------------------------------
 	

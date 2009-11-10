@@ -82,17 +82,7 @@ public class FileOpenAction implements IObjectActionDelegate {
 				e.printStackTrace();
 			}
 
-			if (resource[i].isDirectory()) {
-				FileOpenActionDelegate action_delegate = new FileOpenActionDelegate();
-				action_delegate.setParentPath(full_path);
-				action_delegate.run(view, new Shell());
-			}else {
-	    	    LogFile file = new LogFile(full_path);
-	    	    if(!view.hasLogFile(file)) {
-	    	        view.openLogFile(file);
-	                FileHistoryTracker.getInstance().storeFile(full_path);
-	    	    }
-			}
+			view.checkAndOpenFile(full_path, false);
 		}
 	}
 

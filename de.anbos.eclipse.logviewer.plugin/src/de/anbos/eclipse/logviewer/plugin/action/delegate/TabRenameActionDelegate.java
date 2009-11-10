@@ -21,7 +21,7 @@ import de.anbos.eclipse.logviewer.plugin.ui.TabRenameDialog;
  * and limitations under the License.
  */
 
-public class TabRenameActionDelegate implements ILogfileActionDelegate {
+public class TabRenameActionDelegate implements ILogViewerActionDelegate {
 
 	// Public ------------------------------------------------------------------
 	

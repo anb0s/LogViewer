@@ -1,8 +1,6 @@
 package de.anbos.eclipse.logviewer.plugin.action.delegate;
 
 import java.io.File;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -31,9 +29,10 @@ import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
  * 	BUG-ID 1681341: added support for multiple file selection and extension filters
  */
 
-public class FileOpenActionDelegate implements ILogfileActionDelegate {
+public class FileOpenActionDelegate implements ILogViewerActionDelegate {
 
 	private String parentPath = null;
+	private boolean fileOpened = false;
 
 	public String getParentPath() {
 		return parentPath;
@@ -43,11 +42,16 @@ public class FileOpenActionDelegate implements ILogfileActionDelegate {
 		this.parentPath = parentPath;
 	}
 
+	public boolean isFileOpened() {
+		return fileOpened;
+	}
+
 	/* (non-Javadoc)
 	 * @see de.anbos.eclipse.logviewer.plugin.action.ILogfileAction#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
 	 */
 	public void run(LogViewer view, Shell shell) {
-		// opening file(s) in logfile view
+		fileOpened = false;
+		// opening file(s) in log view
 	    FileDialog dialog = new FileDialog(shell,SWT.OPEN|SWT.MULTI);
 	    String[] extensions = {
 	    		"*.log;*.txt;*.er?",
@@ -75,11 +79,9 @@ public class FileOpenActionDelegate implements ILogfileActionDelegate {
 	    	path = tempFile.isDirectory() ? tempFile.toString() : tempFile.getParent();
 	    	String selectedFiles[] = dialog.getFileNames();
 	    	for (int i=0;i<selectedFiles.length;i++) {
-	    	    LogFile file = new LogFile(path + File.separator + selectedFiles[i]);
-	    	    if(!view.hasLogFile(file)) {
-	    	        view.openLogFile(file);
-	                FileHistoryTracker.getInstance().storeFile(path);
-	    	    }
+	    		String fileStr = path.endsWith(File.separator) ? path + selectedFiles[i] : path + File.separator + selectedFiles[i];
+	    		if (!view.checkAndOpenFile(fileStr, true))
+	    	        fileOpened = true;
 	    	}
 	    }
 	}

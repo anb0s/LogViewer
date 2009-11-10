@@ -17,6 +17,13 @@ import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
@@ -37,7 +44,9 @@ import de.anbos.eclipse.logviewer.plugin.action.StartTailOnCurrentFileViewAction
 import de.anbos.eclipse.logviewer.plugin.action.StopTailOnAllFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StopTailOnCurrentFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.TabRenameAction;
+import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenActionDelegate;
 import de.anbos.eclipse.logviewer.plugin.file.document.LogDocument;
+import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
 import de.anbos.eclipse.logviewer.plugin.ui.menu.LocalPullDownMenu;
 import de.anbos.eclipse.logviewer.plugin.viewer.LogFileViewer;
@@ -103,6 +112,26 @@ public class LogViewer extends ViewPart {
         tabfolder = new TabFolder(parent,0);
         tabfolder.addSelectionListener(new TabSelectionListener());
         viewer = new LogFileViewer(tabfolder,SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+        
+        // DnD
+    	DropTarget target = new DropTarget(parent, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
+    	target.setTransfer(new Transfer[] {FileTransfer.getInstance(), TextTransfer.getInstance()});
+    	target.addDropListener (new DropTargetAdapter() {
+    		public void dragEnter(DropTargetEvent e) {
+    			if (e.detail == DND.DROP_NONE)
+    				e.detail = DND.DROP_COPY;
+    		}
+    		public void drop(DropTargetEvent event) {
+    			if (event.data == null || ((String[])event.data).length < 1) {
+    				event.detail = DND.DROP_NONE;
+    				return;
+    			}
+    			//File file = new File(((String[])event.data)[0]);
+    			if (!checkAndOpenFile(((String[])event.data)[0], false))
+    				event.detail = DND.DROP_NONE;
+    		}
+    	});
+
 		// fill the menues
         makeActions();
         hookContextMenu();
@@ -222,7 +251,25 @@ public class LogViewer extends ViewPart {
         }
         return logTab.containsKey(file.getFileName());
     }
-    
+
+    public boolean checkAndOpenFile(String full_path, boolean fromAction) {
+    	File file = new File(full_path);
+		if (!fromAction && file.isDirectory()) {
+			FileOpenActionDelegate action = new FileOpenActionDelegate();
+			action.setParentPath(full_path);
+			action.run(this, getSite().getShell());
+			return action.isFileOpened();
+		}else {
+    	    LogFile logFile = new LogFile(full_path);
+    	    if(!hasLogFile(logFile)) {
+                FileHistoryTracker.getInstance().storeFile(full_path);    	        
+    	    }
+    	    // open or show file
+    	    openLogFile(logFile);
+		}
+        return true;
+    }
+
     public void openLogFile(LogFile file) {
         String key = file.getFileName();
         if(!logTab.containsKey(key)) {

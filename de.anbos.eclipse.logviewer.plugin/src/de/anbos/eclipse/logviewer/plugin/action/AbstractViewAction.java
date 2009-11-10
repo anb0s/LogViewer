@@ -4,7 +4,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Shell;
 
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
-import de.anbos.eclipse.logviewer.plugin.action.delegate.ILogfileActionDelegate;
+import de.anbos.eclipse.logviewer.plugin.action.delegate.ILogViewerActionDelegate;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -25,13 +25,13 @@ public abstract class AbstractViewAction extends Action {
 
 	// Attribute --------------------------------------------------------------------
 	
-	protected ILogfileActionDelegate actionDelegate;
+	protected ILogViewerActionDelegate actionDelegate;
 	protected LogViewer view;
 	protected Shell shell;
 	
 	// Constructor ------------------------------------------------------------------
 	
-	public AbstractViewAction(LogViewer view, Shell shell, ILogfileActionDelegate actionDelegate) {
+	public AbstractViewAction(LogViewer view, Shell shell, ILogViewerActionDelegate actionDelegate) {
 		super();
 		this.view = view;
 		this.shell = shell;
