@@ -73,6 +73,7 @@ public class LogViewer extends ViewPart {
     private Logger logger;
     private Composite parent;
 
+    private boolean stopAfterChange = false;
     
     private TabFolder tabfolder;
     private LogFileViewer viewer;
@@ -195,9 +196,10 @@ public class LogViewer extends ViewPart {
     
     public void refreshCurrentLogFile() {
         try {
-        	getSelectedTab().getDocument().synchronize();
-        	startTailOnCurrentFile.setEnabled(false);
-        	stopTailOnCurrentFile.setEnabled(true);
+        	boolean wasMonitor = getSelectedTab().getDocument().isMonitor();
+        	if (!wasMonitor)
+        		stopAfterChange = true;
+        	getSelectedTab().getDocument().synchronize();        	
         } catch(Exception e) {
             logger.logError("unable to refresh the current tab's content",e); //$NON-NLS-1$
         }
@@ -532,6 +534,10 @@ public class LogViewer extends ViewPart {
                     viewer.getActualViewer().refresh();
                     viewer.getActualViewer().setTopIndex(event.getDocument().getNumberOfLines());
                 }
+        		if (stopAfterChange) {
+            		stopAfterChange = false;
+        			stopTail();
+        		}
             }
 
             protected ViewDocumentListener() {
