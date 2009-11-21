@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.1.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.1">
+   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.5.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.5">
       <category name="Eclipse Log Viewer"/>
    </feature>
    <category-def name="Eclipse Log Viewer" label="Eclipse Log Viewer"/>
