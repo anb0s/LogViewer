@@ -20,6 +20,7 @@ public class HistoryFile {
 	// Attribute ---------------------------------------------------------------
 	
 	private String path;
+	//private String name;
 	private int count;
 	
 	// Constructor -------------------------------------------------------------
@@ -35,6 +36,10 @@ public class HistoryFile {
 		return path;
 	}
 	
+/*	public String getName() {
+		return name;
+	}*/
+
 	public String getFileName() {
 		return path.substring(path.lastIndexOf(System.getProperty("file.separator")) + 1,path.length());
 	}

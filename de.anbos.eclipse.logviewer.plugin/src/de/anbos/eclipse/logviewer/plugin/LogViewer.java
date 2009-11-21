@@ -230,6 +230,7 @@ public class LogViewer extends ViewPart {
     public void startTail() {
         try {
         	getSelectedTab().getDocument().setMonitor(true);
+        	getSelectedTab().getDocument().getFile().setMonitor(true);
             stopTailOnCurrentFile.setEnabled(true);
             startTailOnCurrentFile.setEnabled(false);
         } catch(Exception e) {
@@ -240,6 +241,7 @@ public class LogViewer extends ViewPart {
     public void stopTail() {
         try {
         	getSelectedTab().getDocument().setMonitor(false);
+        	getSelectedTab().getDocument().getFile().setMonitor(false);
             stopTailOnCurrentFile.setEnabled(false);
             startTailOnCurrentFile.setEnabled(true);
         } catch(Exception e) {
@@ -254,17 +256,17 @@ public class LogViewer extends ViewPart {
         return logTab.containsKey(file.getFileName());
     }
 
-    public boolean checkAndOpenFile(String full_path, boolean fromAction) {
-    	File file = new File(full_path);
+    public boolean checkAndOpenFile(String fullPath, boolean fromAction) {
+    	File file = new File(fullPath);
 		if (!fromAction && file.isDirectory()) {
 			FileOpenActionDelegate action = new FileOpenActionDelegate();
-			action.setParentPath(full_path);
+			action.setParentPath(fullPath);
 			action.run(this, getSite().getShell());
 			return action.isFileOpened();
 		}else {
-    	    LogFile logFile = new LogFile(full_path);
+    	    LogFile logFile = new LogFile(fullPath,null,true);
     	    if(!hasLogFile(logFile)) {
-                FileHistoryTracker.getInstance().storeFile(full_path);    	        
+                FileHistoryTracker.getInstance().storeFile(fullPath);    	        
     	    }
     	    // open or show file
     	    openLogFile(logFile);
@@ -281,12 +283,16 @@ public class LogViewer extends ViewPart {
                 File logFile = new File(file.getFileName());
                 TabItem item = new TabItem(tabfolder,0);
                 item.setControl(viewer.getControl());
-                item.setText(logFile.getName());
+                item.setText(file.getTabName());
                 item.setToolTipText(logFile.getPath());
                 logTab.put(key,new LogFileTab(key,item,document));
                 document.addDocumentListener(documentListener);
-                document.setMonitor(true);
-                stopTailOnCurrentFile.setEnabled(true);
+
+            	// restore monitor status
+                document.setMonitor(file.getMonitor());
+                stopTailOnCurrentFile.setEnabled(file.getMonitor());
+                startTailOnCurrentFile.setEnabled(!file.getMonitor());                
+                
                 refreshCurrentFileAction.setEnabled(true);
                 fileEncodingAction.setEnabled(true);
                 fileCloseAction.setEnabled(true);
@@ -351,6 +357,7 @@ public class LogViewer extends ViewPart {
     
     public void setCurrentLogFileTabName(String name) {
     	getSelectedTab().getItem().setText(name);
+    	getSelectedTab().getDocument().getFile().setTabName(name);
     }
     
     public void dispose() {

@@ -20,11 +20,15 @@ public class LogFile {
     // Attribute ---------------------------------------------------------------
     
     private String fileName;
+    private String tabName;
+    private boolean monitor;
     
     // Constructor -------------------------------------------------------------
     
-    public LogFile(String fileName) {
+    public LogFile(String fileName, String tabName, boolean monitor) {
         this.fileName = fileName;
+        setTabName(tabName);
+        setMonitor(monitor);
     }
     
     // Public ------------------------------------------------------------------
@@ -32,4 +36,24 @@ public class LogFile {
     public String getFileName() {
         return fileName;
     }
+
+    public String getTabName() {
+        return tabName;
+    }
+
+    public boolean getMonitor() {
+        return monitor;
+    }
+    
+    public void setTabName(String tabName) {
+        if (tabName == null || tabName.isEmpty()) {
+        	this.tabName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")) + 1,fileName.length());
+        } else {
+        	this.tabName = tabName;
+        }
+    }
+    
+    public void setMonitor(boolean monitor) {
+    	this.monitor = monitor;
+    }    
 }

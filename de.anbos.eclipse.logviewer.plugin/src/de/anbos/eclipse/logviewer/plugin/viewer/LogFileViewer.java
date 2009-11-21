@@ -100,7 +100,7 @@ public class LogFileViewer {
 		presentationReconciler.setRepairer(dr,IDocument.DEFAULT_CONTENT_TYPE);
 		presentationReconciler.install(viewer);
 	}
-	
+
 	// Inner classes ----------------------------------------------------------------
 	
 	private class PropertyChangeListener implements IPropertyChangeListener {

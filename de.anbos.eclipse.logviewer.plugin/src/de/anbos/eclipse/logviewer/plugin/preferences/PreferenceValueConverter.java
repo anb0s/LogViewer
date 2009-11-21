@@ -142,9 +142,15 @@ public class PreferenceValueConverter {
 		}
 		return files;
 	}
-	
+
 	public static String asString(LogFile logFile) {
-		return logFile.getFileName();
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(logFile.getFileName());
+		buffer.append(VALUE_DELIMITER);
+		buffer.append(logFile.getTabName());
+		buffer.append(VALUE_DELIMITER);
+		buffer.append(logFile.getMonitor());
+		return buffer.toString();
 	}
 	
 	public static String asLogFileListString(List logFiles) {
@@ -158,8 +164,17 @@ public class PreferenceValueConverter {
 		return buffer.toString();
 	}
 	
-	public static LogFile asLogFile(String value) {
-		LogFile logFile = new LogFile(value);
+	public static LogFile asLogFile(String logFileStr) {
+		String str[] = new String[3];
+		StringTokenizer tokenizer = new StringTokenizer(logFileStr,VALUE_DELIMITER);
+		for (int i=0;i<3;i++) {			
+			if(tokenizer.hasMoreTokens()) {
+				str[i] = tokenizer.nextToken();
+			} else {
+				str[i] = null;
+			}
+		}
+		LogFile logFile = new LogFile(str[0], str[1], !("false".equals(str[2])));
 		return logFile;
 	}
 	
