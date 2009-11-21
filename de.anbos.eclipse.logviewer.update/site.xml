@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <description name="Eclipse Log Viewer" url="http://eclipselogviewer.googlecode.com/svn/trunk/de.anbos.eclipse.logviewer.update/">
+      Eclipse Plug-in for tailing log files, including syntax coloring. It allows you to have multiple files open concurrently.
+   </description>
    <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.5.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.5">
       <category name="Eclipse Log Viewer"/>
    </feature>
