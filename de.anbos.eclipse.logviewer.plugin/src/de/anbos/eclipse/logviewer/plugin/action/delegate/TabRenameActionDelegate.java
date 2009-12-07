@@ -3,7 +3,6 @@ package de.anbos.eclipse.logviewer.plugin.action.delegate;
 import org.eclipse.swt.widgets.Shell;
 
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
-import de.anbos.eclipse.logviewer.plugin.ui.EncodingDialog;
 import de.anbos.eclipse.logviewer.plugin.ui.TabRenameDialog;
 
 /*
@@ -29,7 +28,7 @@ public class TabRenameActionDelegate implements ILogViewerActionDelegate {
 		TabRenameDialog dialog = new TabRenameDialog(shell,view.getCurrentLogFileTabName());
 		dialog.setBlockOnOpen(true);
 		int retval = dialog.open();
-		if(retval == EncodingDialog.OK & dialog.isNewValue()) {
+		if(retval == TabRenameDialog.OK & dialog.isNewValue()) {
 			view.setCurrentLogFileTabName(dialog.getValue());
 		}
 	}

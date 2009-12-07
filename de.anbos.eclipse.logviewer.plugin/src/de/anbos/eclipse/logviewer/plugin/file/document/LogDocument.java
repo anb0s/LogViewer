@@ -49,9 +49,11 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	
 	public LogDocument(LogFile file, String encoding) {
 		super();
+		if (file.getEncoding() == null)
+			file.setEncoding(encoding);
 		this.file = file;
-		this.encoding = encoding;
-		this.charset = Charset.forName(encoding);
+		this.encoding = file.getEncoding();
+		this.charset = Charset.forName(file.getEncoding());
 		IPreferenceStore store = LogViewerPlugin.getDefault().getPreferenceStore();
 		store.addPropertyChangeListener(new PropertyChangeListener());
 		backlogLines = store.getInt(ILogViewerConstants.PREF_BACKLOG);
@@ -69,6 +71,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	 */
 	public void setEncoding(String encoding) {
 		setMonitor(false);
+		this.file.setEncoding(encoding);
 		this.encoding = encoding;
 		this.charset = Charset.forName(encoding);
 		tail = new Tail(file.getFileName(),charset,this);

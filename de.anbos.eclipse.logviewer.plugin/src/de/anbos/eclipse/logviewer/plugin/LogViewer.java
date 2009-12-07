@@ -264,7 +264,7 @@ public class LogViewer extends ViewPart {
 			action.run(this, getSite().getShell());
 			return action.isFileOpened();
 		}else {
-    	    LogFile logFile = new LogFile(fullPath,null,true);
+    	    LogFile logFile = new LogFile(fullPath,null,null,true);
     	    if(!hasLogFile(logFile)) {
                 FileHistoryTracker.getInstance().storeFile(fullPath);    	        
     	    }

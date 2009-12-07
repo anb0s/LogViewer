@@ -38,7 +38,7 @@ public class HistoryFileOpenActionDelegate implements ILogViewerActionDelegate {
 	
 	public void run(LogViewer view, Shell shell) {
 		// opening file in logfile view
-	    LogFile logFile = new LogFile(file.getPath(),null,true);
+	    LogFile logFile = new LogFile(file.getPath(),null,null,true);
 	    if(file.getPath() != null && !view.hasLogFile(logFile)) {
 	    	FileHistoryTracker.getInstance().storeFile(file.getPath());
 	        view.openLogFile(logFile);

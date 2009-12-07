@@ -130,7 +130,7 @@ public class EncodingDialog extends Dialog {
 		applyDialogFont(composite);
 		return composite;
 	}
-	
+
 	// Public ------------------------------------------------------------------
 	
 	public boolean isNewValue() {

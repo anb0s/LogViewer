@@ -185,6 +185,8 @@ public class PreferenceValueConverter {
 		buffer.append(VALUE_DELIMITER);
 		buffer.append(logFile.getTabName());
 		buffer.append(VALUE_DELIMITER);
+		buffer.append(logFile.getEncoding());
+		buffer.append(VALUE_DELIMITER);
 		buffer.append(logFile.getMonitor());
 		return buffer.toString();
 	}
@@ -201,19 +203,19 @@ public class PreferenceValueConverter {
 	}
 	
 	public static LogFile asLogFile(String logFileStr) {
-		String str[] = new String[3];
+		String str[] = new String[4];
 		StringTokenizer tokenizer = new StringTokenizer(logFileStr,VALUE_DELIMITER);
-		for (int i=0;i<3;i++) {			
+		for (int i=0;i<4;i++) {			
 			if(tokenizer.hasMoreTokens()) {
 				str[i] = tokenizer.nextToken();
 			} else {
 				str[i] = null;
 			}
 		}
-		LogFile logFile = new LogFile(str[0], str[1], !("false".equals(str[2])));
+		LogFile logFile = new LogFile(str[0], str[1], str[2], !("false".equals(str[3])));
 		return logFile;
 	}
-	
+
 	public static List asLogFileList(String logFileList) {
 		List files = new Vector();
 		StringTokenizer tokenizer = new StringTokenizer(logFileList,ITEM_DELIMITER);

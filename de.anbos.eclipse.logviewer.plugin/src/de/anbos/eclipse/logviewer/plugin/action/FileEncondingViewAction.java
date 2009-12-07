@@ -30,15 +30,15 @@ public class FileEncondingViewAction extends AbstractViewAction {
     public FileEncondingViewAction(LogViewer view, Shell shell) {
         super(view,shell,new FileEncodingActionDelegate());
     }
-    
+
     // Public -----------------------------------------------------------------------
-    
+
     public void run() {
         super.run();
         FileEncodingActionDelegate delegate = (FileEncodingActionDelegate)super.actionDelegate;
         this.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] { delegate.getEncoding()})); //$NON-NLS-1$
     }
-    
+
     /* (non-Javadoc)
      * @see de.anbos.eclipse.logviewer.plugin.action.AbstractViewAction#init()
      */
@@ -48,5 +48,4 @@ public class FileEncondingViewAction extends AbstractViewAction {
 		this.setToolTipText(LogViewerPlugin.getResourceString("menu.encodingchange.tooltip")); //$NON-NLS-1$
 		this.setImageDescriptor(UIImages.getImageDescriptor(ILogViewerConstants.IMG_ENCODING_ACTIVE));
     }
-
 }

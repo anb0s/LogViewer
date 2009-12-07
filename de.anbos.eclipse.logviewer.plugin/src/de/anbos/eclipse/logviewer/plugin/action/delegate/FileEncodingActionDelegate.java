@@ -32,10 +32,11 @@ public class FileEncodingActionDelegate implements ILogViewerActionDelegate {
      * @see de.anbos.eclipse.logviewer.plugin.action.delegate.ILogViewerActionDelegate#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
      */
     public void run(LogViewer view, Shell shell) {
+    	this.encoding = view.getCurrentDocument().getEncoding();
 		EncodingDialog dialog = new EncodingDialog(shell,view.getCurrentDocument().getEncoding());
 		dialog.setBlockOnOpen(true);
 		int retval = dialog.open();
-		if(retval == EncodingDialog.OK & dialog.isNewValue()) {
+		if(retval == EncodingDialog.OK && dialog.isNewValue()) {
 			view.getCurrentDocument().setEncoding(dialog.getValue());
 			this.encoding = dialog.getValue();
 		}

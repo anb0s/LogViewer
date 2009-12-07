@@ -21,13 +21,15 @@ public class LogFile {
     
     private String fileName;
     private String tabName;
+    private String encoding;
     private boolean monitor;
     
     // Constructor -------------------------------------------------------------
     
-    public LogFile(String fileName, String tabName, boolean monitor) {
+    public LogFile(String fileName, String tabName, String encoding, boolean monitor) {
         this.fileName = fileName;
         setTabName(tabName);
+        setEncoding(encoding);
         setMonitor(monitor);
     }
     
@@ -41,10 +43,18 @@ public class LogFile {
         return tabName;
     }
 
-    public boolean getMonitor() {
+    public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	public boolean getMonitor() {
         return monitor;
     }
-    
+
     public void setTabName(String tabName) {
         if (tabName == null || tabName.isEmpty()) {
         	this.tabName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")) + 1,fileName.length());
@@ -52,7 +62,7 @@ public class LogFile {
         	this.tabName = tabName;
         }
     }
-    
+
     public void setMonitor(boolean monitor) {
     	this.monitor = monitor;
     }    
