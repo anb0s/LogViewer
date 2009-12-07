@@ -15,7 +15,7 @@ package de.anbos.eclipse.logviewer.plugin.viewer.rule;
  * and limitations under the License.
  */
 
-public interface ILogFileToolColoringRule {
+public interface ILogFileToolRule {
 	
 	/**
 	 * returns the actual priority of the given rule

@@ -20,14 +20,14 @@ import java.util.Comparator;
 public class RuleComparator implements Comparator {
 
 	public int compare(Object arg0, Object arg1) {
-		if(!(arg0 instanceof ILogFileToolColoringRule)) {
+		if(!(arg0 instanceof ILogFileToolRule)) {
 			return -1;
 		}
-		if(!(arg1 instanceof ILogFileToolColoringRule)) {
+		if(!(arg1 instanceof ILogFileToolRule)) {
 			return -1;
 		}
-		ILogFileToolColoringRule rule0 = (ILogFileToolColoringRule)arg0;
-		ILogFileToolColoringRule rule1 = (ILogFileToolColoringRule)arg1;
+		ILogFileToolRule rule0 = (ILogFileToolRule)arg0;
+		ILogFileToolRule rule1 = (ILogFileToolRule)arg1;
 		
 		if(rule0.getPriority() > rule1.getPriority()) {
 			return 1;

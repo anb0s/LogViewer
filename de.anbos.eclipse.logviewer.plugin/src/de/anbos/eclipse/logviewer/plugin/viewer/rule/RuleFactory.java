@@ -1,9 +1,3 @@
-package de.anbos.eclipse.logviewer.plugin.viewer.rule;
-
-import org.eclipse.swt.graphics.Color;
-
-import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
-
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -19,41 +13,56 @@ import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
  * and limitations under the License.
  */
 
+package de.anbos.eclipse.logviewer.plugin.viewer.rule;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
+
 public class RuleFactory {
 
 	// Constant ----------------------------------------------------------------
 	
 	private static final String[] RULES = new String[] {
 		LogViewerPlugin.getResourceString(WordRule.class.getName()),
-		LogViewerPlugin.getResourceString(RegExpRule.class.getName())
+		LogViewerPlugin.getResourceString(JakartaRegExpRule.class.getName()),
+		LogViewerPlugin.getResourceString(JavaRegExpRule.class.getName())
 	};
 	
 	// Public ------------------------------------------------------------------
 	
-	public static ILogFileToolColoringRule getRule(String rule, int priority, String value, Color backgroundColor, Color foregroundColor) {
-		if(isWordRule(rule)) {
-			return getWordRule(priority,value,backgroundColor,foregroundColor);
+	public static ILogFileToolRule getRule(String ruleName, LogToolRuleDesc ruleDesc) {
+		if(isWordRule(ruleName)) {
+			return getWordRule(ruleDesc);
 		}
-		if(isRegExpRule(rule)) {
-			return getRegExpRule(priority,value,backgroundColor,foregroundColor);
+		if(isJakartaRegExpRule(ruleName)) {
+			return getJakartaRegExpRule(ruleDesc);
+		}
+		if(isJavaRegExpRule(ruleName)) {
+			return getJavaRegExpRule(ruleDesc);
 		}
 		return null;
 	}
 	
-	public static boolean isWordRule(String rule) {
-		return rule.equals(WordRule.class.getName());
+	public static boolean isWordRule(String ruleName) {
+		return ruleName.equals(WordRule.class.getName());
 	}
 	
-	public static WordRule getWordRule(int priority, String value, Color backgroundColor, Color foregroundColor) {
-		return new WordRule(priority,value,backgroundColor,foregroundColor);
+	public static WordRule getWordRule(LogToolRuleDesc ruleDesc) {
+		return new WordRule(ruleDesc);
 	}
 	
-	public static boolean isRegExpRule(String rule) {
-		return rule.equals(RegExpRule.class.getName());
+	public static boolean isJakartaRegExpRule(String ruleName) {
+		return ruleName.equals(JakartaRegExpRule.class.getName());
 	}
 	
-	public static RegExpRule getRegExpRule(int priority, String value, Color backgroundColor, Color foregroundColor) {
-		return new RegExpRule(priority,value,backgroundColor,foregroundColor);
+	public static JakartaRegExpRule getJakartaRegExpRule(LogToolRuleDesc ruleDesc) {
+		return new JakartaRegExpRule(ruleDesc);
+	}
+
+	public static boolean isJavaRegExpRule(String ruleName) {
+		return ruleName.equals(JavaRegExpRule.class.getName());
+	}
+	
+	public static JavaRegExpRule getJavaRegExpRule(LogToolRuleDesc ruleDesc) {
+		return new JavaRegExpRule(ruleDesc);
 	}
 	
 	public static String[] getAllRulesAsComboNames() {

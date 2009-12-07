@@ -29,7 +29,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
-import de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferenceData;
+import de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferenceData;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -46,16 +46,18 @@ import de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferenceData;
  * and limitations under the License.
  */
 
-public class ColorItemReadWriter {
+public class RuleItemReadWriter {
 
 	// Constant ----------------------------------------------------------------
 	
-	private static final String NODE_ROOT		= "coloring-items"; //$NON-NLS-1$
+	private static final String NODE_ROOT		= "rule-items"; //$NON-NLS-1$
 	private static final String NODE_ITEM		= "item"; //$NON-NLS-1$
 	private static final String NODE_RULE		= "rule"; //$NON-NLS-1$
 	private static final String NODE_BACKGROUND = "background"; //$NON-NLS-1$
 	private static final String NODE_FOREGROUND	= "foreground"; //$NON-NLS-1$
 	private static final String NODE_VALUE		= "value"; //$NON-NLS-1$
+	private static final String NODE_MATCHMODE  = "matchmode"; //$NON-NLS-1$
+	private static final String NODE_CASEINSENSITIVE  = "case-insensitive"; //$NON-NLS-1$
 	
 	private static final String ATTR_POSITION	= "position"; //$NON-NLS-1$
 	private static final String ATTR_CHECKED	= "checked"; //$NON-NLS-1$
@@ -64,22 +66,22 @@ public class ColorItemReadWriter {
 	
 	// Constructor -------------------------------------------------------------
 	
-	public ColorItemReadWriter() {
+	public RuleItemReadWriter() {
 	}
 	
 	// Public ------------------------------------------------------------------
 	
-	public ColorPreferenceData[] read(InputStream stream) throws IOException {
+	public RulePreferenceData[] read(InputStream stream) throws IOException {
 		return read(new InputSource(stream));
 	}
 	
-	public void write(ColorPreferenceData[] data, OutputStream stream) throws IOException {
+	public void write(RulePreferenceData[] data, OutputStream stream) throws IOException {
 		write(data,new StreamResult(stream));
 	}
 	
 	// Private -----------------------------------------------------------------
 	
-	private ColorPreferenceData[] read(InputSource input) throws IOException {
+	private RulePreferenceData[] read(InputSource input) throws IOException {
 		boolean errorInParsing = false;
 		Collection itemArray= new ArrayList();
 		try {
@@ -91,7 +93,7 @@ public class ColorItemReadWriter {
 			
 			for (int i= 0; i != items.getLength(); i++) {
 				int fieldCounter = 0;
-				ColorPreferenceData data = new ColorPreferenceData();
+				RulePreferenceData data = new RulePreferenceData();
 				Node item= items.item(i);
 				NamedNodeMap attributes= item.getAttributes();
 				
@@ -115,10 +117,10 @@ public class ColorItemReadWriter {
 					break;					
 				}
 				if(checkedAttr.getNodeValue().equals(Boolean.toString(true))) {
-					data.setChecked(true);
+					data.setEnabled(true);
 					fieldCounter++;
 				} else if(checkedAttr.getNodeValue().equals(Boolean.toString(false))) {
-					data.setChecked(false);
+					data.setEnabled(false);
 					fieldCounter++;
 				} else {
 					errorInParsing = true;
@@ -152,8 +154,24 @@ public class ColorItemReadWriter {
 						fieldCounter++;
 						continue;
 					}
+					// match mode
+					if(node.getNodeName().equals(NODE_MATCHMODE)) {
+						data.setMatchMode(extractStringValueFromNode(node));
+						fieldCounter++;
+						continue;
+					}					
+					// case insensitive
+					if(node.getNodeName().equals(NODE_CASEINSENSITIVE)) {
+						if(extractStringValueFromNode(node).equals(Boolean.toString(true))) {
+							data.setCaseInsensitive(true);
+						} else {
+							data.setCaseInsensitive(false);
+						}
+						fieldCounter++;
+						continue;
+					}					
 				}
-				if(fieldCounter != 6) {
+				if(fieldCounter != 8) {
 					errorInParsing = true;
 					break;
 				}
@@ -171,12 +189,12 @@ public class ColorItemReadWriter {
 				throw new IOException(e.getMessage());
 		}
 		if(!errorInParsing) {
-			return (ColorPreferenceData[])itemArray.toArray(new ColorPreferenceData[itemArray.size()]);
+			return (RulePreferenceData[])itemArray.toArray(new RulePreferenceData[itemArray.size()]);
 		}
 		throw new IOException("unable to parse the xml"); //$NON-NLS-1$
 	}
 	
-	private void write(ColorPreferenceData[] data, StreamResult streamResult) throws IOException {
+	private void write(RulePreferenceData[] data, StreamResult streamResult) throws IOException {
 		try {
 			DocumentBuilderFactory factory= DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder= factory.newDocumentBuilder();
@@ -188,7 +206,7 @@ public class ColorItemReadWriter {
 			
 			// add children
 			for(int i = 0 ; i < data.length ; i++) {
-				ColorPreferenceData item = data[i];
+				RulePreferenceData item = data[i];
 				
 				Node itemNode = document.createElement(NODE_ITEM);
 				rootNode.appendChild(itemNode);
@@ -200,7 +218,7 @@ public class ColorItemReadWriter {
 				attributes.setNamedItem(positionAttr);
 				// checked
 				Attr checkedAttr = document.createAttribute(ATTR_CHECKED);
-				checkedAttr.setValue(Boolean.toString(item.isChecked()));
+				checkedAttr.setValue(Boolean.toString(item.isEnabled()));
 				attributes.setNamedItem(checkedAttr);
 				
 				// rule
@@ -223,6 +241,16 @@ public class ColorItemReadWriter {
 				itemNode.appendChild(valueNode);
 				CDATASection valueCDataSection = document.createCDATASection(item.getValue());
 				valueNode.appendChild(valueCDataSection);
+				// match mode
+				Node matchModeNode = document.createElement(NODE_MATCHMODE);
+				itemNode.appendChild(matchModeNode);
+				Text matchModeValue = document.createTextNode(item.getMatchMode());
+				matchModeNode.appendChild(matchModeValue);
+				// case insensitive
+				Node caseInsensitiveNode = document.createElement(NODE_CASEINSENSITIVE);
+				itemNode.appendChild(caseInsensitiveNode);
+				Text caseInsensitiveValue = document.createTextNode(Boolean.toString(item.getCaseInsensitive()));
+				caseInsensitiveNode.appendChild(caseInsensitiveValue);
 			}
 			
 			Transformer transformer=TransformerFactory.newInstance().newTransformer();

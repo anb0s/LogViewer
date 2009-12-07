@@ -1,15 +1,3 @@
-package de.anbos.eclipse.logviewer.plugin.viewer.rule;
-
-import org.apache.regexp.RE;
-import org.apache.regexp.REUtil;
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.Token;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -25,7 +13,18 @@ import org.eclipse.swt.graphics.Color;
  * and limitations under the License.
  */
 
-public class RegExpRule implements IPredicateRule, ILogFileToolColoringRule {
+package de.anbos.eclipse.logviewer.plugin.viewer.rule;
+
+import org.apache.regexp.RE;
+import org.apache.regexp.REUtil;
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.ICharacterScanner;
+import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.Token;
+import org.eclipse.swt.SWT;
+
+public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 
 	// Attribute ---------------------------------------------------------------
 
@@ -35,12 +34,16 @@ public class RegExpRule implements IPredicateRule, ILogFileToolColoringRule {
 	
 	// Constructor -------------------------------------------------------------
 	
-	public RegExpRule(int priority, String ruleValue, Color backgroundColor, Color foregroundColor) {
-		regexp = REUtil.createRE(ruleValue);
-		successToken = new Token(new TokenData(new TextAttribute(foregroundColor,backgroundColor,SWT.NORMAL),priority));
-		this.priority = priority;
+	public JakartaRegExpRule(LogToolRuleDesc ruleDesc) {
+		regexp = REUtil.createRE(ruleDesc.getRuleValue());
+		int flags = regexp.getMatchFlags();
+		if (ruleDesc.isCaseInsensitive())
+			flags = org.apache.regexp.RE.MATCH_CASEINDEPENDENT;
+		regexp.setMatchFlags(flags);
+		successToken = new Token(new TokenData(new TextAttribute(ruleDesc.getForegroundColor(),ruleDesc.getBackgroundColor(),SWT.NORMAL),priority));
+		this.priority = ruleDesc.getPriority();
 	}
-	
+
 	// Static ------------------------------------------------------------------
 	
 	// Public ------------------------------------------------------------------

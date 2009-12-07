@@ -1,7 +1,3 @@
-package de.anbos.eclipse.logviewer.plugin.viewer.rule;
-
-import org.eclipse.swt.graphics.Color;
-
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -18,20 +14,23 @@ import org.eclipse.swt.graphics.Color;
  */
 
 /**
- * I have decided to use the RegExpRule instead of the eclipse internal word
+ * I have decided to use the JakartaRegExpRule instead of the eclipse internal word
  * matching magic due to the fact that the eclipse internal stuff rewindes the
  * cursor all the time and that is posion for my rulebased scanner!
  */
-public class WordRule extends RegExpRule {
+
+package de.anbos.eclipse.logviewer.plugin.viewer.rule;
+
+public class WordRule extends JakartaRegExpRule {
 
 	// Attribute ---------------------------------------------------------------
 	
 	// Constructor -------------------------------------------------------------
 	
-	public WordRule(int priority, String ruleValue, Color backgroundColor, Color foregroundColor) {
-		super(priority,ruleValue,backgroundColor,foregroundColor);
+	public WordRule(LogToolRuleDesc ruleDesc) {
+		super(ruleDesc);
 	}
-	
+
 	// Static ------------------------------------------------------------------
 	
 	// Public ------------------------------------------------------------------

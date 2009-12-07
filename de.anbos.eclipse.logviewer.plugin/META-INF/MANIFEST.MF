@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %logviewer.plugin.name
 Bundle-SymbolicName: de.anbos.eclipse.logviewer.plugin;singleton:=true
-Bundle-Version: 0.9.5
+Bundle-Version: 0.9.6
 Bundle-ClassPath: bin,
  lib/jakarta-regexp-1.5.jar,
  .
