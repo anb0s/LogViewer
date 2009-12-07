@@ -254,7 +254,7 @@ public class RuleDialog extends StatusDialog {
         matchModeCombo = new CCombo(parent,SWT.BORDER);
         matchModeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         matchModeCombo.setEditable(false);
-        String[] matchModes = {"Find sequence", "Match complete valueText"};
+        String[] matchModes = {"Find sequence", "Match complete text"};
         matchModeCombo.setItems(matchModes);
         if(edit) {
             String[] items = matchModeCombo.getItems();

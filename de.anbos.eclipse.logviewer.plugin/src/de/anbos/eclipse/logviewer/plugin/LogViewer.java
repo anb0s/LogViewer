@@ -300,6 +300,7 @@ public class LogViewer extends ViewPart {
                 tabRenameAction.setEnabled(true);
     	        startTailOnAllFiles.setEnabled(true);
     	        stopTailOnAllFiles.setEnabled(true);
+    	        
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
                 LogViewerPlugin.getDefault().showErrorMessage(LogViewerPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
@@ -314,6 +315,10 @@ public class LogViewer extends ViewPart {
         } catch(Exception e) {
             logger.logError("showing the document has lead to the following exception",e); //$NON-NLS-1$
         }
+
+        // check if file should be refreshed
+        if (!file.getMonitor())
+        	refreshCurrentLogFile();
     }
     
     public boolean isAvailable() {
