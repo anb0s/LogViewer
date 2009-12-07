@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.anbos.eclipse.logviewer.feature"
-      label="de.anbos.eclipse.logviewer.feature"
-      version="0.9.5"
+      label="Eclipse Log Viewer Feature"
+      version="0.9.6"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.logviewer.plugin">
 
