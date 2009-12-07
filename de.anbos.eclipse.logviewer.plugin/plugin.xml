@@ -30,8 +30,8 @@
             name="%logviewer.properties.main.page.title">
        </page>
        <page id="de.anbos.eclipse.logviewer.plugin.LogViewer.page1.3"
-        class="de.anbos.eclipse.logviewer.plugin.preferences.color.ColorPreferencePage"
-            name="%logviewer.properties.coloring.page.title"
+        class="de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferencePage"
+            name="%logviewer.properties.rules.page.title"
             category="de.anbos.eclipse.logviewer.plugin.LogViewer.page1">
        </page>
    </extension>
