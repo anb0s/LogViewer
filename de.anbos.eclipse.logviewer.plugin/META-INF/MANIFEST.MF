@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Andre Bossert
 Import-Package: org.eclipse.core.resources
+Export-Package: de.anbos.eclipse.logviewer.plugin
