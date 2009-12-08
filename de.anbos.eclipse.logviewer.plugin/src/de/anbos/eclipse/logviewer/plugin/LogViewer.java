@@ -27,6 +27,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -300,7 +301,6 @@ public class LogViewer extends ViewPart {
                 tabRenameAction.setEnabled(true);
     	        startTailOnAllFiles.setEnabled(true);
     	        stopTailOnAllFiles.setEnabled(true);
-    	        
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
                 LogViewerPlugin.getDefault().showErrorMessage(LogViewerPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
@@ -312,6 +312,10 @@ public class LogViewer extends ViewPart {
         try {
             showDocument(tab.getDocument(),true);
         	tabfolder.setSelection(new TabItem[] {tab.getItem()});
+        	// send event to refresh encoding
+        	Event event = new Event();
+    		event.item = tab.getItem();
+    		tabfolder.notifyListeners(SWT.Selection, event);
         } catch(Exception e) {
             logger.logError("showing the document has lead to the following exception",e); //$NON-NLS-1$
         }

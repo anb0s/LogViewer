@@ -8,6 +8,7 @@ import java.util.SortedMap;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -15,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 
@@ -68,6 +70,8 @@ public class EncodingDialog extends Dialog {
 			} else {
 				valueChanged = false;
 			}
+		} else if (buttonId == 3){
+			doLoadDefault();
 		} else {
 			value = null;
 		}
@@ -92,6 +96,7 @@ public class EncodingDialog extends Dialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		// create OK and Cancel buttons by default
 		createButton(parent, IDialogConstants.OK_ID,IDialogConstants.OK_LABEL, true);
+		createButton(parent, 3,"Restore Default", false);
 		createButton(parent, IDialogConstants.CANCEL_ID,IDialogConstants.CANCEL_LABEL, false);
 		//do this here because setting the text will set enablement on the ok
 		// button
@@ -132,7 +137,17 @@ public class EncodingDialog extends Dialog {
 	}
 
 	// Public ------------------------------------------------------------------
-	
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.preference.FieldEditor#doLoadDefault()
+	 */
+	protected void doLoadDefault() {
+		if(encodingCombo != null) {
+			String value = LogViewerPlugin.getDefault().getPreferenceStore().getDefaultString(ILogViewerConstants.PREF_ENCODING);
+			encodingCombo.setText(value);
+		}
+	}
+
 	public boolean isNewValue() {
 		return valueChanged;
 	}
