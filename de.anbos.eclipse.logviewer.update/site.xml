@@ -6,5 +6,8 @@
    <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.5.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.5">
       <category name="Eclipse Log Viewer"/>
    </feature>
+   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.6.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.6">
+      <category name="Eclipse Log Viewer"/>
+   </feature>
    <category-def name="Eclipse Log Viewer" label="Eclipse Log Viewer"/>
 </site>
