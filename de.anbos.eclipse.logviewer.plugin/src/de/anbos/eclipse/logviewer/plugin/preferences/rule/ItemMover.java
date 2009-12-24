@@ -52,7 +52,7 @@ public class ItemMover implements SelectionListener {
 		previousElement.setPosition(oldPosition);
 		currentSelection.setPosition(newPosition);		
 	}
-	
+
 	public void moveCurrentSelectionDown() {
 		if(currentSelection == null) {
 			return;

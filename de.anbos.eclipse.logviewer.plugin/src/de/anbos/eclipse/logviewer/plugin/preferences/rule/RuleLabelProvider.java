@@ -34,9 +34,9 @@ public class RuleLabelProvider extends LabelProvider implements ITableLabelProvi
         RulePreferenceData data = (RulePreferenceData)element;
         switch(columnIndex) {
             case 0:
-                return data.getRule();
+                return data.getRuleNameShort();
             case 1:
-            	return data.getValue();
+            	return data.getRuleValue();
             default:
                 return ""; //$NON-NLS-1$
         }

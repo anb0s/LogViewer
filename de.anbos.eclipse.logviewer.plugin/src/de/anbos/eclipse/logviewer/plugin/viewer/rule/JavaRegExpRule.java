@@ -22,6 +22,8 @@ import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 public class JavaRegExpRule implements IPredicateRule, ILogFileToolRule {
 
@@ -42,8 +44,8 @@ public class JavaRegExpRule implements IPredicateRule, ILogFileToolRule {
 		if (ruleDesc.getMatchMode().startsWith("find"))
 			find = true;
 		regexp = Pattern.compile(ruleDesc.getRuleValue(),flags);
-		successToken = new Token(new TokenData(new TextAttribute(ruleDesc.getForegroundColor(),ruleDesc.getBackgroundColor(),SWT.NORMAL),priority));
 		this.priority = ruleDesc.getPriority();
+		successToken = new Token(new TokenData(new TextAttribute(new Color(Display.getDefault(),ruleDesc.getForegroundColor()),new Color(Display.getDefault(),ruleDesc.getBackgroundColor()),SWT.NORMAL),priority));
 	}
 	
 	// Static ------------------------------------------------------------------

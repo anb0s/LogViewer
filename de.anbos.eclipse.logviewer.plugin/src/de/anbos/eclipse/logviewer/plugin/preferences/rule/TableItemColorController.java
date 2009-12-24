@@ -56,8 +56,8 @@ public class TableItemColorController implements PaintListener {
 				return;
 			}
 			RulePreferenceData data = (RulePreferenceData)item.getData();
-			item.setBackground(new Color(Display.getDefault(),data.getBackground()));
-			item.setForeground(new Color(Display.getDefault(),data.getForeground()));
+			item.setBackground(new Color(Display.getDefault(),data.getBackgroundColor()));
+			item.setForeground(new Color(Display.getDefault(),data.getForegroundColor()));
 		}
 	}
 }

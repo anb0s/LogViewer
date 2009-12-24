@@ -5,17 +5,22 @@ import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
+import de.anbos.eclipse.logviewer.plugin.LogFileTab;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
 
@@ -151,6 +156,11 @@ public class RuleDialog extends StatusDialog {
         pageGroup22.setLayoutData(data22);
         pageGroup22.setFont(parent.getFont());
         */
+        
+    	// send event to refresh matchMode
+    	Event event = new Event();
+		event.item = null;
+		ruleTypeCombo.notifyListeners(SWT.Selection, event);        
         return pageComponent;
     }
     
@@ -173,16 +183,16 @@ public class RuleDialog extends StatusDialog {
         }
         data.setPosition(position);
         data.setEnabled(enabledCheckBox.getSelection());
-        data.setRule(ruleTypeCombo.getText());
-        data.setValue(valueText.getText());
+        data.setRuleNameShort(ruleTypeCombo.getText());
+        data.setRuleValue(valueText.getText());
         data.setCaseInsensitive(caseInsensitiveCheckBox.getSelection());
         data.setMatchMode(matchModeCombo.getText());
         data.setColoringEnabled(coloringEnabledCheckBox.getSelection());
-        data.setBackground(backgroundColorSelector.getColorValue());
-        data.setForeground(foregroundColorSelector.getColorValue());
+        data.setBackgroundColor(backgroundColorSelector.getColorValue());
+        data.setForegroundColor(foregroundColorSelector.getColorValue());
         super.okPressed();
     }
-    
+
     // Private ----------------------------------------------------------------------
     
     private void createEnabledCheckBox(Composite parent) {
@@ -205,7 +215,7 @@ public class RuleDialog extends StatusDialog {
         // draw checkbox
         caseInsensitiveCheckBox = new Button(parent,SWT.CHECK);
         if(edit) {
-        	caseInsensitiveCheckBox.setSelection(this.data.getCaseInsensitive());
+        	caseInsensitiveCheckBox.setSelection(this.data.isCaseInsensitive());
         }
     }
 
@@ -234,10 +244,25 @@ public class RuleDialog extends StatusDialog {
         ruleTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         ruleTypeCombo.setEditable(false);
         ruleTypeCombo.setItems(RuleFactory.getAllRulesAsComboNames());
+        ruleTypeCombo.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				String text = ruleTypeCombo.getItem(ruleTypeCombo.getSelectionIndex());
+				if (text.toLowerCase().indexOf("word")!=-1)
+					matchModeCombo.setEnabled(false);
+				else
+					matchModeCombo.setEnabled(true);
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
         if(edit) {
             String[] items = ruleTypeCombo.getItems();
             for(int i = 0 ; i < items.length ; i++) {
-                if(items[i].equals(this.data.getRule())) {
+                if(items[i].equals(this.data.getRuleNameShort())) {
                     ruleTypeCombo.select(i);
                     return;
                 }
@@ -259,14 +284,14 @@ public class RuleDialog extends StatusDialog {
         if(edit) {
             String[] items = matchModeCombo.getItems();
             for(int i = 0 ; i < items.length ; i++) {
-                if(items[i].equals(this.data.getMatchMode())) {
+                if(items[i].toLowerCase().indexOf(this.data.getMatchMode())!=-1) {
                 	matchModeCombo.select(i);
                     return;
                 }
             }
         }
     }
-    
+
     private void createBackgroundColorSelector(Composite parent) {
         // draw label
         Label label = new Label(parent,SWT.LEFT);
@@ -277,7 +302,7 @@ public class RuleDialog extends StatusDialog {
         backgroundColorSelector.setColorValue(new RGB(255,255,255));
         backgroundColorSelector.getButton().setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
         if(edit) {
-            backgroundColorSelector.setColorValue(this.data.getBackground());
+            backgroundColorSelector.setColorValue(this.data.getBackgroundColor());
         }
     }
     
@@ -291,7 +316,7 @@ public class RuleDialog extends StatusDialog {
         foregroundColorSelector.setColorValue(new RGB(0,0,0));
         foregroundColorSelector.getButton().setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
         if(edit) {
-            foregroundColorSelector.setColorValue(this.data.getForeground());
+            foregroundColorSelector.setColorValue(this.data.getForegroundColor());
         }      
     }
     
@@ -304,7 +329,7 @@ public class RuleDialog extends StatusDialog {
         valueText = new Text(parent,SWT.BORDER);
         valueText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         if(edit) {
-            valueText.setText(this.data.getValue());
+            valueText.setText(this.data.getRuleValue());
         }
     }
 }

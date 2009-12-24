@@ -1,0 +1,26 @@
+package de.anbos.eclipse.logviewer.plugin.file;
+import org.eclipse.debug.ui.console.IConsole;
+import org.eclipse.debug.ui.console.IConsoleLineTracker;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IRegion;
+
+public class ConsoleLineTracker implements IConsoleLineTracker {
+
+	private IConsole m_console;
+	         
+	public void dispose() {       
+	     
+	}
+	
+	public void init(IConsole console) {       
+	    m_console = console;       
+	}
+	 
+	public void lineAppended(IRegion region) {
+	    try {
+	        String line = m_console.getDocument().get(region.getOffset(), region.getLength());
+	        System.out.println(line);
+	    } catch (BadLocationException e) {	        
+	    }
+	}
+}

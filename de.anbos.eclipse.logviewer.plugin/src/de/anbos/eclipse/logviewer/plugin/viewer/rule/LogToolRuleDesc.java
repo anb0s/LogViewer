@@ -15,28 +15,15 @@
 
 package de.anbos.eclipse.logviewer.plugin.viewer.rule;
 
-import org.eclipse.swt.graphics.Color;
+import de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferenceData;
 
-public class LogToolRuleDesc {
+public class LogToolRuleDesc extends RulePreferenceData{
 
 	// Attribute ---------------------------------------------------------------
 
-	private	int priority;
-	private String ruleValue;
-	private Color backgroundColor;
-	private Color foregroundColor;
-	private String matchMode;
-	private boolean caseInsensitive;
-
 	// Constructor -------------------------------------------------------------
 	
-	public LogToolRuleDesc(int priority, String ruleValue, Color backgroundColor, Color foregroundColor, String matchMode, boolean caseInsensitive) {
-		this.priority = priority;
-		this.ruleValue = ruleValue;
-		this.backgroundColor = backgroundColor;
-		this.foregroundColor = foregroundColor;
-		this.matchMode = matchMode;
-		this.caseInsensitive = caseInsensitive;
+	public LogToolRuleDesc() {
 	}
 
 	// Public ------------------------------------------------------------------
@@ -45,48 +32,7 @@ public class LogToolRuleDesc {
 		return priority;
 	}
 
-	public String getRuleValue() {
-		return ruleValue;
-	}
-
-	public Color getBackgroundColor() {
-		return backgroundColor;
-	}
-
-	public Color getForegroundColor() {
-		return foregroundColor;
-	}
-
-	public String getMatchMode() {
-		return matchMode;
-	}
-
-	public boolean isCaseInsensitive() {
-		return caseInsensitive;
-	}
-
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-
-	public void setRuleValue(String ruleValue) {
-		this.ruleValue = ruleValue;
-	}
-
-	public void setBackgroundColor(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-
-	public void setForegroundColor(Color foregroundColor) {
-		this.foregroundColor = foregroundColor;
-	}
-
-	public void setMatchMode(String matchMode) {
-		this.matchMode = matchMode;
-	}
-
-	public void setCaseInsensitive(boolean caseInsensitive) {
-		this.caseInsensitive = caseInsensitive;
-	}	
-	
 }

@@ -132,25 +132,25 @@ public class RuleItemReadWriter {
 					Node node = nodes.item(n);
 					// rule
 					if(node.getNodeName().equals(NODE_RULE)) {
-						data.setRule(LogViewerPlugin.getResourceString(extractStringValueFromNode(node)));
+						data.setRuleName(extractStringValueFromNode(node));
 						fieldCounter++;
 						continue;
 					}
 					// background
 					if(node.getNodeName().equals(NODE_BACKGROUND)) {
-						data.setBackground(StringConverter.asRGB(extractStringValueFromNode(node)));
+						data.setBackgroundColor(StringConverter.asRGB(extractStringValueFromNode(node)));
 						fieldCounter++;
 						continue;
 					}
 					// foreground
 					if(node.getNodeName().equals(NODE_FOREGROUND)) {
-						data.setForeground(StringConverter.asRGB(extractStringValueFromNode(node)));
+						data.setForegroundColor(StringConverter.asRGB(extractStringValueFromNode(node)));
 						fieldCounter++;
 						continue;
 					}
 					// value
 					if(node.getNodeName().equals(NODE_VALUE)) {
-						data.setValue(extractStringValueFromNode(node));
+						data.setRuleValue(extractStringValueFromNode(node));
 						fieldCounter++;
 						continue;
 					}
@@ -224,22 +224,22 @@ public class RuleItemReadWriter {
 				// rule
 				Node ruleNode = document.createElement(NODE_RULE);
 				itemNode.appendChild(ruleNode);
-				Text ruleValue = document.createTextNode(LogViewerPlugin.getResourceString(item.getRule()));
+				Text ruleValue = document.createTextNode(item.getRuleName());
 				ruleNode.appendChild(ruleValue);
 				// background
 				Node backgroundNode = document.createElement(NODE_BACKGROUND);
 				itemNode.appendChild(backgroundNode);
-				Text backgroundValue = document.createTextNode(StringConverter.asString(item.getBackground()));
+				Text backgroundValue = document.createTextNode(StringConverter.asString(item.getBackgroundColor()));
 				backgroundNode.appendChild(backgroundValue);
 				// foreground
 				Node foregroundNode = document.createElement(NODE_FOREGROUND);
 				itemNode.appendChild(foregroundNode);
-				Text foregroundValue = document.createTextNode(StringConverter.asString(item.getForeground()));
+				Text foregroundValue = document.createTextNode(StringConverter.asString(item.getForegroundColor()));
 				foregroundNode.appendChild(foregroundValue);			
 				// value
 				Node valueNode = document.createElement(NODE_VALUE);
 				itemNode.appendChild(valueNode);
-				CDATASection valueCDataSection = document.createCDATASection(item.getValue());
+				CDATASection valueCDataSection = document.createCDATASection(item.getRuleValue());
 				valueNode.appendChild(valueCDataSection);
 				// match mode
 				Node matchModeNode = document.createElement(NODE_MATCHMODE);
@@ -249,7 +249,7 @@ public class RuleItemReadWriter {
 				// case insensitive
 				Node caseInsensitiveNode = document.createElement(NODE_CASEINSENSITIVE);
 				itemNode.appendChild(caseInsensitiveNode);
-				Text caseInsensitiveValue = document.createTextNode(Boolean.toString(item.getCaseInsensitive()));
+				Text caseInsensitiveValue = document.createTextNode(Boolean.toString(item.isCaseInsensitive()));
 				caseInsensitiveNode.appendChild(caseInsensitiveValue);
 			}
 			

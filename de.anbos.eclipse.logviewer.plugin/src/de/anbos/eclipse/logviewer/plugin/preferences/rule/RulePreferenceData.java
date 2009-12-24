@@ -1,39 +1,48 @@
-package de.anbos.eclipse.logviewer.plugin.preferences.rule;
-
-import org.eclipse.swt.graphics.RGB;
-
 /*
- * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * Copyright 2009 by Andre Bossert
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * software distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. 
  */
+
+package de.anbos.eclipse.logviewer.plugin.preferences.rule;
+
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+import org.eclipse.jface.resource.StringConverter;
+import org.eclipse.swt.graphics.RGB;
+
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
+import de.anbos.eclipse.logviewer.plugin.preferences.Base64;
+
 
 public class RulePreferenceData {
     
     // Attribute --------------------------------------------------------------------
-    	
+	
+	// Status
+	protected int priority;
     private int position;
     private boolean enabled;
     
     // Rule
-    private String rule;
-    private String value;
+    private String ruleName;
+    private String ruleValue;
     private String matchMode;
     private boolean caseInsensitive;
 
     // Action: coloring
-    private boolean coloringEnabled; 
-    private RGB background;
-    private RGB foreground;
+    private boolean coloringEnabled;
+	private RGB backgroundColor;
+	private RGB foregroundColor;
     
     // Constructor ------------------------------------------------------------------
     
@@ -42,124 +51,98 @@ public class RulePreferenceData {
     
     // Public -----------------------------------------------------------------------
     
-    /**
-     * @return Returns the background.
-     */
-    public RGB getBackground() {
-        return background;
-    }
+	public int getPriority() {
+		return priority;
+	}
 
-    /**
-     * @param background The background to set.
-     */
-    public void setBackground(RGB background) {
-        this.background = background;
-    }
+	public int getPosition() {
+		return position;
+	}
 
-    /**
-     * @return Returns the enabled.
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
+	public boolean isEnabled() {
+		return enabled;
+	}
 
-    /**
-     * @param enabled The enabled to set.
-     */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+	public String getRuleName() {
+		return ruleName;
+	}
 
-    /**
-     * @return Returns the foreground.
-     */
-    public RGB getForeground() {
-        return foreground;
-    }
+	public String getRuleNameShort() {
+		return LogViewerPlugin.getResourceString(ruleName);
+	}
+	
+	public String getRuleValue() {
+		return ruleValue;
+	}
 
-    /**
-     * @param foreground The foreground to set.
-     */
-    public void setForeground(RGB foreground) {
-        this.foreground = foreground;
-    }
+	public String getMatchMode() {
+		return matchMode;
+	}
 
-    /**
-     * @return Returns the position.
-     */
-    public int getPosition() {
-        return position;
-    }
+	public boolean isCaseInsensitive() {
+		return caseInsensitive;
+	}
 
-    /**
-     * @param position The position to set.
-     */
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    /**
-     * @return Returns the rule.
-     */
-    public String getRule() {
-        return rule;
-    }
-
-    /**
-     * @param rule The rule to set.
-     */
-    public void setRule(String rule) {
-        this.rule = rule;
-    }
-
-    /**
-     * @return Returns the value.
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @param value The value to set.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
-    
-    /**
-     * @param value The value to set.
-     */
-    public void setCaseInsensitive(boolean caseInsensitive) {
-        this.caseInsensitive = caseInsensitive;
-    }
-
-    /**
-     * @return Returns the case insensitive.
-     */
-    public boolean getCaseInsensitive() {
-        return caseInsensitive;
-    }
-
-    /**
-     * @return Returns the value.
-     */
-    public String getMatchMode() {
-        return matchMode;
-    }
-
-    /**
-     * @param value The value to set.
-     */
-    public void setMatchMode(String matchMode) {
-        this.matchMode = matchMode;
-    }
-    
-    public boolean isColoringEnabled() {
+	public boolean isColoringEnabled() {
 		return coloringEnabled;
+	}
+
+	public RGB getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public RGB getForegroundColor() {
+		return foregroundColor;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public void setRuleName(String ruleName) {
+		this.ruleName = ruleName;
+	}
+
+	public void setRuleNameShort(String ruleName) {
+		this.ruleName = LogViewerPlugin.getResourceString(ruleName);
+	}
+	
+	public void setRuleValue(String ruleValue) {
+		this.ruleValue = ruleValue;
+	}
+
+	public void setMatchMode(String matchMode) {
+		if (matchMode.toLowerCase().indexOf("find") != -1)
+			matchMode = "find";
+		else 
+			matchMode = "match";
+		if (getRuleNameShort().toLowerCase().indexOf("word") != -1)
+			matchMode = "find";
+		this.matchMode = matchMode;
+	}
+
+	public void setCaseInsensitive(boolean caseInsensitive) {
+		this.caseInsensitive = caseInsensitive;
 	}
 
 	public void setColoringEnabled(boolean coloringEnabled) {
 		this.coloringEnabled = coloringEnabled;
+	}
+
+	public void setBackgroundColor(RGB backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+	
+	public void setForegroundColor(RGB foregroundColor) {
+		this.foregroundColor = foregroundColor;
 	}
 
 	public boolean equals(Object object) {
@@ -167,17 +150,54 @@ public class RulePreferenceData {
     		return false;
     	}
     	RulePreferenceData data = (RulePreferenceData)object;
-    	if(data.getPosition() == this.getPosition() &
-    			data.getBackground().equals(this.getBackground()) &
-    			data.getForeground().equals(this.getForeground()) &
-    			data.getRule().equals(this.getRule()) &
-    			data.getValue().equals(this.getValue()) &
-    			data.getCaseInsensitive() == this.getCaseInsensitive() &
+    	if(		data.getPosition() == this.getPosition() &
+    			data.getBackgroundColor().equals(this.getBackgroundColor()) &
+    			data.getForegroundColor().equals(this.getForegroundColor()) &
+    			data.getRuleName().equals(this.getRuleName()) &
+    			data.getRuleValue().equals(this.getRuleValue()) &
+    			data.isCaseInsensitive() == this.isCaseInsensitive() &
     			data.getMatchMode().equals(this.getMatchMode())) {
     		return true;
     	}
     	return false;
     }
-    
+
+	public boolean fillTokens(String value, String delimiter) {
+		if(value == null || value.length() <= 0) {
+			return false;
+		}
+		StringTokenizer tokenizer = new StringTokenizer(value,delimiter);
+        String priorityStr = Base64.decode(tokenizer.nextToken());
+        String enabledStr = Base64.decode(tokenizer.nextToken());
+        String ruleNameStr = Base64.decode(tokenizer.nextToken());
+        String backgroundStr = Base64.decode(tokenizer.nextToken());
+        String foregroundStr = Base64.decode(tokenizer.nextToken());
+		String ruleValueStr = Base64.decode(tokenizer.nextToken());
+		String matchModeStr = null;
+		try {
+			matchModeStr = tokenizer.nextToken();
+			matchModeStr = Base64.decode(matchModeStr);
+		} catch (NoSuchElementException e) {
+			matchModeStr = "match";
+		}
+		String caseInsensitiveStr = null;
+		try {
+			caseInsensitiveStr = tokenizer.nextToken();
+			caseInsensitiveStr = Base64.decode(caseInsensitiveStr);
+		} catch (NoSuchElementException e) {
+			caseInsensitiveStr = "false";
+		}
+		// set members
+		setPriority(Integer.parseInt(priorityStr));
+		setEnabled(Boolean.valueOf(enabledStr).booleanValue());
+		setRuleName(ruleNameStr);
+		setBackgroundColor(StringConverter.asRGB(backgroundStr));
+		setForegroundColor(StringConverter.asRGB(foregroundStr));
+		setRuleValue(ruleValueStr);
+		setMatchMode(matchModeStr);
+		setCaseInsensitive(Boolean.valueOf(caseInsensitiveStr).booleanValue());
+		return true;
+	}
+	
     // Private ----------------------------------------------------------------------
 }

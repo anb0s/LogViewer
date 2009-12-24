@@ -135,7 +135,7 @@ public class RuleStore {
     }
     
     public void loadDefault() { 
-        RulePreferenceData[] items = PreferenceValueConverter.asColorPreferenceDataArray(store.getDefaultString(ILogViewerConstants.PREF_COLORING_ITEMS));
+        RulePreferenceData[] items = PreferenceValueConverter.asRulePreferenceDataArray(store.getDefaultString(ILogViewerConstants.PREF_COLORING_ITEMS));
         this.items.clear();
         for(int i = 0 ; i < items.length ; i++) {
             this.items.add(items[i]);
@@ -144,7 +144,7 @@ public class RuleStore {
     }
     
     public void load() {
-        RulePreferenceData[] items = PreferenceValueConverter.asColorPreferenceDataArray(store.getString(ILogViewerConstants.PREF_COLORING_ITEMS));
+        RulePreferenceData[] items = PreferenceValueConverter.asRulePreferenceDataArray(store.getString(ILogViewerConstants.PREF_COLORING_ITEMS));
         this.items.clear();
         for(int i = 0 ; i < items.length ; i++) {
             this.items.add(items[i]);
