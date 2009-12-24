@@ -108,6 +108,10 @@ public class RulePreferenceData {
 	}
 
 	public void setRuleName(String ruleName) {
+		if (ruleName.equalsIgnoreCase("ch.mimo.eclipse.plugin.logfiletools.viewer.rule.WordRule"))
+			ruleName = LogViewerPlugin.getResourceString("WORD");
+		else if (ruleName.equalsIgnoreCase("ch.mimo.eclipse.plugin.logfiletools.viewer.rule.RegExpRule"))
+			ruleName = LogViewerPlugin.getResourceString("JakartaRegExp");
 		this.ruleName = ruleName;
 	}
 

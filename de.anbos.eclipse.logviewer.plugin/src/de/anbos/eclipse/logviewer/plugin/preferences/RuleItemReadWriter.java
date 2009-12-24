@@ -58,7 +58,7 @@ public class RuleItemReadWriter {
 	private static final String NODE_VALUE		= "value"; //$NON-NLS-1$
 	private static final String NODE_MATCHMODE  = "matchmode"; //$NON-NLS-1$
 	private static final String NODE_CASEINSENSITIVE  = "case-insensitive"; //$NON-NLS-1$
-	
+
 	private static final String ATTR_POSITION	= "position"; //$NON-NLS-1$
 	private static final String ATTR_CHECKED	= "checked"; //$NON-NLS-1$
 	
@@ -172,8 +172,14 @@ public class RuleItemReadWriter {
 					}					
 				}
 				if(fieldCounter != 8) {
-					errorInParsing = true;
-					break;
+					if (fieldCounter < 8 && fieldCounter >= 6) {
+						data.setMatchMode("match");
+						if (fieldCounter == 6)
+							data.setCaseInsensitive(false);
+					} else {						
+						errorInParsing = true;
+						break;
+					}
 				}
 				itemArray.add(data);
 			}
