@@ -28,11 +28,8 @@ public class LogToolRuleDesc extends RulePreferenceData{
 
 	// Public ------------------------------------------------------------------
 
+	// RulePreferenceData.position = rule priority 
 	public int getPriority() {
-		return priority;
-	}
-
-	public void setPriority(int priority) {
-		this.priority = priority;
+		return getPosition();
 	}
 }

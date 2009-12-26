@@ -29,7 +29,6 @@ public class RulePreferenceData {
     // Attribute --------------------------------------------------------------------
 	
 	// Status
-	protected int priority;
     private int position;
     private boolean enabled;
     
@@ -50,10 +49,6 @@ public class RulePreferenceData {
     }
     
     // Public -----------------------------------------------------------------------
-    
-	public int getPriority() {
-		return priority;
-	}
 
 	public int getPosition() {
 		return position;
@@ -95,10 +90,6 @@ public class RulePreferenceData {
 		return foregroundColor;
 	}
 
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
-
 	public void setPosition(int position) {
 		this.position = position;
 	}
@@ -128,7 +119,9 @@ public class RulePreferenceData {
 			matchMode = "find";
 		else 
 			matchMode = "match";
-		if (getRuleNameShort().toLowerCase().indexOf("word") != -1)
+		// word / jakarta regexp support only 'find' mode
+		if (getRuleNameShort().toLowerCase().indexOf("word")    != -1 ||
+			getRuleNameShort().toLowerCase().indexOf("jakarta") != -1  )
 			matchMode = "find";
 		this.matchMode = matchMode;
 	}
@@ -171,7 +164,7 @@ public class RulePreferenceData {
 			return false;
 		}
 		StringTokenizer tokenizer = new StringTokenizer(value,delimiter);
-        String priorityStr = Base64.decode(tokenizer.nextToken());
+        String positionStr = Base64.decode(tokenizer.nextToken());
         String enabledStr = Base64.decode(tokenizer.nextToken());
         String ruleNameStr = Base64.decode(tokenizer.nextToken());
         String backgroundStr = Base64.decode(tokenizer.nextToken());
@@ -192,7 +185,7 @@ public class RulePreferenceData {
 			caseInsensitiveStr = "false";
 		}
 		// set members
-		setPriority(Integer.parseInt(priorityStr));
+		setPosition(Integer.parseInt(positionStr));
 		setEnabled(Boolean.valueOf(enabledStr).booleanValue());
 		setRuleName(ruleNameStr);
 		setBackgroundColor(StringConverter.asRGB(backgroundStr));

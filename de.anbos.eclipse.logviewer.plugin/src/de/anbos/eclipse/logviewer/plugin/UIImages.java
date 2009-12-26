@@ -67,6 +67,8 @@ public class UIImages {
         
         declareRegistryImage(ILogViewerConstants.IMG_OPEN_FILE_ACTIVE,		"active/open_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_OPEN_FILE_PASSIVE,		"passive/open_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_PREFERENCES_ACTIVE,	"active/prop_ps.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_PREFERENCES_PASSIVE,	"passive/prop_ps.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_CLOSE_FILE_ACTIVE,		"active/remove_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_CLOSE_FILE_PASSIVE,		"passive/remove_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_CLOSEALL_ACTIVE,			"active/removeall_active.gif"); //$NON-NLS-1$

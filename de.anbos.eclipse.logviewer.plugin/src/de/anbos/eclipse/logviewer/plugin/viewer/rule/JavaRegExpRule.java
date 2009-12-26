@@ -44,7 +44,7 @@ public class JavaRegExpRule implements IPredicateRule, ILogFileToolRule {
 		if (ruleDesc.getMatchMode().startsWith("find"))
 			find = true;
 		regexp = Pattern.compile(ruleDesc.getRuleValue(),flags);
-		this.priority = ruleDesc.getPriority();
+		priority = ruleDesc.getPriority();
 		successToken = new Token(new TokenData(new TextAttribute(new Color(Display.getDefault(),ruleDesc.getForegroundColor()),new Color(Display.getDefault(),ruleDesc.getBackgroundColor()),SWT.NORMAL),priority));
 	}
 	
@@ -58,17 +58,16 @@ public class JavaRegExpRule implements IPredicateRule, ILogFileToolRule {
 
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		String line = returnNextCompleteLine(scanner);
-		if(line == null) {
-			return Token.UNDEFINED;
-		}
-		if (find) {
-			if(regexp.matcher(line).find()) {
-				return successToken;
+		if(line != null) {
+			if (find) {
+				if(regexp.matcher(line).find()) {
+					return successToken;
+				}
+			} else {
+				if(regexp.matcher(line).matches()) {
+					return successToken;
+				}			
 			}
-		} else {
-			if(regexp.matcher(line).matches()) {
-				return successToken;
-			}			
 		}
 		return Token.UNDEFINED;
 	}

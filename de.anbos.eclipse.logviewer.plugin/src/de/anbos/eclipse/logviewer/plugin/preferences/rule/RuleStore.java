@@ -163,6 +163,10 @@ public class RuleStore {
     		comparator = new DataObjectComparator();
     	}
     	Collections.sort(items,comparator);
+    	// bug fix: rewrite positions
+    	for (int i=0;i<items.size();i++) {
+    		((RulePreferenceData)items.get(i)).setPosition(i);
+    	}
     }
     
     // Inner Classe -----------------------------------------------------------------

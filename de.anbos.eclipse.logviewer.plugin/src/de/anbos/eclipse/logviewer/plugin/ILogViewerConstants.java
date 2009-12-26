@@ -26,6 +26,8 @@ public interface ILogViewerConstants {
 	
 	public static final String IMG_OPEN_FILE_ACTIVE			= "IMG_OPEN_FILE_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_OPEN_FILE_PASSIVE		= "IMG_OPEN_FILE_PASSIVE"; //$NON-NLS-1$
+	public static final String IMG_PREFERENCES_ACTIVE		= "IMG_PREFERENCES_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_PREFERENCES_PASSIVE		= "IMG_PREFERENCES_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_CLOSE_FILE_ACTIVE		= "IMG_CLOSE_FILE_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_CLOSE_FILE_PASSIVE		= "IMG_CLOSE_FILE_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_CLOSEALL_ACTIVE			= "IMG_CLOSEALL_ACTIVE"; //$NON-NLS-1$

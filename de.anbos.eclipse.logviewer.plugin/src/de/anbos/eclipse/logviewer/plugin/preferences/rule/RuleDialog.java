@@ -17,10 +17,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
-import de.anbos.eclipse.logviewer.plugin.LogFileTab;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
 
@@ -70,7 +68,7 @@ public class RuleDialog extends StatusDialog {
             title = LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.edit.title"); //$NON-NLS-1$
         } else {
             title = LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.new.title"); //$NON-NLS-1$
-        }        
+        }
         setTitle(title);
     }
 
@@ -126,7 +124,7 @@ public class RuleDialog extends StatusDialog {
         pageGroup2.setFont(parent.getFont());
     	// define group2.1
     	Group pageGroup21 = new Group(pageGroup2, SWT.SHADOW_ETCHED_IN);
-    	pageGroup21.setText("Coloring");
+    	pageGroup21.setText("Highlighting");
         GridLayout layout21 = new GridLayout();
         layout21.numColumns = 2;
         layout21.makeColumnsEqualWidth = true;
@@ -157,10 +155,13 @@ public class RuleDialog extends StatusDialog {
         pageGroup22.setFont(parent.getFont());
         */
         
-    	// send event to refresh matchMode
-    	Event event = new Event();
-		event.item = null;
-		ruleTypeCombo.notifyListeners(SWT.Selection, event);        
+        //if (edit) {
+	    	// send event to refresh matchMode
+	    	Event event = new Event();
+			event.item = null;
+			ruleTypeCombo.notifyListeners(SWT.Selection, event);
+        //}
+
         return pageComponent;
     }
     
@@ -204,6 +205,8 @@ public class RuleDialog extends StatusDialog {
         enabledCheckBox = new Button(parent,SWT.CHECK);
         if(edit) {
             enabledCheckBox.setSelection(this.data.isEnabled());
+        } else {
+        	enabledCheckBox.setSelection(true);
         }
     }
 
@@ -228,10 +231,10 @@ public class RuleDialog extends StatusDialog {
         coloringEnabledCheckBox = new Button(parent,SWT.CHECK);
         if(edit) {
         	coloringEnabledCheckBox.setSelection(this.data.isColoringEnabled());
-        	// TODO: entfernen !!!
-        	coloringEnabledCheckBox.setSelection(true);
-        	coloringEnabledCheckBox.setEnabled(false);
         }
+    	// TODO: remove after implementing more filters / actions !!!
+    	coloringEnabledCheckBox.setSelection(true);
+    	coloringEnabledCheckBox.setEnabled(false);        
     }
     
     private void createRuleCombo(Composite parent) {
@@ -248,10 +251,15 @@ public class RuleDialog extends StatusDialog {
 
 			public void widgetSelected(SelectionEvent e) {
 				String text = ruleTypeCombo.getItem(ruleTypeCombo.getSelectionIndex());
-				if (text.toLowerCase().indexOf("word")!=-1)
+				// word / jakarta regexp support only 'find' mode				
+				if (text.toLowerCase().indexOf("word")    !=-1 ||
+					text.toLowerCase().indexOf("jakarta") !=-1  ) {
 					matchModeCombo.setEnabled(false);
-				else
+					matchModeCombo.select(0);
+				}
+				else {					
 					matchModeCombo.setEnabled(true);
+				}
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -267,6 +275,8 @@ public class RuleDialog extends StatusDialog {
                     return;
                 }
             }
+        } else {
+        	ruleTypeCombo.select(0);
         }
     }
 

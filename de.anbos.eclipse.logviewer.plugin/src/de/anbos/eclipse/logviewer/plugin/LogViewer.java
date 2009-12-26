@@ -39,6 +39,7 @@ import de.anbos.eclipse.logviewer.plugin.action.CloseAllFilesViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileCloseViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileEncondingViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileOpenViewAction;
+import de.anbos.eclipse.logviewer.plugin.action.PreferencesViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.RefreshCurrentFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StartTailOnAllFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StartTailOnCurrentFileViewAction;
@@ -84,6 +85,7 @@ public class LogViewer extends ViewPart {
     private ViewDocumentListener documentListener;
     
     private FileOpenViewAction fileOpenAction;
+    private PreferencesViewAction preferencesAction;
     private FileCloseViewAction fileCloseAction;
     private CloseAllFilesViewAction closeAllFilesAction;
     private RefreshCurrentFileViewAction refreshCurrentFileAction;
@@ -411,6 +413,7 @@ public class LogViewer extends ViewPart {
 		menu.addAction(refreshCurrentFileAction);
 		menu.addSeparator();
 		menu.addAction(fileEncodingAction);
+		menu.addAction(preferencesAction);
 		menu.addSeparator();
 		menu.addAction(tabRenameAction);
 		menu.addSeparator();
@@ -435,6 +438,7 @@ public class LogViewer extends ViewPart {
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(fileOpenAction);
+		manager.add(preferencesAction);
 		manager.add(new Separator());
 		manager.add(startTailOnCurrentFile);
 		manager.add(stopTailOnCurrentFile);
@@ -484,28 +488,31 @@ public class LogViewer extends ViewPart {
     		// open
     		fileOpenAction = new FileOpenViewAction(this,parent.getShell());
     		fileOpenAction.setEnabled(true);
-        // close
+    		// preferences
+    		preferencesAction = new PreferencesViewAction(this,parent.getShell());
+    		preferencesAction.setEnabled(true);    		
+    		// close
     		fileCloseAction = new FileCloseViewAction(this,parent.getShell());
     		fileCloseAction.setEnabled(false);
     		// close all
     		closeAllFilesAction = new CloseAllFilesViewAction(this,parent.getShell());
     		closeAllFilesAction.setEnabled(false);		
-		// refresh
+    		// refresh
     		refreshCurrentFileAction = new RefreshCurrentFileViewAction(this,parent.getShell());
     		refreshCurrentFileAction.setEnabled(false);
-		// start tail
+    		// start tail
     		startTailOnCurrentFile = new StartTailOnCurrentFileViewAction(this,parent.getShell());
     		startTailOnCurrentFile.setEnabled(false);
-		// stop tail
+    		// stop tail
     		stopTailOnCurrentFile = new StopTailOnCurrentFileViewAction(this,parent.getShell());
     		stopTailOnCurrentFile.setEnabled(false);
-    	// start all tail
+    		// start all tail
     	    startTailOnAllFiles = new StartTailOnAllFileViewAction(this,parent.getShell());
     	    startTailOnAllFiles.setEnabled(false);
-    	// stop all tail
+    	    // stop all tail
     	    stopTailOnAllFiles = new StopTailOnAllFileViewAction(this,parent.getShell());
     	    stopTailOnAllFiles.setEnabled(false);
-		// encoding action
+    	    // encoding action
     		fileEncodingAction = new FileEncondingViewAction(this,parent.getShell());
     		fileEncodingAction.setEnabled(false);
     		// tab rename action

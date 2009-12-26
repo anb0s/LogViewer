@@ -2,16 +2,11 @@ package de.anbos.eclipse.logviewer.plugin.preferences;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.jface.resource.StringConverter;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
-
 import de.anbos.eclipse.logviewer.plugin.LogFile;
-import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferenceData;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.ILogFileToolRule;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.LogToolRuleDesc;

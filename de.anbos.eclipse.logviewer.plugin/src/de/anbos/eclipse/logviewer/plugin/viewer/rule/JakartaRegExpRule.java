@@ -42,7 +42,7 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 		if (ruleDesc.isCaseInsensitive())
 			flags = org.apache.regexp.RE.MATCH_CASEINDEPENDENT;
 		regexp.setMatchFlags(flags);
-		this.priority = ruleDesc.getPriority();
+		priority = ruleDesc.getPriority();
 		successToken = new Token(new TokenData(new TextAttribute(new Color(Display.getDefault(),ruleDesc.getForegroundColor()),new Color(Display.getDefault(),ruleDesc.getBackgroundColor()),SWT.NORMAL),priority));
 	}
 
@@ -56,11 +56,10 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		String line = returnNextCompleteLine(scanner);
-		if(line == null) {
-			return Token.UNDEFINED;
-		}
-		if(regexp.match(line)) {
-			return successToken;
+		if(line != null) {
+			if(regexp.match(line)) {
+				return successToken;
+			}
 		}
 		return Token.UNDEFINED;
 	}

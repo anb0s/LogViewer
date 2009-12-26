@@ -21,7 +21,9 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -37,6 +39,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -81,7 +84,8 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
     private Button upButton;
     private Button downButton;
     private Button importButton;
-    private Button exportButton;
+    private Button exportSelectedButton;
+    private Button exportAllButton;
     private Button removeButton;
     
     // Constructor ------------------------------------------------------------------
@@ -162,6 +166,19 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
                 data.setEnabled(event.getChecked());
             }
         });
+        
+        tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			public void selectionChanged(SelectionChangedEvent event) {
+		    	IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
+		    	boolean selected = !selection.isEmpty();		    	
+	    		editButton.setEnabled(selected);
+	    		removeButton.setEnabled(selected);
+	    		upButton.setEnabled(selected);
+	    		downButton.setEnabled(selected);
+	    		exportSelectedButton.setEnabled(selected);
+			}
+		});
         
         tableViewer.setSorter(new ViewerSorter() {
             public int compare(Viewer viewer, Object object1, Object object2) {
@@ -254,15 +271,25 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         downButton.setFont(font);
         setButtonLayoutData(downButton);
         
-        exportButton = new Button(groupComponent, SWT.PUSH);
-        exportButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.export")); //$NON-NLS-1$
-        exportButton.addSelectionListener(new SelectionAdapter() {
+        exportSelectedButton = new Button(groupComponent, SWT.PUSH);
+        exportSelectedButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.export.selected")); //$NON-NLS-1$
+        exportSelectedButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-            	export();
+            	exportSelected();
             }
         });      
-        exportButton.setFont(font);
-        setButtonLayoutData(exportButton);
+        exportSelectedButton.setFont(font);
+        setButtonLayoutData(exportSelectedButton);
+
+        exportAllButton = new Button(groupComponent, SWT.PUSH);
+        exportAllButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.export.all")); //$NON-NLS-1$
+        exportAllButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+            	exportAll();
+            }
+        });      
+        exportAllButton.setFont(font);
+        setButtonLayoutData(exportAllButton);
         
         importButton = new Button(groupComponent, SWT.PUSH);
         importButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.import")); //$NON-NLS-1$
@@ -279,6 +306,11 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         Dialog.applyDialogFont(pageComponent);
         // trigger the resize
         table.getHorizontalBar().setVisible(true);
+        
+    	// send event to refresh tableViewer
+    	Event event = new Event();
+		event.item = null;		
+		tableViewer.getTable().notifyListeners(SWT.Selection, event);
         
         return pageComponent;
     }
@@ -420,17 +452,46 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
     	tableViewer.refresh();
     }
     
-    private void export() {
+    private void exportSelected() {
     	IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
     	if(selection.isEmpty()) {
+    		if (askSelectAll()) {
+    			tableViewer.getTable().selectAll();
+    			selection= (IStructuredSelection)tableViewer.getSelection();
+    		} else {
+	        	MessageDialog.openError(getShell(),
+	        			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.title"), //$NON-NLS-1$
+	        			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.select.items.text")); //$NON-NLS-1$
+	    		return;
+    		}
+    	}
+
+    	Collection itemArray= new ArrayList();
+    	itemArray.addAll(selection.toList());
+    	export((RulePreferenceData[])itemArray.toArray(new RulePreferenceData[itemArray.size()]));
+    }
+
+    private void exportAll() {
+    	// save selection
+		IStructuredSelection selectionSave= (IStructuredSelection)tableViewer.getSelection();
+		// select all
+		tableViewer.getTable().selectAll();
+		IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
+
+		if(selection.isEmpty()) {
         	MessageDialog.openError(getShell(),
         			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.title"), //$NON-NLS-1$
         			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.select.items.text")); //$NON-NLS-1$
     		return;
-    	}
-    	Collection itemArray= new ArrayList();
-    	itemArray.addAll(selection.toList());
-    	export((RulePreferenceData[])itemArray.toArray(new RulePreferenceData[itemArray.size()]));
+		} else {
+			//export 
+	    	Collection itemArray= new ArrayList();
+	    	itemArray.addAll(selection.toList());
+	    	export((RulePreferenceData[])itemArray.toArray(new RulePreferenceData[itemArray.size()]));
+		}
+
+		// restore selection
+		tableViewer.setSelection(selectionSave, true);
     }
     
     private void export(RulePreferenceData[] data) {
@@ -461,6 +522,8 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 		
 		if (!file.exists() || confirmOverwrite(file)) {
+			// first save outstanding changes
+			performApply();
 			OutputStream output= null;
 			try {
 				output= new BufferedOutputStream(new FileOutputStream(file));
@@ -497,6 +560,8 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 				InputStream input= new BufferedInputStream(new FileInputStream(file));
 				try {
 					RulePreferenceData[] datas= reader.read(input);
+					// first save outstanding changes
+					performApply();
 					if(askOverwriteImport()) {
 						store.removeAll();
 					}
@@ -547,4 +612,11 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 		String message= LogViewerPlugin.getResourceString("preferences.ruleseditor.import.error.text"); //$NON-NLS-1$
 		MessageDialog.openError(getShell(),title,message);
 	}
+	
+    private boolean askSelectAll() {
+    	return MessageDialog.openQuestion(getShell(),
+    			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.dialog.selectall.title"),
+    			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.dialog.selectall.text"));
+    }
+
 }
