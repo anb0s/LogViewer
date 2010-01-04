@@ -35,6 +35,8 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
+import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
+import de.anbos.eclipse.logviewer.plugin.action.ClearHistoryAction;
 import de.anbos.eclipse.logviewer.plugin.action.CloseAllFilesViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileCloseViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileEncondingViewAction;
@@ -52,6 +54,11 @@ import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
 import de.anbos.eclipse.logviewer.plugin.ui.menu.LocalPullDownMenu;
 import de.anbos.eclipse.logviewer.plugin.viewer.LogFileViewer;
+
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -74,6 +81,9 @@ public class LogViewer extends ViewPart {
     
     private Logger logger;
     private Composite parent;
+    
+    private MessageConsole console;
+    private MessageConsoleStream consoleStream;
 
     private boolean stopAfterChange = false;
     
@@ -85,6 +95,7 @@ public class LogViewer extends ViewPart {
     private ViewDocumentListener documentListener;
     
     private FileOpenViewAction fileOpenAction;
+    private ClearHistoryAction clearHistoryAction;
     private PreferencesViewAction preferencesAction;
     private FileCloseViewAction fileCloseAction;
     private CloseAllFilesViewAction closeAllFilesAction;
@@ -101,6 +112,7 @@ public class LogViewer extends ViewPart {
     public LogViewer() {
         logger = LogViewerPlugin.getDefault().getLogger();
         logTab = new Hashtable();
+        createConsole();
     }
     
     // Public ------------------------------------------------------------------
@@ -131,7 +143,7 @@ public class LogViewer extends ViewPart {
     				return;
     			}
     			//File file = new File(((String[])event.data)[0]);
-    			if (!checkAndOpenFile(((String[])event.data)[0], false))
+    			if (!checkAndOpenFile(LogFileType.LOGFILE_SYSTEM_FILE,((String[])event.data)[0], false))
     				event.detail = DND.DROP_NONE;
     		}
     	});
@@ -143,9 +155,14 @@ public class LogViewer extends ViewPart {
         openAllLastOpenFiles();
     }
     
-    public void closeCurrentLogFile() {
+    public MessageConsole getConsole() {
+		return console;
+	}
+
+	public void closeCurrentLogFile() {
         try {
             LogFileTab tab = getSelectedTab();
+            getConsoleStream().println("Close Tab: " + tab.getKey() + "...");
             tab.close();
             logTab.remove(tab.getKey());
         } catch(IOException e) {
@@ -154,8 +171,8 @@ public class LogViewer extends ViewPart {
         int index = tabfolder.getSelectionIndex();
         getSelectedItem().dispose();
         if(tabfolder.getItemCount() == 0) {
-        		fileCloseAction.setEnabled(false);
-        		closeAllFilesAction.setEnabled(false);
+        	fileCloseAction.setEnabled(false);
+        	closeAllFilesAction.setEnabled(false);
             refreshCurrentFileAction.setEnabled(false);
             fileEncodingAction.setEnabled(false);
             startTailOnCurrentFile.setEnabled(false);
@@ -163,12 +180,13 @@ public class LogViewer extends ViewPart {
 	        startTailOnAllFiles.setEnabled(false);
 	        stopTailOnAllFiles.setEnabled(false);
             tabRenameAction.setEnabled(false);
-        } else
+        } else {
             if(index == 0) {
                 tabfolder.setSelection(0);
             } else {
                 tabfolder.setSelection(index - 1);
-            }        
+            }
+        }
     }
     
     public void closeAllLogFiles() {
@@ -232,6 +250,7 @@ public class LogViewer extends ViewPart {
     
     public void startTail() {
         try {
+            getConsoleStream().println("Start Tail...");        	
         	getSelectedTab().getDocument().setMonitor(true);
         	getSelectedTab().getDocument().getFile().setMonitor(true);
             stopTailOnCurrentFile.setEnabled(true);
@@ -243,6 +262,7 @@ public class LogViewer extends ViewPart {
     
     public void stopTail() {
         try {
+            getConsoleStream().println("Stop Tail...");        	
         	getSelectedTab().getDocument().setMonitor(false);
         	getSelectedTab().getDocument().getFile().setMonitor(false);
             stopTailOnCurrentFile.setEnabled(false);
@@ -259,7 +279,7 @@ public class LogViewer extends ViewPart {
         return logTab.containsKey(file.getFileName());
     }
 
-    public boolean checkAndOpenFile(String fullPath, boolean fromAction) {
+    public boolean checkAndOpenFile(LogFileType type, String fullPath, boolean fromAction) {
     	File file = new File(fullPath);
 		if (!fromAction && file.isDirectory()) {
 			FileOpenActionDelegate action = new FileOpenActionDelegate();
@@ -267,9 +287,9 @@ public class LogViewer extends ViewPart {
 			action.run(this, getSite().getShell());
 			return action.isFileOpened();
 		}else {
-    	    LogFile logFile = new LogFile(fullPath,null,null,true);
+    	    LogFile logFile = new LogFile(type,fullPath,null,null,true);
     	    if(!hasLogFile(logFile)) {
-                FileHistoryTracker.getInstance().storeFile(fullPath);    	        
+                FileHistoryTracker.getInstance().storeFile(type, fullPath);
     	    }
     	    // open or show file
     	    openLogFile(logFile);
@@ -283,11 +303,10 @@ public class LogViewer extends ViewPart {
             try {
             	String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
             	LogDocument document = new LogDocument(file,encoding);
-                File logFile = new File(file.getFileName());
                 TabItem item = new TabItem(tabfolder,0);
                 item.setControl(viewer.getControl());
                 item.setText(file.getTabName());
-                item.setToolTipText(logFile.getPath());
+                item.setToolTipText(file.getFileName());
                 logTab.put(key,new LogFileTab(key,item,document));
                 document.addDocumentListener(documentListener);
 
@@ -403,36 +422,33 @@ public class LogViewer extends ViewPart {
 		LocalPullDownMenu menu = new LocalPullDownMenu(manager,this,parent.getShell());
 		menu.addAction(fileOpenAction);
 		menu.addFilelist();
+		menu.addAction(clearHistoryAction);
 		menu.addSeparator();
+		menu.addAction(refreshCurrentFileAction);
 		menu.addAction(startTailOnCurrentFile);
 		menu.addAction(stopTailOnCurrentFile);
+		menu.addAction(fileCloseAction);
+		menu.addSeparator();
+		menu.addAction(fileEncodingAction);
+		menu.addAction(tabRenameAction);
 		menu.addSeparator();
 		menu.addAction(startTailOnAllFiles);
 		menu.addAction(stopTailOnAllFiles);
+		menu.addAction(closeAllFilesAction);
 		menu.addSeparator();
-		menu.addAction(refreshCurrentFileAction);
-		menu.addSeparator();
-		menu.addAction(fileEncodingAction);
 		menu.addAction(preferencesAction);
 		menu.addSeparator();
-		menu.addAction(tabRenameAction);
-		menu.addSeparator();
-		menu.addAction(fileCloseAction);
-		menu.addAction(closeAllFilesAction);
 		menu.finalize();
 	}
 
 	private void fillContextMenu(IMenuManager manager) {		
 		manager.add(refreshCurrentFileAction);
-		manager.add(new Separator());
-		manager.add(fileEncodingAction);
-		manager.add(new Separator());
 		manager.add(startTailOnCurrentFile);
 		manager.add(stopTailOnCurrentFile);
-		manager.add(new Separator());
-		manager.add(tabRenameAction);
-		manager.add(new Separator());
 		manager.add(fileCloseAction);
+		manager.add(new Separator());
+		manager.add(fileEncodingAction);
+		manager.add(tabRenameAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
@@ -440,15 +456,13 @@ public class LogViewer extends ViewPart {
 		manager.add(fileOpenAction);
 		manager.add(preferencesAction);
 		manager.add(new Separator());
+		manager.add(refreshCurrentFileAction);
 		manager.add(startTailOnCurrentFile);
 		manager.add(stopTailOnCurrentFile);
-		manager.add(new Separator());
-		manager.add(refreshCurrentFileAction);
+		manager.add(fileCloseAction);
 		manager.add(new Separator());
 		manager.add(startTailOnAllFiles);
 		manager.add(stopTailOnAllFiles);
-		manager.add(new Separator());
-		manager.add(fileCloseAction);
 		manager.add(closeAllFilesAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -488,6 +502,9 @@ public class LogViewer extends ViewPart {
     		// open
     		fileOpenAction = new FileOpenViewAction(this,parent.getShell());
     		fileOpenAction.setEnabled(true);
+    		// clear history
+    		clearHistoryAction = new ClearHistoryAction(this,parent.getShell());
+    		clearHistoryAction.setEnabled(true);
     		// preferences
     		preferencesAction = new PreferencesViewAction(this,parent.getShell());
     		preferencesAction.setEnabled(true);    		
@@ -541,9 +558,31 @@ public class LogViewer extends ViewPart {
     	}
     }
 	
+    private void createConsole() {
+    	console = new MessageConsole("Log Viewer Console", null);
+    	console.activate();
+    	ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });    	
+    	consoleStream = console.newMessageStream();
+    	consoleStream.println("Log Viewer started!");
+
+    	/*
+    	IConsole[] consoles = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+    	stream.println("Consoles:");
+    	for (int i=0;i<consoles.length;i++) {
+    		stream.println(consoles[i].getName());    		
+    	}
+    	*/
+    }
+
+
 	// Inner Class -------------------------------------------------------------
 	
-    private class ViewDocumentListener implements IDocumentListener {
+    public MessageConsoleStream getConsoleStream() {
+		return consoleStream;
+	}
+
+
+	private class ViewDocumentListener implements IDocumentListener {
 
             public void documentAboutToBeChanged(DocumentEvent documentevent) {
             }

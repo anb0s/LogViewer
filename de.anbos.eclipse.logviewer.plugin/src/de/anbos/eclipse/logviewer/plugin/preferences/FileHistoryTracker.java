@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
+import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -46,13 +47,13 @@ public class FileHistoryTracker {
 	
 	// Public ------------------------------------------------------------------
 	
-	public void storeFile(String path) {
+	public void storeFile(LogFileType type, String path) {
 		init();
-		if(containsThenIncrement(path)) {
+		HistoryFile file = new HistoryFile(path,type,0);		
+		if(containsThenIncrement(file)) {
             LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
 			return;
 		}
-		HistoryFile file = new HistoryFile(path,0);
 		if(files.size() == ILogViewerConstants.MAX_FILES_IN_HISTORY) {
 			files.remove(ILogViewerConstants.MAX_FILES_IN_HISTORY - 1);
 			files.add(file);
@@ -68,6 +69,12 @@ public class FileHistoryTracker {
 		return files;
 	}
 	
+	public void clearFiles() {
+		init();
+		files.clear();
+		LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
+	}	
+	
 	// Private -----------------------------------------------------------------
 	
 	private void init() {
@@ -81,12 +88,12 @@ public class FileHistoryTracker {
 		Collections.sort(files,new HistoryFileComparator());
 	}
 	
-	private boolean containsThenIncrement(String path) {
+	private boolean containsThenIncrement(HistoryFile file) {
 		Iterator it = files.iterator();
 		while(it.hasNext()) {
-			HistoryFile file = (HistoryFile)it.next();
-			if(file.getPath().equals(path)) {
-				file.incrementCount();
+			HistoryFile fileOld = (HistoryFile)it.next();
+			if(fileOld.equals(file)) {
+				fileOld.incrementCount();
 				Collections.sort(files,new HistoryFileComparator());
 				return true;
 			}

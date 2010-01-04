@@ -19,14 +19,22 @@ public class LogFile {
 
     // Attribute ---------------------------------------------------------------
     
+	public enum LogFileType{
+		LOGFILE_SYSTEM_FILE,
+		LOGFILE_ECLIPSE_CONSOLE,
+		LOGFILE_STREAM
+	};
+
     private String fileName;
+    private LogFileType fileType;
     private String tabName;
     private String encoding;
     private boolean monitor;
     
     // Constructor -------------------------------------------------------------
     
-    public LogFile(String fileName, String tabName, String encoding, boolean monitor) {
+    public LogFile(LogFileType fileType, String fileName, String tabName, String encoding, boolean monitor) {
+    	this.fileType = fileType;
         this.fileName = fileName;
         setTabName(tabName);
         setEncoding(encoding);
@@ -34,12 +42,16 @@ public class LogFile {
     }
     
     // Public ------------------------------------------------------------------
+
+    public LogFileType getFileType() {
+		return fileType;
+	}
     
     public String getFileName() {
         return fileName;
     }
 
-    public String getTabName() {
+	public String getTabName() {
         return tabName;
     }
 

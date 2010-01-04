@@ -1,5 +1,7 @@
 package de.anbos.eclipse.logviewer.plugin.preferences;
 
+import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
+
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -20,13 +22,14 @@ public class HistoryFile {
 	// Attribute ---------------------------------------------------------------
 	
 	private String path;
-	//private String name;
+	private LogFileType type;
 	private int count;
-	
+
 	// Constructor -------------------------------------------------------------
 	
-	public HistoryFile(String path, int count) {
+	public HistoryFile(String path, LogFileType type, int count) {
 		this.path = path;
+		this.type = type;
 		this.count = count;
 	}
 	
@@ -35,15 +38,24 @@ public class HistoryFile {
 	public String getPath() {
 		return path;
 	}
-	
-/*	public String getName() {
-		return name;
-	}*/
+
+	public LogFileType getType() {
+		return type;
+	}
 
 	public String getFileName() {
 		return path.substring(path.lastIndexOf(System.getProperty("file.separator")) + 1,path.length());
 	}
 	
+	public String getName() {
+		String name = null;
+		if (type == LogFileType.LOGFILE_SYSTEM_FILE)
+			name = "File: ";
+		else if (type == LogFileType.LOGFILE_ECLIPSE_CONSOLE)
+			name = "Console: ";
+		return name + getFileName();
+	}
+
 	public int getCount() {
 		return count;
 	}
@@ -55,7 +67,9 @@ public class HistoryFile {
 	public boolean equals(Object object) {
 		if(object instanceof HistoryFile) {
 			HistoryFile file = (HistoryFile)object;
-			return file.getPath().equals(this.getPath());
+			
+			return file.getPath().equals(this.getPath()) &&
+			       file.getType() == this.getType();
 		}
 		return false;
 	}

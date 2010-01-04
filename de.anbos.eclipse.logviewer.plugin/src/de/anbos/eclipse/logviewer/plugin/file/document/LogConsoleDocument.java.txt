@@ -20,7 +20,7 @@ import de.anbos.eclipse.logviewer.plugin.LogFile;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 /*
 import de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener;
-import de.anbos.eclipse.logviewer.plugin.file.Tail;
+import de.anbos.eclipse.logviewer.plugin.file.TailFile;
 */
 
 /*

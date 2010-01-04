@@ -28,7 +28,7 @@ public class HistoryFileOpenViewAction extends AbstractViewAction {
 	
 	public HistoryFileOpenViewAction(HistoryFile file, LogViewer view, Shell shell) {
 		super(view,shell,new HistoryFileOpenActionDelegate(file));
-		this.setText(file.getFileName());
+		this.setText(file.getName());
 	}
 	
 	// Public ------------------------------------------------------------------

@@ -31,7 +31,7 @@ import de.anbos.eclipse.logviewer.plugin.Logger;
  * and limitations under the License.
  */
 
-public class Tail implements Runnable {
+public class TailFile implements Runnable {
 	
     // Constant ----------------------------------------------------------------
     
@@ -51,7 +51,7 @@ public class Tail implements Runnable {
 	
 	// Constructor -------------------------------------------------------------
 	
-	public Tail(String filePath, Charset charset, IFileChangedListener listener) {
+	public TailFile(String filePath, Charset charset, IFileChangedListener listener) {
         logger = LogViewerPlugin.getDefault().getLogger();
 		this.filePath = filePath;
 		this.listener = listener;

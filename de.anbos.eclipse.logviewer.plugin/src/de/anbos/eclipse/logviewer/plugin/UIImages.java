@@ -67,30 +67,32 @@ public class UIImages {
         
         declareRegistryImage(ILogViewerConstants.IMG_OPEN_FILE_ACTIVE,		"active/open_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_OPEN_FILE_PASSIVE,		"passive/open_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_CLEAR_HISTORY_ACTIVE,	"active/removeall_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_CLEAR_HISTORY_PASSIVE,	"passive/removeall_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_PREFERENCES_ACTIVE,	"active/prop_ps.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_PREFERENCES_PASSIVE,	"passive/prop_ps.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_CLOSE_FILE_ACTIVE,		"active/remove_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_CLOSE_FILE_PASSIVE,		"passive/remove_passive.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_CLOSEALL_ACTIVE,			"active/removeall_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_CLOSE_FILE_PASSIVE,	"passive/remove_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_CLOSEALL_ACTIVE,		"active/removeall_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_CLOSEALL_PASSIVE,		"passive/removeall_passive.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_REFRESH_FILE_ACTIVE,		"active/refresh_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_REFRESH_FILE_ACTIVE,	"active/refresh_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_REFRESH_FILE_PASSIVE,	"passive/refresh_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_START_TAIL_ACTIVE,		"active/start_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_START_TAIL_PASSIVE,		"passive/start_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_START_TAIL_PASSIVE,	"passive/start_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_START_ALL_TAIL_ACTIVE,	"active/start_all_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_START_ALL_TAIL_PASSIVE,	"passive/start_all_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_START_ALL_TAIL_PASSIVE,"passive/start_all_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_STOP_TAIL_ACTIVE,		"active/stop_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_STOP_TAIL_PASSIVE,		"passive/stop_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_STOP_ALL_TAIL_ACTIVE,	"active/stop_all_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_STOP_ALL_TAIL_PASSIVE,	"passive/stop_all_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_FILTER_ACTIVE,			"active/filter_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_FILTER_PASSIVE,			"passive/filter_passive.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_ENCODING_ACTIVE,			"active/encoding_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_FIND_ACTIVE,				"active/find_obj_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_FILTER_PASSIVE,		"passive/filter_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_ENCODING_ACTIVE,		"active/encoding_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_FIND_ACTIVE,			"active/find_obj_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_FIND_PASSIVE,			"passive/find_obj_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_RENAME_ACTIVE,			"active/rename_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_RENAME_PASSIVE,			"passive/rename_passive.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_COPY_ACTIVE,				"active/copy_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_RENAME_PASSIVE,		"passive/rename_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_COPY_ACTIVE,			"active/copy_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_COPY_PASSIVE,			"active/copy_passive.gif"); //$NON-NLS-1$
         return imageRegistry;
     }

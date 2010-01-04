@@ -18,7 +18,7 @@ package de.anbos.eclipse.logviewer.plugin;
 
 public interface ILogViewerConstants {
 
-	// Tail settings -----------------------------------------------------------
+	// TailFile settings -----------------------------------------------------------
 	
 	public static final long TAIL_FILEOPEN_ERROR_WAIT		= 500;
 	
@@ -26,6 +26,8 @@ public interface ILogViewerConstants {
 	
 	public static final String IMG_OPEN_FILE_ACTIVE			= "IMG_OPEN_FILE_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_OPEN_FILE_PASSIVE		= "IMG_OPEN_FILE_PASSIVE"; //$NON-NLS-1$
+	public static final String IMG_CLEAR_HISTORY_ACTIVE		= "IMG_CLEAR_HISTORY_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_CLEAR_HISTORY_PASSIVE	= "IMG_CLEAR_HISTORY_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_PREFERENCES_ACTIVE		= "IMG_PREFERENCES_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_PREFERENCES_PASSIVE		= "IMG_PREFERENCES_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_CLOSE_FILE_ACTIVE		= "IMG_CLOSE_FILE_ACTIVE"; //$NON-NLS-1$

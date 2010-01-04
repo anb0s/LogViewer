@@ -11,6 +11,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Shell;
 
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.action.ClearHistoryAction;
 import de.anbos.eclipse.logviewer.plugin.action.HistoryFileOpenViewAction;
 import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
@@ -80,6 +81,7 @@ public class LocalPullDownMenu implements IMenuListener {
 	// Private -----------------------------------------------------------------
 	
 	private void fillMenu() {
+		boolean historyIsEmpty = true;
 		Iterator it = actionList.iterator();
 		while(it.hasNext()) {
 			Object object = it.next();
@@ -95,10 +97,13 @@ public class LocalPullDownMenu implements IMenuListener {
 						if(file != null) {
 							HistoryFileOpenViewAction action = new HistoryFileOpenViewAction(file,view,shell);
 							menuManager.add(action);
+							historyIsEmpty = false;
 						}
 					}
 				}
 				continue;
+			} else if(object instanceof ClearHistoryAction) {
+				((ClearHistoryAction)object).setEnabled(!historyIsEmpty);
 			}
 			menuManager.add((IAction)object);
 		}

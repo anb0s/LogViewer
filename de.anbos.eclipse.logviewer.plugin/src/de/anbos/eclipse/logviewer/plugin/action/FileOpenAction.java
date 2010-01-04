@@ -29,10 +29,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import de.anbos.eclipse.logviewer.plugin.LogFile;
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
-import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenActionDelegate;
-import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
+import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 
 
 public class FileOpenAction implements IObjectActionDelegate {
@@ -82,7 +80,7 @@ public class FileOpenAction implements IObjectActionDelegate {
 				e.printStackTrace();
 			}
 
-			view.checkAndOpenFile(full_path, false);
+			view.checkAndOpenFile(LogFileType.LOGFILE_SYSTEM_FILE,full_path, false);
 		}
 	}
 

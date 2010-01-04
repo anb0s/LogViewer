@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Display;
 import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogFile;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
+import de.anbos.eclipse.logviewer.plugin.file.BackgroundReader;
 import de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener;
-import de.anbos.eclipse.logviewer.plugin.file.Tail;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -40,7 +40,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	private LogFile file;
 	private Charset charset;
 	private String encoding;
-	private Tail tail;
+	private BackgroundReader reader;
 	private boolean monitor;
 	
 	private int backlogLines; 
@@ -59,14 +59,14 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		backlogLines = store.getInt(ILogViewerConstants.PREF_BACKLOG);
 		setTextStore(new GapTextStore(50, 300));
 		setLineTracker(new DefaultLineTracker());
-		completeInitialization();
-		tail = new Tail(file.getFileName(),charset,this);
+		completeInitialization();		
+		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
 	}
 	
 	// Public ------------------------------------------------------------------
 	
 	/**
-	 * invoking that setter will cause the tail thread to stop and a new Tail
+	 * invoking that setter will cause the tail thread to stop and a new TailFile
 	 * instance is created with the given charset.
 	 */
 	public void setEncoding(String encoding) {
@@ -74,7 +74,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		this.file.setEncoding(encoding);
 		this.encoding = encoding;
 		this.charset = Charset.forName(encoding);
-		tail = new Tail(file.getFileName(),charset,this);
+		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
 		setMonitor(true);
 	}
 	
@@ -86,17 +86,17 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	}
 	
 	/**
-	 * invoking that method will cause the tail thread to stop and a new Tail
+	 * invoking that method will cause the tail thread to stop and a new TailFile
 	 * instance is create.
 	 */
 	public void synchronize() {
 		setMonitor(false);
-		getStore().set(""); //$NON-NLS-1$
-		getTracker().set(""); //$NON-NLS-1$
-		tail = new Tail(file.getFileName(),charset,this);
+		getStore().set("");
+		getTracker().set("");
+		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
 		setMonitor(true);		
 	}
-	
+
 	/**
 	 * setter for the amount of lines that the view has to dislay at any time.
 	 * It is although possible that the view can display some more lines for
@@ -109,11 +109,11 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	}
 	
 	/**
-	 * if the monitor parameter is true and the current Tail instance thread
+	 * if the monitor parameter is true and the current TailFile instance thread
 	 * is not running the Thread will be inovked and the tail begins to update
 	 * this document.
 	 * 
-	 * if the monitor parameter is false the Tail instance thread is notified
+	 * if the monitor parameter is false the TailFile instance thread is notified
 	 * to stop at the next possbile exit point.
 	 * @param monitor
 	 */
@@ -123,7 +123,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 			getStore().set(""); //$NON-NLS-1$
 			getTracker().set(""); //$NON-NLS-1$
 		}
-		tail.setMonitorStatus(monitor);
+		reader.setMonitorStatus(monitor);
 	}
 	
 	public boolean isMonitor() {
@@ -193,7 +193,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 			return 0;
 		}
 	}
-	
+
 	// Inner classes ----------------------------------------------------------------
 	
 	private class PropertyChangeListener implements IPropertyChangeListener {

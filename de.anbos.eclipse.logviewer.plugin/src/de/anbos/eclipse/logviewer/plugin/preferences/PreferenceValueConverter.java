@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import org.eclipse.jface.resource.StringConverter;
 import de.anbos.eclipse.logviewer.plugin.LogFile;
+import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 import de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferenceData;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.ILogFileToolRule;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.LogToolRuleDesc;
@@ -95,12 +96,20 @@ public class PreferenceValueConverter {
 	}
 	
 	public static String asString(HistoryFile historyFile) {
-		return historyFile.getPath() + VALUE_DELIMITER + historyFile.getCount();
+		return historyFile.getPath() + VALUE_DELIMITER + historyFile.getCount() + VALUE_DELIMITER + historyFile.getType();
 	}
 	
 	public static HistoryFile asHistoryFile(String value) {
+		String str[] = new String[3];
 		StringTokenizer tokenizer = new StringTokenizer(value,VALUE_DELIMITER);
-		return new HistoryFile(tokenizer.nextToken(),Integer.parseInt(tokenizer.nextToken()));
+		for (int i=0;i<3;i++) {			
+			if(tokenizer.hasMoreTokens()) {
+				str[i] = tokenizer.nextToken();
+			} else {
+				str[i] = null;
+			}
+		}
+		return new HistoryFile(str[0],asType(str[2]),Integer.parseInt(str[1]));
 	}
 	
 	public static String asString(List historyFiles) {
@@ -133,9 +142,11 @@ public class PreferenceValueConverter {
 		buffer.append(logFile.getEncoding());
 		buffer.append(VALUE_DELIMITER);
 		buffer.append(logFile.getMonitor());
+		buffer.append(VALUE_DELIMITER);
+		buffer.append(logFile.getFileType().toString());
 		return buffer.toString();
 	}
-	
+
 	public static String asLogFileListString(List logFiles) {
 		Iterator it = logFiles.iterator();
 		StringBuffer buffer = new StringBuffer();
@@ -148,17 +159,32 @@ public class PreferenceValueConverter {
 	}
 	
 	public static LogFile asLogFile(String logFileStr) {
-		String str[] = new String[4];
+		String str[] = new String[5];
 		StringTokenizer tokenizer = new StringTokenizer(logFileStr,VALUE_DELIMITER);
-		for (int i=0;i<4;i++) {			
+		for (int i=0;i<5;i++) {			
 			if(tokenizer.hasMoreTokens()) {
 				str[i] = tokenizer.nextToken();
 			} else {
 				str[i] = null;
 			}
 		}
-		LogFile logFile = new LogFile(str[0], str[1], str[2], !("false".equals(str[3])));
+		LogFileType type = asType(str[4]);
+		LogFile logFile = new LogFile(type, str[0], str[1], str[2], !("false".equals(str[3])));
 		return logFile;
+	}
+
+	public static LogFileType asType(String logTypeStr) {
+		LogFileType type = LogFileType.LOGFILE_SYSTEM_FILE;
+		if (logTypeStr != null && !logTypeStr.isEmpty()) {
+			LogFileType[] types = LogFileType.values();
+			for (int i=0;i<types.length;i++) {
+				if (types[i].toString().equals(logTypeStr)) {
+					type = types[i];
+					break;
+				}
+			}
+		}
+		return type;
 	}
 
 	public static List asLogFileList(String logFileList) {
