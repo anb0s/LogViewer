@@ -18,7 +18,7 @@ package de.anbos.eclipse.logviewer.plugin;
 
 public interface ILogViewerConstants {
 
-	// TailFile settings -----------------------------------------------------------
+	// FileTail settings -----------------------------------------------------------
 	
 	public static final long TAIL_FILEOPEN_ERROR_WAIT		= 500;
 	

@@ -35,7 +35,7 @@ import org.eclipse.ui.part.PageBookView;
 
 import de.anbos.eclipse.logviewer.plugin.ConsolePageParticipant;
 
-public class TailConsole implements IDocumentListener {
+public class ConsoleTail implements IDocumentListener {
 
 	private String fullName;
 	private IFileChangedListener listener;
@@ -46,7 +46,7 @@ public class TailConsole implements IDocumentListener {
 
 	// Constructor -------------------------------------------------------------
 
-	public TailConsole(String myName, IFileChangedListener myListener) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
+	public ConsoleTail(String myName, IFileChangedListener myListener) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
 		fullName = myName;
 		listener = myListener;
 		findDocument(fullName);		
@@ -75,19 +75,7 @@ public class TailConsole implements IDocumentListener {
 	}
 
 	// Private -----------------------------------------------------------------
-/*
-	private TextConsole findTextConsole(String name) {
-		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
-		IConsoleManager conMan = conPlugin.getConsoleManager();
-		IConsole[] existing = conMan.getConsoles();
-		for (int i = 0; i < existing.length; i++) {
-			if (name.equals(existing[i].getName())) {
-				return (TextConsole) existing[i];
-			}
-		}
-		return null;
-	}
-*/
+
 	private IConsole findConsole(String name) {
 		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = conPlugin.getConsoleManager();

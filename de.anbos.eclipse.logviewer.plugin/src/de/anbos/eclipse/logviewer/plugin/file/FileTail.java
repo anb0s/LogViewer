@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
 package de.anbos.eclipse.logviewer.plugin.file;
 
 import java.io.FileNotFoundException;
@@ -16,22 +31,7 @@ import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 
-/*
- * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
-
-public class TailFile implements Runnable {
+public class FileTail implements Runnable {
 	
     // Constant ----------------------------------------------------------------
     
@@ -51,7 +51,7 @@ public class TailFile implements Runnable {
 	
 	// Constructor -------------------------------------------------------------
 	
-	public TailFile(String filePath, Charset charset, IFileChangedListener listener) {
+	public FileTail(String filePath, Charset charset, IFileChangedListener listener) {
         logger = LogViewerPlugin.getDefault().getLogger();
 		this.filePath = filePath;
 		this.listener = listener;
@@ -72,10 +72,10 @@ public class TailFile implements Runnable {
             tailThread.start();
         }
 	}
-	
+
 	public synchronized void run() {
 		isRunning = true;
-        RandomAccessFile file = null;
+		RandomAccessFile file = null;
 		try {
 			int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
 			file = openFile();
@@ -91,29 +91,31 @@ public class TailFile implements Runnable {
 				wait(readwait);
 			}
 		} catch(ThreadInterruptedException tie) {
-		    logger.logError(tie);
+			logger.logError(tie);
+			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{filePath}).toCharArray(),true);
 		} catch(MalformedInputException mie) { 
-		    logger.logError(mie);
-            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.encoding.error",new String[]{decoder.charset().displayName()}).toCharArray(),true);
+			logger.logError(mie);
+			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.encoding.error",new String[]{decoder.charset().displayName()}).toCharArray(),true);
 		} catch(IOException ioe) {
-		    logger.logError(ioe);
+			logger.logError(ioe);
 		} catch(InterruptedException ie) {
 			logger.logError(ie);
 		} finally {
-		    try {
-                if(file != null) {
-                    file.close();
-                }
-            } catch(Exception e) {
-                // ignore this
-            }
-        }
+			try {
+				if(file != null) {
+					file.close();
+				}
+			} catch(Exception e) {
+				// ignore this
+			}
+		}
 		isRunning = false;
 	}
-	
+
 	// Private -----------------------------------------------------------------
 	
 	private synchronized RandomAccessFile openFile() throws ThreadInterruptedException {
+		boolean firstExec = true;
 		while(isRunning) {
 			try {
 				RandomAccessFile file = new RandomAccessFile(filePath,"r"); //$NON-NLS-1$
@@ -121,15 +123,19 @@ public class TailFile implements Runnable {
 				return file;
 			} catch(FileNotFoundException fnfe) {
 				try {
+					if (firstExec) {
+						listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.warning",new String[]{filePath}).toCharArray(),true);
+						firstExec = false;
+					}
 					wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
 				} catch(InterruptedException ie) {
 					throw new ThreadInterruptedException(ie);
 				}
-			}		
+			}
 		}
 		throw new ThreadInterruptedException("no file found"); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * reads bytes from the currently open nio file input stream
 	 * @param channel
@@ -139,13 +145,13 @@ public class TailFile implements Runnable {
 		if(isFirstTimeRead) {
 			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{filePath}).toCharArray(),true);
 			synchronized (channel) {
-                 long startPosition = 0l;
-                 long size = channel.size();
-                 if(channel.size() > INITIAL_LOAD_SIZE) {
-                     startPosition = channel.size() - INITIAL_LOAD_SIZE;
-                     size = INITIAL_LOAD_SIZE;
-                 } 
-                 MappedByteBuffer mappedBuffer = channel.map(MapMode.READ_ONLY,startPosition,size);
+				long startPosition = 0l;
+				long size = channel.size();
+				if(channel.size() > INITIAL_LOAD_SIZE) {
+					startPosition = channel.size() - INITIAL_LOAD_SIZE;
+					size = INITIAL_LOAD_SIZE;
+				} 
+				MappedByteBuffer mappedBuffer = channel.map(MapMode.READ_ONLY,startPosition,size);
 				CharBuffer mappedChars = decoder.decode(mappedBuffer);
 				channel.position(channel.size());
 				listener.fileChanged(mappedChars.array(),true);

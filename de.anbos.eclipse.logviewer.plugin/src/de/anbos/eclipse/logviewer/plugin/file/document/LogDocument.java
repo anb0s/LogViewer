@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
 package de.anbos.eclipse.logviewer.plugin.file.document;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,21 +34,6 @@ import de.anbos.eclipse.logviewer.plugin.LogFile;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.file.BackgroundReader;
 import de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener;
-
-/*
- * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
 
 public class LogDocument extends AbstractDocument implements IFileChangedListener {
 	
@@ -68,7 +68,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	// Public ------------------------------------------------------------------
 	
 	/**
-	 * invoking that setter will cause the tail thread to stop and a new TailFile
+	 * invoking that setter will cause the tail thread to stop and a new FileTail
 	 * instance is created with the given charset.
 	 */
 	public void setEncoding(String encoding) {
@@ -114,7 +114,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	}
 	
 	/**
-	 * invoking that method will cause the tail thread to stop and a new TailFile
+	 * invoking that method will cause the tail thread to stop and a new FileTail
 	 * instance is create.
 	 */
 	public void synchronize() {
@@ -163,11 +163,11 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	}
 	
 	/**
-	 * if the monitor parameter is true and the current TailFile instance thread
+	 * if the monitor parameter is true and the current FileTail instance thread
 	 * is not running the Thread will be inovked and the tail begins to update
 	 * this document.
 	 * 
-	 * if the monitor parameter is false the TailFile instance thread is notified
+	 * if the monitor parameter is false the FileTail instance thread is notified
 	 * to stop at the next possbile exit point.
 	 * @param monitor
 	 */

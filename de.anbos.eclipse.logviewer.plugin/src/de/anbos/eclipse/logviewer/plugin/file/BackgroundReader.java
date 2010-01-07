@@ -24,8 +24,8 @@ import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 
 public class BackgroundReader {
 
-	private TailFile tailFile;
-	private TailConsole tailConsole;
+	private FileTail fileTail;
+	private ConsoleTail consoleTail;
 	private LogFileType type;
 	//private String name;
 	//private IFileChangedListener listener;
@@ -36,17 +36,17 @@ public class BackgroundReader {
 		//this.listener = listener;
 
 		if (type == LogFileType.LOGFILE_SYSTEM_FILE) {
-			tailFile = new TailFile(name,charset,listener);
+			fileTail = new FileTail(name,charset,listener);
 		} else if (type == LogFileType.LOGFILE_ECLIPSE_CONSOLE) {
-			tailConsole = new TailConsole(name,listener);
+			consoleTail = new ConsoleTail(name,listener);
 		}
 	}
 	
 	public void setMonitorStatus(boolean monitor) {
 		if (type == LogFileType.LOGFILE_SYSTEM_FILE) {
-			tailFile.setMonitorStatus(monitor);
+			fileTail.setMonitorStatus(monitor);
 		} else if (type == LogFileType.LOGFILE_ECLIPSE_CONSOLE) {
-			tailConsole.setMonitorStatus(monitor);
+			consoleTail.setMonitorStatus(monitor);
 		}
 	}
 }
