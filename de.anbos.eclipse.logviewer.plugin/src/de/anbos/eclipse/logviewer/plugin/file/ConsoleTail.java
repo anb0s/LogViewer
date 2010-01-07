@@ -15,8 +15,11 @@
 
 package de.anbos.eclipse.logviewer.plugin.file;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.FileNotFoundException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -32,51 +35,52 @@ import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.part.IPage;
 import org.eclipse.ui.part.PageBookView;
+import org.eclipse.ui.progress.UIJob;
 
 import de.anbos.eclipse.logviewer.plugin.ConsolePageParticipant;
+import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
+import de.anbos.eclipse.logviewer.plugin.Logger;
 
-public class ConsoleTail implements IDocumentListener {
+public class ConsoleTail implements IDocumentListener, Runnable {
 
+    private Logger logger;	
 	private String fullName;
 	private IFileChangedListener listener;
-	IDocument doc;
-
+	private IDocument doc;
+	private IConsole con;
+	private ITextViewer viewer;
 	private boolean isRunning;
 	private boolean isFirstTimeRead;
 
 	// Constructor -------------------------------------------------------------
 
-	public ConsoleTail(String myName, IFileChangedListener myListener) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
+	public ConsoleTail(String myName, IFileChangedListener myListener) {
+		logger = LogViewerPlugin.getDefault().getLogger();
 		fullName = myName;
 		listener = myListener;
-		findDocument(fullName);		
+		isRunning = false;
 		isFirstTimeRead = true;
+		doc = null;
 	}
 
 	// Public ------------------------------------------------------------------
 
 	public void setMonitorStatus(boolean monitor) {
-		if (isRunning == monitor) {
-			return;
-		}
-		isRunning = monitor;
-		if (isRunning) {
-			doc.addDocumentListener(this);
-			if (isFirstTimeRead) {
-				DocumentEvent event = new DocumentEvent();
-				event.fText = doc.get();
-				documentAboutToBeChanged(event);
-				documentChanged(event);
-			}
-		} else {
-			doc.removeDocumentListener(this);
-			isFirstTimeRead = true;
-		}
+        if(isRunning == monitor) {
+            return;
+        }
+        isRunning = monitor;
+        if(isRunning) {
+            Thread tailThread = new Thread(this);
+            tailThread.setDaemon(true);
+            tailThread.start();
+        }
 	}
-
+	
 	// Private -----------------------------------------------------------------
 
-	private IConsole findConsole(String name) {
+	private IConsole findConsole(String name) throws FileNotFoundException {
 		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = conPlugin.getConsoleManager();
 		IConsole[] existing = conMan.getConsoles();
@@ -85,9 +89,10 @@ public class ConsoleTail implements IDocumentListener {
 				return existing[i];
 			}
 		}
-		return null;
+		throw new FileNotFoundException("no console found");
 	}
 
+	/*
 	private IConsole createConsole(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		Class [] classParm = null;
 		Object [] objectParm = null;
@@ -100,40 +105,43 @@ public class ConsoleTail implements IDocumentListener {
 		//}
 		//return null;
 	}
-
-	private void findDocument(String fullName) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
-		doc = null;
-		String name = getName();
-		IConsole con = findConsole(name);
-		if (con == null) {
-			String className = getClassName();
-			con = createConsole(className);
-		}
-		// check and open
+	*/
+	
+	private IDocument getConsoleDocument() throws FileNotFoundException {
 		if (con != null) {
 			if(con instanceof TextConsole) {
-				doc = ((TextConsole)con).getDocument();
-			} else {
-				// Now open the view and console
-				IConsoleView view = null;
-				//try {
-					view = (IConsoleView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
-				//} catch (PartInitException e) {
-				//	e.printStackTrace();
-				//}
-				if (view != null) {
-					// show it 
-					view.display(con);
-			        IViewPart vp =(IViewPart)view;
-			        if (vp instanceof PageBookView) {
-			            IPage page = ((PageBookView) vp).getCurrentPage();
-			            ITextViewer viewer = ConsolePageParticipant.getViewer(page);
-			            if (viewer != null)
-			            	doc = viewer.getDocument();
-			        }
-				}
+				return ((TextConsole)con).getDocument();
+			} else {				
+				// Now open the view and console in UI-Thread
+				UIJob uiJob = new UIJob("Update UI") {
+					@Override
+				    public IStatus runInUIThread(IProgressMonitor monitor) {
+						IConsoleView view = null;
+						try {
+							view = (IConsoleView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
+						} catch (PartInitException e) {
+							e.printStackTrace();
+						}
+						if (view != null) {
+							// show it 
+							view.display(con);
+					        IViewPart vp =(IViewPart)view;
+					        if (vp instanceof PageBookView) {
+					            IPage page = ((PageBookView) vp).getCurrentPage();
+					            viewer = ConsolePageParticipant.getViewer(page);
+					            //if (viewer != null)
+					            //	return viewer.getDocument();
+					        }
+						}
+				        return Status.OK_STATUS;
+				    }
+				};
+				uiJob.schedule();
+	            if (viewer != null)
+	            	return viewer.getDocument();				
 			}
 		}
+		throw new FileNotFoundException("no document found");
 	}
 
 	public String getFullName() {
@@ -157,4 +165,72 @@ public class ConsoleTail implements IDocumentListener {
 		listener.fileChanged(event.getText().toCharArray(), isFirstTimeRead);
 		isFirstTimeRead = false;
 	}
+
+	public synchronized void run() {
+		isRunning = true;
+		try {
+			int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
+			doc = openConsole();
+			if(doc != null) {
+				doc.addDocumentListener(this);
+				if (isFirstTimeRead) {
+					listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{fullName}).toCharArray(),true);
+					DocumentEvent event = new DocumentEvent();
+					event.fText = doc.get();
+					documentAboutToBeChanged(event);
+					documentChanged(event);
+				}			
+			} else {
+				throw new ThreadInterruptedException("document was null"); //$NON-NLS-1$
+			}
+			while(isRunning) {
+				wait(readwait);
+			}
+		} catch(ThreadInterruptedException tie) {
+			logger.logError(tie);
+			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{fullName}).toCharArray(),true);
+		} catch(InterruptedException ie) {
+			logger.logError(ie);
+		} catch(NullPointerException npe) {
+			logger.logError(npe);
+			npe.printStackTrace();
+		} finally {
+			try {
+				if(doc != null) {
+					doc.removeDocumentListener(this);
+					isFirstTimeRead = true;					
+				}
+			} catch(Exception e) {
+				// ignore this
+			}
+		}
+		isRunning = false;
+	}
+	
+	private synchronized IDocument openConsole() throws ThreadInterruptedException {
+		IDocument myDoc = null;
+		boolean firstExec = true;
+		while(isRunning) {
+			try {
+				con = findConsole(getName());
+				if (con != null) {
+					myDoc = getConsoleDocument();
+				}
+				isFirstTimeRead = true;
+				return myDoc;
+			} catch(FileNotFoundException fnfe) {
+				try {
+					if (firstExec) {
+						listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.warning",new String[]{fullName}).toCharArray(),true);
+						firstExec = false;
+					}
+					wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
+				} catch(InterruptedException ie) {
+					throw new ThreadInterruptedException(ie);
+				}
+			}
+		}
+		throw new ThreadInterruptedException("no console found"); //$NON-NLS-1$
+	}
+	
 }

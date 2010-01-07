@@ -51,10 +51,10 @@ public class FileTail implements Runnable {
 	
 	// Constructor -------------------------------------------------------------
 	
-	public FileTail(String filePath, Charset charset, IFileChangedListener listener) {
+	public FileTail(String myFilePath, Charset charset, IFileChangedListener myListener) {
         logger = LogViewerPlugin.getDefault().getLogger();
-		this.filePath = filePath;
-		this.listener = listener;
+		filePath = myFilePath;
+		listener = myListener;
 		decoder = charset.newDecoder();
 		bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
 	}
