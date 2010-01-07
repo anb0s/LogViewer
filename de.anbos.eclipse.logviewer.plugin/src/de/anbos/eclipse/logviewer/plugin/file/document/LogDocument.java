@@ -1,5 +1,6 @@
 package de.anbos.eclipse.logviewer.plugin.file.document;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -11,6 +12,7 @@ import org.eclipse.jface.text.GapTextStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
 
 import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogFile;
@@ -47,7 +49,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	
 	// Constructor -------------------------------------------------------------
 	
-	public LogDocument(LogFile file, String encoding) {
+	public LogDocument(LogFile file, String encoding) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
 		super();
 		if (file.getEncoding() == null)
 			file.setEncoding(encoding);
@@ -74,7 +76,33 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		this.file.setEncoding(encoding);
 		this.encoding = encoding;
 		this.charset = Charset.forName(encoding);
-		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+		try {
+			reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PartInitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setMonitor(true);
 	}
 	
@@ -93,7 +121,33 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		setMonitor(false);
 		getStore().set("");
 		getTracker().set("");
-		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+		try {
+			reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PartInitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setMonitor(true);		
 	}
 

@@ -44,7 +44,7 @@ public class HistoryFile {
 	}
 
 	public String getFileName() {
-		return path.substring(path.lastIndexOf(System.getProperty("file.separator")) + 1,path.length());
+		return path.substring(path.lastIndexOf(System.getProperty("file.separator")) + 1);
 	}
 	
 	public String getName() {

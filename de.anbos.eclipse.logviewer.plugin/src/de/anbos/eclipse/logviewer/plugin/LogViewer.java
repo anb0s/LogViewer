@@ -349,18 +349,18 @@ public class LogViewer extends ViewPart {
     public boolean isAvailable() {
         return viewer != null && viewer.getControl() != null && !viewer.getControl().isDisposed();
     }
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.IWorkbenchPart#setFocus()
      */
     public void setFocus() {
         tabfolder.setFocus();
     }
-    
+
     public LogDocument getCurrentDocument() {
         return getSelectedTab().getDocument();
     }
-    
+
     public LogFileViewer getViewer() {
     	return viewer;
     }

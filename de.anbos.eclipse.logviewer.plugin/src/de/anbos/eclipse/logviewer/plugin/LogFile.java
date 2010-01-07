@@ -69,7 +69,7 @@ public class LogFile {
 
     public void setTabName(String tabName) {
         if (tabName == null || tabName.isEmpty()) {
-        	this.tabName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")) + 1,fileName.length());
+        	this.tabName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")) + 1);
         } else {
         	this.tabName = tabName;
         }

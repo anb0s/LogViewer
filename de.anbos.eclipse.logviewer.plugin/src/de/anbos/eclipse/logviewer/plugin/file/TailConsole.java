@@ -13,94 +13,155 @@
  * limitations under the License. 
  */
 
-
 package de.anbos.eclipse.logviewer.plugin.file;
+
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.TextConsole;
+import org.eclipse.ui.part.IPage;
+import org.eclipse.ui.part.PageBookView;
 
-//import org.eclipse.cdt.internal.ui.buildconsole.CBuildConsole;
-//import org.eclipse.cdt.ui.*;
+import de.anbos.eclipse.logviewer.plugin.ConsolePageParticipant;
 
 public class TailConsole implements IDocumentListener {
 
-	private String name;
+	private String fullName;
 	private IFileChangedListener listener;
-	//MessageConsole con;
-	TextConsole con;
 	IDocument doc;
-	
-	//private CharsetDecoder decoder;
+
 	private boolean isRunning;
 	private boolean isFirstTimeRead;
-	
+
 	// Constructor -------------------------------------------------------------
-	
-	public TailConsole(String name, IFileChangedListener listener) {
-		this.name = name;
-		this.listener = listener;
-		doc = findConsoleText(name).getDocument();
+
+	public TailConsole(String myName, IFileChangedListener myListener) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
+		fullName = myName;
+		listener = myListener;
+		findDocument(fullName);		
 		isFirstTimeRead = true;
 	}
-	
-	// Public ------------------------------------------------------------------
-	
-	public void setMonitorStatus(boolean monitor) {
-        if(isRunning == monitor) {
-            return;
-        }
-        isRunning = monitor;
-        if(isRunning) {
-        	doc.addDocumentListener(this);
-        	if (isFirstTimeRead) {
-        		DocumentEvent event = new DocumentEvent();
-        		event.fText = doc.get();
-        		documentAboutToBeChanged(event);
-        		documentChanged(event);
-        	}
-        		
-        } else {
-        	doc.removeDocumentListener(this);
-        	isFirstTimeRead = true;
-        }
-	}
-	
-	// Private -----------------------------------------------------------------
 
-	private TextConsole findConsoleText(String name) {
-		ConsolePlugin plugin = ConsolePlugin.getDefault();
-		IConsoleManager conMan = plugin.getConsoleManager();
+	// Public ------------------------------------------------------------------
+
+	public void setMonitorStatus(boolean monitor) {
+		if (isRunning == monitor) {
+			return;
+		}
+		isRunning = monitor;
+		if (isRunning) {
+			doc.addDocumentListener(this);
+			if (isFirstTimeRead) {
+				DocumentEvent event = new DocumentEvent();
+				event.fText = doc.get();
+				documentAboutToBeChanged(event);
+				documentChanged(event);
+			}
+		} else {
+			doc.removeDocumentListener(this);
+			isFirstTimeRead = true;
+		}
+	}
+
+	// Private -----------------------------------------------------------------
+/*
+	private TextConsole findTextConsole(String name) {
+		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
+		IConsoleManager conMan = conPlugin.getConsoleManager();
 		IConsole[] existing = conMan.getConsoles();
 		for (int i = 0; i < existing.length; i++) {
-		   if (name.equals(existing[i].getName()))
-		   {
-			   return (TextConsole)existing[i];		   
-		   }
+			if (name.equals(existing[i].getName())) {
+				return (TextConsole) existing[i];
+			}
+		}
+		return null;
+	}
+*/
+	private IConsole findConsole(String name) {
+		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
+		IConsoleManager conMan = conPlugin.getConsoleManager();
+		IConsole[] existing = conMan.getConsoles();
+		for (int i = 0; i < existing.length; i++) {
+			if (name.equals(existing[i].getName())) {
+				return existing[i];
+			}
 		}
 		return null;
 	}
 
-	private MessageConsole findConsole(String name) {
-		ConsolePlugin plugin = ConsolePlugin.getDefault();
-		IConsoleManager conMan = plugin.getConsoleManager();
-		IConsole[] existing = conMan.getConsoles();
-		for (int i = 0; i < existing.length; i++)
-		   if (name.equals(existing[i].getName()))
-		      return (MessageConsole) existing[i];
-		//no console found, so create a new one      
-		MessageConsole myConsole = new MessageConsole(name, null);
-		conMan.addConsoles(new IConsole[]{myConsole});
-		return myConsole;
-   }
-		//listener.fileChanged(chars.array(),false);
+	private IConsole createConsole(String className) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		Class [] classParm = null;
+		Object [] objectParm = null;
+		//try {
+			Class cl = Class.forName(className);
+			java.lang.reflect.Constructor co = cl.getConstructor(classParm);
+			return (IConsole)co.newInstance(objectParm);
+		//}
+		//catch (Exception e) {
+		//}
+		//return null;
+	}
 
-	public void documentAboutToBeChanged(DocumentEvent event) {		
+	private void findDocument(String fullName) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
+		doc = null;
+		String name = getName();
+		IConsole con = findConsole(name);
+		if (con == null) {
+			String className = getClassName();
+			con = createConsole(className);
+		}
+		// check and open
+		if (con != null) {
+			if(con instanceof TextConsole) {
+				doc = ((TextConsole)con).getDocument();
+			} else {
+				// Now open the view and console
+				IConsoleView view = null;
+				//try {
+					view = (IConsoleView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(IConsoleConstants.ID_CONSOLE_VIEW);
+				//} catch (PartInitException e) {
+				//	e.printStackTrace();
+				//}
+				if (view != null) {
+					// show it 
+					view.display(con);
+			        IViewPart vp =(IViewPart)view;
+			        if (vp instanceof PageBookView) {
+			            IPage page = ((PageBookView) vp).getCurrentPage();
+			            ITextViewer viewer = ConsolePageParticipant.getViewer(page);
+			            if (viewer != null)
+			            	doc = viewer.getDocument();
+			        }
+				}
+			}
+		}
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public String getName() {		
+		return fullName.substring(fullName.lastIndexOf(System.getProperty("file.separator")) + 1);
+	}
+
+	public String getClassName() {
+		int idx = fullName.indexOf(System.getProperty("file.separator"));
+		return idx != -1 ? fullName.substring(0, idx) : fullName;
+	}
+
+	public void documentAboutToBeChanged(DocumentEvent event) {
 		listener.contentAboutToBeChanged();
 	}
 

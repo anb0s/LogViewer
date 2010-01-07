@@ -5,7 +5,7 @@
       <category name="Log Viewer" id="logviewer"/>
       <view
             name="%logviewer.plugin.name"
-            icon="icons/logfileviewer.gif"
+            icon="icons/logviewer.gif"
             category="logviewer"
             class="de.anbos.eclipse.logviewer.plugin.LogViewer"
             id="de.anbos.eclipse.logviewer.plugin.LogViewer">
@@ -43,7 +43,7 @@
             id="de.anbos.eclipse.logviewer.plugin.actionset">
          <action
                class="de.anbos.eclipse.logviewer.plugin.action.FileOpenWorkbenchAction"
-               icon="icons/logfileviewer.gif"
+               icon="icons/logviewer.gif"
                id="de.anbos.eclipse.logviewer.plugin.action.fileopen"
                label="%logviewer.action.openfile.name"
                menubarPath="File/content"
@@ -61,7 +61,7 @@
          <action
                class="de.anbos.eclipse.logviewer.plugin.action.FileOpenAction"
                enablesFor="+"
-               icon="icons/logfileviewer.gif"
+               icon="icons/logviewer.gif"
                id="de.anbos.eclipse.logviewer.plugin.action.fileopen.menu"
                label="%logviewer.action.openwith.name"
                menubarPath="additions"
@@ -113,5 +113,16 @@
             </with>
          </activeWhen>
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="de.anbos.eclipse.logviewer.plugin.ConsolePageParticipant"
+            id="de.anbos.eclipse.logviewer.plugin.consolePageParticipant">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.ui.console.AbstractConsole">
+            </instanceof></enablement>
+      </consolePageParticipant>
    </extension>
 </plugin>

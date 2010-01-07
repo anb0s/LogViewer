@@ -15,7 +15,10 @@
 
 
 package de.anbos.eclipse.logviewer.plugin.file;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
+
+import org.eclipse.ui.PartInitException;
 
 import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 
@@ -27,7 +30,7 @@ public class BackgroundReader {
 	//private String name;
 	//private IFileChangedListener listener;
 
-	public BackgroundReader(LogFileType type, String name, Charset charset, IFileChangedListener listener) {
+	public BackgroundReader(LogFileType type, String name, Charset charset, IFileChangedListener listener) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
 		this.type = type;
 		//this.name = name;
 		//this.listener = listener;
