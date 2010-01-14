@@ -125,4 +125,12 @@
             </instanceof></enablement>
       </consolePageParticipant>
    </extension>
+   <extension
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            class="de.anbos.eclipse.logviewer.plugin.ConsoleFactory"
+            icon="icons/logviewer.gif"
+            label="%logviewer.plugin.console.name">
+      </consoleFactory>
+   </extension>
 </plugin>

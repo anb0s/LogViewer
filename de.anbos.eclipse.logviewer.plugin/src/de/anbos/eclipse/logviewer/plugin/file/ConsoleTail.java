@@ -77,9 +77,98 @@ public class ConsoleTail implements IDocumentListener, Runnable {
             tailThread.start();
         }
 	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public String getName() {		
+		return fullName.substring(fullName.lastIndexOf(System.getProperty("file.separator")) + 1);
+	}
+
+	public String getClassName() {
+		int idx = fullName.indexOf(System.getProperty("file.separator"));
+		return idx != -1 ? fullName.substring(0, idx) : fullName;
+	}
+
+	public void documentAboutToBeChanged(DocumentEvent event) {
+		listener.contentAboutToBeChanged();
+	}
+
+	public void documentChanged(DocumentEvent event) {
+		listener.fileChanged(event.getText().toCharArray(), isFirstTimeRead);
+		isFirstTimeRead = false;
+	}
 	
+	public synchronized void run() {
+		isRunning = true;
+		try {
+			int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
+			doc = openConsole();
+			if(doc != null) {
+				doc.addDocumentListener(this);
+				if (isFirstTimeRead) {
+					listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{fullName}).toCharArray(),true);
+					DocumentEvent event = new DocumentEvent();
+					event.fText = doc.get();
+					documentAboutToBeChanged(event);
+					documentChanged(event);
+				}			
+			} else {
+				throw new ThreadInterruptedException("document was null"); //$NON-NLS-1$
+			}
+			while(isRunning) {
+				wait(readwait);
+			}
+		} catch(ThreadInterruptedException tie) {
+			logger.logError(tie);
+			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{fullName}).toCharArray(),true);
+		} catch(InterruptedException ie) {
+			logger.logError(ie);
+		} catch(NullPointerException npe) {
+			logger.logError(npe);
+			npe.printStackTrace();
+		} finally {
+			try {
+				if(doc != null) {
+					doc.removeDocumentListener(this);
+					isFirstTimeRead = true;					
+				}
+			} catch(Exception e) {
+				// ignore this
+			}
+		}
+		isRunning = false;
+	}
+
 	// Private -----------------------------------------------------------------
 
+	private synchronized IDocument openConsole() throws ThreadInterruptedException {
+		IDocument myDoc = null;
+		boolean firstExec = true;
+		while(isRunning) {
+			try {
+				con = findConsole(getName());
+				if (con != null) {
+					myDoc = getConsoleDocument();
+				}
+				isFirstTimeRead = true;
+				return myDoc;
+			} catch(FileNotFoundException fnfe) {
+				try {
+					if (firstExec) {
+						listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.warning",new String[]{fullName}).toCharArray(),true);
+						firstExec = false;
+					}
+					wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
+				} catch(InterruptedException ie) {
+					throw new ThreadInterruptedException(ie);
+				}
+			}
+		}
+		throw new ThreadInterruptedException("no console found"); //$NON-NLS-1$
+	}
+	
 	private IConsole findConsole(String name) throws FileNotFoundException {
 		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = conPlugin.getConsoleManager();
@@ -143,94 +232,4 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 		}
 		throw new FileNotFoundException("no document found");
 	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public String getName() {		
-		return fullName.substring(fullName.lastIndexOf(System.getProperty("file.separator")) + 1);
-	}
-
-	public String getClassName() {
-		int idx = fullName.indexOf(System.getProperty("file.separator"));
-		return idx != -1 ? fullName.substring(0, idx) : fullName;
-	}
-
-	public void documentAboutToBeChanged(DocumentEvent event) {
-		listener.contentAboutToBeChanged();
-	}
-
-	public void documentChanged(DocumentEvent event) {
-		listener.fileChanged(event.getText().toCharArray(), isFirstTimeRead);
-		isFirstTimeRead = false;
-	}
-
-	public synchronized void run() {
-		isRunning = true;
-		try {
-			int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
-			doc = openConsole();
-			if(doc != null) {
-				doc.addDocumentListener(this);
-				if (isFirstTimeRead) {
-					listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{fullName}).toCharArray(),true);
-					DocumentEvent event = new DocumentEvent();
-					event.fText = doc.get();
-					documentAboutToBeChanged(event);
-					documentChanged(event);
-				}			
-			} else {
-				throw new ThreadInterruptedException("document was null"); //$NON-NLS-1$
-			}
-			while(isRunning) {
-				wait(readwait);
-			}
-		} catch(ThreadInterruptedException tie) {
-			logger.logError(tie);
-			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{fullName}).toCharArray(),true);
-		} catch(InterruptedException ie) {
-			logger.logError(ie);
-		} catch(NullPointerException npe) {
-			logger.logError(npe);
-			npe.printStackTrace();
-		} finally {
-			try {
-				if(doc != null) {
-					doc.removeDocumentListener(this);
-					isFirstTimeRead = true;					
-				}
-			} catch(Exception e) {
-				// ignore this
-			}
-		}
-		isRunning = false;
-	}
-	
-	private synchronized IDocument openConsole() throws ThreadInterruptedException {
-		IDocument myDoc = null;
-		boolean firstExec = true;
-		while(isRunning) {
-			try {
-				con = findConsole(getName());
-				if (con != null) {
-					myDoc = getConsoleDocument();
-				}
-				isFirstTimeRead = true;
-				return myDoc;
-			} catch(FileNotFoundException fnfe) {
-				try {
-					if (firstExec) {
-						listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.warning",new String[]{fullName}).toCharArray(),true);
-						firstExec = false;
-					}
-					wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
-				} catch(InterruptedException ie) {
-					throw new ThreadInterruptedException(ie);
-				}
-			}
-		}
-		throw new ThreadInterruptedException("no console found"); //$NON-NLS-1$
-	}
-	
 }

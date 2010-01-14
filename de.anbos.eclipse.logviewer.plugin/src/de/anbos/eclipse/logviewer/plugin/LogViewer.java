@@ -1,7 +1,9 @@
 package de.anbos.eclipse.logviewer.plugin;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -82,8 +84,7 @@ public class LogViewer extends ViewPart {
     private Logger logger;
     private Composite parent;
     
-    private MessageConsole console;
-    private MessageConsoleStream consoleStream;
+    private LogViewerConsole console;
 
     private boolean stopAfterChange = false;
     
@@ -112,9 +113,10 @@ public class LogViewer extends ViewPart {
     public LogViewer() {
         logger = LogViewerPlugin.getDefault().getLogger();
         logTab = new Hashtable();
-        createConsole();
+        console = null;
+        //createConsole();
     }
-    
+
     // Public ------------------------------------------------------------------
     
     
@@ -154,15 +156,11 @@ public class LogViewer extends ViewPart {
         contributeToActionBars();
         openAllLastOpenFiles();
     }
-    
-    public MessageConsole getConsole() {
-		return console;
-	}
 
 	public void closeCurrentLogFile() {
         try {
             LogFileTab tab = getSelectedTab();
-            getConsoleStream().println("Close Tab: " + tab.getKey() + "...");
+            //getConsoleStream().println("Close Tab: " + tab.getKey() + "...");
             tab.close();
             logTab.remove(tab.getKey());
         } catch(IOException e) {
@@ -250,7 +248,7 @@ public class LogViewer extends ViewPart {
     
     public void startTail() {
         try {
-            getConsoleStream().println("Start Tail...");        	
+            //getConsoleStream().println("Start Tail...");        	
         	getSelectedTab().getDocument().setMonitor(true);
         	getSelectedTab().getDocument().getFile().setMonitor(true);
             stopTailOnCurrentFile.setEnabled(true);
@@ -262,7 +260,7 @@ public class LogViewer extends ViewPart {
     
     public void stopTail() {
         try {
-            getConsoleStream().println("Stop Tail...");        	
+            //getConsoleStream().println("Stop Tail...");        	
         	getSelectedTab().getDocument().setMonitor(false);
         	getSelectedTab().getDocument().getFile().setMonitor(false);
             stopTailOnCurrentFile.setEnabled(false);
@@ -301,6 +299,8 @@ public class LogViewer extends ViewPart {
         String key = file.getFileName();
         if(!logTab.containsKey(key)) {
             try {
+            	if (file.getTabName().equals(LogViewerPlugin.getResourceString("logviewer.plugin.console.name")))
+            		createConsole();
             	String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
             	LogDocument document = new LogDocument(file,encoding);
                 TabItem item = new TabItem(tabfolder,0);
@@ -395,6 +395,25 @@ public class LogViewer extends ViewPart {
     	super.dispose();
     }
     
+    public MessageConsoleStream getConsoleStream() {
+        if (console == null)
+        	createConsole();
+		return console.getOutStream();
+	}
+
+    public MessageConsole getConsole() {
+        if (console == null)
+        	createConsole();
+		return console;
+	}    
+    
+    public void printDefaultMessage() {
+    	if (getConsole().getDocument().get().isEmpty()) {
+        	//getConsoleStream().println("Log Viewer started!");
+    		getConsoleStream().println("Paste messages into this console and check rules and filters in Log Viewer.");    	
+    	}
+    }
+    
     // Private -----------------------------------------------------------------
     
 	private void hookContextMenu() {
@@ -406,9 +425,9 @@ public class LogViewer extends ViewPart {
 			}
 		});
 
-		Menu menu = manager.createContextMenu(viewer.getControl());		
+		Menu menu = manager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		
+
 		getSite().registerContextMenu(manager,null);
 	}
     
@@ -559,28 +578,13 @@ public class LogViewer extends ViewPart {
     }
 	
     private void createConsole() {
-    	console = new MessageConsole("Log Viewer Console", null);
-    	console.activate();
+    	console = new LogViewerConsole(LogViewerPlugin.getResourceString("logviewer.plugin.console.name"), null);
+    	//console.activate();
     	ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });    	
-    	consoleStream = console.newMessageStream();
-    	consoleStream.println("Log Viewer started!");
-
-    	/*
-    	IConsole[] consoles = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-    	stream.println("Consoles:");
-    	for (int i=0;i<consoles.length;i++) {
-    		stream.println(consoles[i].getName());    		
-    	}
-    	*/
+    	printDefaultMessage();
     }
 
-
 	// Inner Class -------------------------------------------------------------
-	
-    public MessageConsoleStream getConsoleStream() {
-		return consoleStream;
-	}
-
 
 	private class ViewDocumentListener implements IDocumentListener {
 
