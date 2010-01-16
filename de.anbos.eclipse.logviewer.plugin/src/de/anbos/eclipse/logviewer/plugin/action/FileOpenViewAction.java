@@ -6,7 +6,7 @@ import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.UIImages;
-import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenActionDelegate;
+import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenViewActionDelegate;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -28,7 +28,7 @@ public class FileOpenViewAction extends AbstractViewAction {
 	// Constructor ------------------------------------------------------------------
 	
 	public FileOpenViewAction(LogViewer view, Shell shell) {
-		super(view,shell,new FileOpenActionDelegate());
+		super(view,shell,new FileOpenViewActionDelegate());
 	}
 	
 	// Public -----------------------------------------------------------------------

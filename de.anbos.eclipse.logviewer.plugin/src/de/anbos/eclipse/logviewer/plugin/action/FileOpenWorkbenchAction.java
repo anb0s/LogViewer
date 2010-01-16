@@ -1,6 +1,6 @@
 package de.anbos.eclipse.logviewer.plugin.action;
 
-import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenActionDelegate;
+import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenViewActionDelegate;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -22,6 +22,6 @@ public class FileOpenWorkbenchAction extends AbstractWorkbenchAction {
 	// Constructor ------------------------------------------------------------------
 	
 	public FileOpenWorkbenchAction() {
-		super(new FileOpenActionDelegate());
+		super(new FileOpenViewActionDelegate());
 	}
 }

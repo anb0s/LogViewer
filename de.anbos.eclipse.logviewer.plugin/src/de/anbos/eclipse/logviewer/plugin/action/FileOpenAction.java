@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 by Andre Bossert
+ * Copyright 2009 - 2010 by Andre Bossert
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,9 +16,6 @@
 package de.anbos.eclipse.logviewer.plugin.action;
 
 import java.io.File;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -30,6 +27,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import de.anbos.eclipse.logviewer.plugin.LogViewer;
+import de.anbos.eclipse.logviewer.plugin.ResourceUtils;
 import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 
 
@@ -91,7 +89,7 @@ public class FileOpenAction implements IObjectActionDelegate {
 	    currentSelection = selection instanceof IStructuredSelection ? (IStructuredSelection)selection : null;
 	}
 
-	protected boolean isEnabled()
+	public boolean isEnabled()
 	{
 		boolean enabled = false;
 		if (currentSelection != null)
@@ -101,8 +99,8 @@ public class FileOpenAction implements IObjectActionDelegate {
 			{
 				resource = new File[selectedObjects.length];
 				for (int i=0;i<selectedObjects.length;i++) {
-					resource[i] = getResource(selectedObjects[i]);
-					if (resource != null)
+					resource[i] = ResourceUtils.getResource(selectedObjects[i]);
+					if (resource[i] != null)
 						enabled=true;
 				}
 			}
@@ -110,57 +108,4 @@ public class FileOpenAction implements IObjectActionDelegate {
 		return enabled;
 	}
 
-	protected File getResource(Object object) {
-		if (object instanceof IFile) {
-			return ((IFile) object).getLocation().toFile();
-		}
-		if (object instanceof File) {
-			return (File) object;
-		}
-		if (object instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) object;
-			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
-			if (ifile != null) {
-				return ifile.getLocation().toFile();
-			}
-			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
-			if (ires != null) {
-				return ires.getLocation().toFile();
-			}
-			/*
-			if (adaptable instanceof PackageFragment
-					&& ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
-				return getJarFile(((PackageFragment) adaptable)
-						.getPackageFragmentRoot());
-			} else if (adaptable instanceof JarPackageFragmentRoot) {
-				return getJarFile(adaptable);
-			} else if (adaptable instanceof FileStoreEditorInput) {
-				URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
-				return new File(fileuri.getPath());
-			}
-			*/
-			File file = (File) adaptable.getAdapter(File.class);
-			if (file != null) {
-				return file;
-			}
-		}
-		return null;
-	}
-	/*
-	protected File getJarFile(IAdaptable adaptable) {
-		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
-		File resource = (File) jpfr.getPath().makeAbsolute().toFile();
-		if (!((File) resource).exists()) {
-			File projectFile =
-				new File(
-					jpfr
-						.getJavaProject()
-						.getProject()
-						.getLocation()
-						.toOSString());
-			resource = new File(projectFile.getParent() + resource.toString());
-		}
-		return resource;
-	}
-	*/
 }

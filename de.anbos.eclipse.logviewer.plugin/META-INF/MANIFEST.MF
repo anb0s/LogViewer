@@ -11,7 +11,8 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
- org.eclipse.ui.workbench.texteditor
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.core.expressions
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Andre Bossert
 Import-Package: org.eclipse.core.resources,

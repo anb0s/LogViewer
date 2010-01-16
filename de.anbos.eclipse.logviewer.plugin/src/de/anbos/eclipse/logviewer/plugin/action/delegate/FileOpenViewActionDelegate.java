@@ -32,7 +32,7 @@ import de.anbos.eclipse.logviewer.plugin.ui.LogFileTypeDialog;
  * 	BUG-ID 1681341: added support for multiple file selection and extension filters
  */
 
-public class FileOpenActionDelegate implements ILogViewerActionDelegate {
+public class FileOpenViewActionDelegate implements ILogViewerActionDelegate {
 
 	private String parentPath = null;
 	private boolean fileOpened = false;

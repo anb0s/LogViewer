@@ -50,7 +50,7 @@ import de.anbos.eclipse.logviewer.plugin.action.StartTailOnCurrentFileViewAction
 import de.anbos.eclipse.logviewer.plugin.action.StopTailOnAllFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StopTailOnCurrentFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.TabRenameAction;
-import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenActionDelegate;
+import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenViewActionDelegate;
 import de.anbos.eclipse.logviewer.plugin.file.document.LogDocument;
 import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
@@ -280,7 +280,7 @@ public class LogViewer extends ViewPart {
     public boolean checkAndOpenFile(LogFileType type, String fullPath, boolean fromAction) {
     	File file = new File(fullPath);
 		if (!fromAction && file.isDirectory()) {
-			FileOpenActionDelegate action = new FileOpenActionDelegate();
+			FileOpenViewActionDelegate action = new FileOpenViewActionDelegate();
 			action.setParentPath(fullPath);
 			action.run(this, getSite().getShell());
 			return action.isFileOpened();

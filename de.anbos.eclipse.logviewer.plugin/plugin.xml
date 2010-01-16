@@ -16,10 +16,11 @@
       <perspectiveExtension
             targetID="org.eclipse.ui.resourcePerspective">
          <view
+               id="de.anbos.eclipse.logviewer.plugin.LogViewer"
                ratio="0.5"
-               relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="de.anbos.eclipse.logviewer.plugin.LogViewer">
+               relative="org.eclipse.ui.views.TaskList"
+               visible="false">
          </view>
       </perspectiveExtension>
    </extension>
@@ -49,25 +50,9 @@
                menubarPath="File/content"
                style="push"
                toolbarPath="Normal/additions"
-               tooltip="Open the Log Viewer in the current workbench page"/>
-      </actionSet>
-   </extension>
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="false"
-            id="de.anbos.eclipse.logviewer.plugin.LogViewer.objectContribution1"
-            objectClass="org.eclipse.core.runtime.IAdaptable">
-         <action
-               class="de.anbos.eclipse.logviewer.plugin.action.FileOpenAction"
-               enablesFor="+"
-               icon="icons/logviewer.gif"
-               id="de.anbos.eclipse.logviewer.plugin.action.fileopen.menu"
-               label="%logviewer.action.openwith.name"
-               menubarPath="additions"
-               tooltip="Open the Log Viewer for selected files">
+               tooltip="Open the Log Viewer in the current workbench page">
          </action>
-      </objectContribution>
+      </actionSet>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -84,6 +69,25 @@
                disabledIcon="icons/passive/copy_passive.gif"
                icon="icons/active/copy_active.gif"
                style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <command
+               commandId="de.anbos.eclipse.logviewer.plugin.openwith"
+               icon="icons/logviewer.gif"
+               label="%logviewer.action.openwith.name"
+               tooltip="Open the Log Viewer for selected files">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        forcePluginActivation="true"
+                        property="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester.hasResourceSelection">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
@@ -113,6 +117,10 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="de.anbos.eclipse.logviewer.plugin.commands.OpenWith"
+            commandId="de.anbos.eclipse.logviewer.plugin.openwith">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.console.consolePageParticipants">
@@ -132,5 +140,22 @@
             icon="icons/logviewer.gif"
             label="%logviewer.plugin.console.name">
       </consoleFactory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="de.anbos.eclipse.logviewer.plugin.openwith"
+            name="%logviewer.action.openwith.name">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester"
+            id="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester"
+            namespace="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester"
+            properties="hasResourceSelection"
+            type="org.eclipse.ui.IWorkbenchPart">
+      </propertyTester>
    </extension>
 </plugin>
