@@ -2,15 +2,13 @@
 <feature
       id="de.anbos.eclipse.logviewer.feature"
       label="Eclipse Log Viewer Feature"
-      version="0.9.7"
+      version="0.9.8"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.logviewer.plugin">
 
    <description url="http://code.google.com/p/eclipselogviewer/">
-      The Eclipse Log Viewer is a non blocking IO stream reader that
-can tail any number of files.
-It allows to syntax color the log files with either a regular
-expression or a word match.
+      The Eclipse Log Viewer is a non blocking IO stream reader that can tail any number of files and eclipse consoles.
+It allows to syntax color the log files with either a regular expression or a word match.
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -55,7 +53,7 @@ and limitations under the License.
          id="de.anbos.eclipse.logviewer.plugin"
          download-size="0"
          install-size="0"
-         version="0.9.7"
+         version="0.9.8"
          unpack="false"/>
 
 </feature>
