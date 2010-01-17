@@ -13,18 +13,32 @@
  * limitations under the License. 
  */
 
+/*
+ * function getViewer() copied from AnyEditTools (Andrei Loskutov):
+ * de.loskutov.anyedit.ui.editor.EditorPropertyTester
+ */
+
 package de.anbos.eclipse.logviewer.plugin;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleView;
+import org.eclipse.ui.console.TextConsolePage;
+import org.eclipse.ui.part.IPage;
+import org.eclipse.ui.part.MessagePage;
+import org.eclipse.ui.part.PageBookView;
 
 public class ResourceUtils {
 
@@ -47,6 +61,65 @@ public class ResourceUtils {
     	return selection;
     }
 
+    static public ISelection getConsoleSelection(IWorkbenchPart part) {
+    	ISelection selection = null;
+    	
+    	IConsole con = getConsole(part);
+    	
+    	if (con != null)
+    		selection = new StructuredSelection(con);
+
+    	return selection;
+    }
+
+    public static IConsole getConsole(IWorkbenchPart part) {
+        if(!(part instanceof IViewPart)){
+            return null;
+        }
+
+        IViewPart vp =(IViewPart) part;
+        if (vp instanceof PageBookView) {
+            IPage page = ((PageBookView) vp).getCurrentPage();
+            ITextViewer viewer = getViewer(page);
+            if (viewer == null || viewer.getDocument() == null)
+            	return null;
+        }
+		
+        IConsole con = null;
+    	try {
+    		con = ((IConsoleView)part).getConsole();
+    	} catch (Exception e) {
+			
+		}
+
+		return con;
+    }
+
+    public static ITextViewer getViewer(IPage page) {
+        if(page == null){
+            return null;
+        }
+        if(page instanceof TextConsolePage) {
+            return ((TextConsolePage)page).getViewer();
+        }
+        if(page.getClass().equals(MessagePage.class)){
+            // empty page placeholder
+            return null;
+        }
+        try {
+            /*
+             * org.eclipse.cdt.internal.ui.buildconsole.BuildConsolePage does not
+             * extend TextConsolePage, so we get access to the viewer with dirty tricks
+             */
+            Method method = page.getClass().getDeclaredMethod("getViewer", null);
+            method.setAccessible(true);
+            return (ITextViewer) method.invoke(page, null);
+        } catch (Exception e) {
+            // AnyEditToolsPlugin.logError("Can't get page viewer from the console page", e);
+        }
+        return null;
+    }
+    
     static public File getResource(Object myObj) {
     	Object object = null;
     	

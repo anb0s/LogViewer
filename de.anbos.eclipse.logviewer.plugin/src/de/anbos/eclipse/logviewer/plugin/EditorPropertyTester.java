@@ -19,6 +19,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.anbos.eclipse.logviewer.plugin.action.ConsoleOpenAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileOpenAction;
 
 public class EditorPropertyTester extends PropertyTester {
@@ -31,13 +32,27 @@ public class EditorPropertyTester extends PropertyTester {
         if("hasResourceSelection".equals(property) && receiver instanceof IWorkbenchPart){
             return hasResourceSelection((IWorkbenchPart)receiver) != null;
         }
+        if("hasAbstractConsole".equals(property) && receiver instanceof IWorkbenchPart){
+            return hasAbstractConsole((IWorkbenchPart)receiver) != null;
+        }        
 		return false;
 	}
-	
+
     static public FileOpenAction hasResourceSelection(IWorkbenchPart part) {
 		ISelection selection = ResourceUtils.getResourceSelection(part);
 		if (selection != null) {
 			FileOpenAction action = new FileOpenAction();
+			action.selectionChanged(null, selection);
+			if (action.isEnabled())
+				return action;
+		}
+    	return null;
+    }
+
+    static public ConsoleOpenAction hasAbstractConsole(IWorkbenchPart part) {
+		ISelection selection = ResourceUtils.getConsoleSelection(part);
+		if (selection != null) {
+			ConsoleOpenAction action = new ConsoleOpenAction();
 			action.selectionChanged(null, selection);
 			if (action.isEnabled())
 				return action;

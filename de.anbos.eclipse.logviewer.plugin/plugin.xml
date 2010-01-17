@@ -73,22 +73,37 @@
       </menuContribution>
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <separator
+               name="de.anbos.eclipse.logviewer.plugin.separator2"
+               visible="true">
+         </separator>
          <command
                commandId="de.anbos.eclipse.logviewer.plugin.openwith"
                icon="icons/logviewer.gif"
+               id="de.anbos.eclipse.logviewer.additions"
                label="%logviewer.action.openwith.name"
                tooltip="Open the Log Viewer for selected files">
             <visibleWhen
                   checkEnabled="false">
                <with
                      variable="activePart">
-                  <test
-                        forcePluginActivation="true"
-                        property="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester.hasResourceSelection">
-                  </test>
+                  <or>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester.hasResourceSelection">
+                     </test>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester.hasAbstractConsole">
+                     </test>
+                  </or>
                </with>
             </visibleWhen>
          </command>
+         <separator
+               name="de.anbos.eclipse.logviewer.plugin.separator1"
+               visible="true">
+         </separator>
       </menuContribution>
    </extension>
    <extension
@@ -154,7 +169,7 @@
             class="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester"
             id="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester"
             namespace="de.anbos.eclipse.logviewer.plugin.EditorPropertyTester"
-            properties="hasResourceSelection"
+            properties="hasResourceSelection,hasAbstractConsole"
             type="org.eclipse.ui.IWorkbenchPart">
       </propertyTester>
    </extension>

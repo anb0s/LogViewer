@@ -59,8 +59,10 @@ public class FileOpenViewActionDelegate implements ILogViewerActionDelegate {
 		
 		// log file type
 		String typeStr = null;
-		String conStr = "Console: ";
 		type = LogFileType.LOGFILE_SYSTEM_FILE;
+
+		/*
+		String conStr = "Console: ";
 	    LogFileTypeDialog typeDialog = new LogFileTypeDialog(shell);
 	    typeDialog.setBlockOnOpen(true);
 		int retval = typeDialog.open();
@@ -73,6 +75,7 @@ public class FileOpenViewActionDelegate implements ILogViewerActionDelegate {
 		} else {
 			return;
 		}
+		*/
 
 		if (type == LogFileType.LOGFILE_SYSTEM_FILE) {		
 			// opening file(s) in log view

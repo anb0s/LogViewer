@@ -19,11 +19,11 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.logviewer.plugin.EditorPropertyTester;
-import de.anbos.eclipse.logviewer.plugin.action.FileOpenAction;
 
 public class OpenWith implements IHandler {
 	
@@ -37,7 +37,10 @@ public class OpenWith implements IHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
-		FileOpenAction action = EditorPropertyTester.hasResourceSelection(part);
+		IObjectActionDelegate action = EditorPropertyTester.hasResourceSelection(part);
+		if (action == null) {
+			action = EditorPropertyTester.hasAbstractConsole(part);
+		}
 		if (action != null)
 			action.run(null);
 		return null;

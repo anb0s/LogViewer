@@ -37,10 +37,10 @@ import org.eclipse.ui.part.IPage;
 import org.eclipse.ui.part.PageBookView;
 import org.eclipse.ui.progress.UIJob;
 
-import de.anbos.eclipse.logviewer.plugin.ConsolePageParticipant;
 import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
+import de.anbos.eclipse.logviewer.plugin.ResourceUtils;
 
 public class ConsoleTail implements IDocumentListener, Runnable {
 
@@ -217,7 +217,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 					        IViewPart vp =(IViewPart)view;
 					        if (vp instanceof PageBookView) {
 					            IPage page = ((PageBookView) vp).getCurrentPage();
-					            viewer = ConsolePageParticipant.getViewer(page);
+					            viewer = ResourceUtils.getViewer(page);
 					            //if (viewer != null)
 					            //	return viewer.getDocument();
 					        }
