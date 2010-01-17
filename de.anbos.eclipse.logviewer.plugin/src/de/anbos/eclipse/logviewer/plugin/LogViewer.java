@@ -1,9 +1,7 @@
 package de.anbos.eclipse.logviewer.plugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -59,8 +57,8 @@ import de.anbos.eclipse.logviewer.plugin.viewer.LogFileViewer;
 
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.console.IOConsole;
+import org.eclipse.ui.console.IOConsoleOutputStream;
 
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
@@ -395,22 +393,27 @@ public class LogViewer extends ViewPart {
     	super.dispose();
     }
     
-    public MessageConsoleStream getConsoleStream() {
+    public IOConsoleOutputStream getConsoleStream() {
         if (console == null)
         	createConsole();
 		return console.getOutStream();
 	}
 
-    public MessageConsole getConsole() {
+    public IOConsole getConsole() {
         if (console == null)
         	createConsole();
 		return console;
-	}    
-    
+	}
+
     public void printDefaultMessage() {
     	if (getConsole().getDocument().get().isEmpty()) {
         	//getConsoleStream().println("Log Viewer started!");
-    		getConsoleStream().println("Paste messages into this console and check rules and filters in Log Viewer.");    	
+    		try {
+				getConsoleStream().write("Paste messages into this console and check rules and filters in Log Viewer.\n");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     }
     
@@ -580,6 +583,7 @@ public class LogViewer extends ViewPart {
     private void createConsole() {
     	console = new LogViewerConsole(LogViewerPlugin.getResourceString("logviewer.plugin.console.name"), null);
     	//console.activate();
+    	//console.setMonitorStatus(true);
     	ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });    	
     	printDefaultMessage();
     }
