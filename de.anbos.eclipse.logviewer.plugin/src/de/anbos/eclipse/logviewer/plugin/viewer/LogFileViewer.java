@@ -11,6 +11,7 @@ import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -40,7 +41,7 @@ public class LogFileViewer {
 
 	// Attribute ---------------------------------------------------------------
 	
-	private TextViewer viewer;
+	private TextViewer txtViewer;
 	
 	private IDocument document;
 	
@@ -53,12 +54,12 @@ public class LogFileViewer {
 	
 	public LogFileViewer(Composite parent,int style) {
 		store = LogViewerPlugin.getDefault().getPreferenceStore();
-		viewer = new SourceViewer(parent,null,style);
+		txtViewer = new SourceViewer(parent,null,style);
 		FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE);
 		if(fontData == null) {
 			fontData = JFaceResources.getDefaultFont().getFontData();
 		}
-		viewer.getTextWidget().setFont(new Font(Display.getCurrent(),fontData));
+		txtViewer.getTextWidget().setFont(new Font(Display.getCurrent(),fontData));
 		store.addPropertyChangeListener(new PropertyChangeListener());
 		createCursorLinePainter();
 		createAndInstallPresentationReconciler();
@@ -68,7 +69,7 @@ public class LogFileViewer {
 	
 	public void setDocument(IDocument document) {
 		this.document = document;
-		viewer.setDocument(document);
+		txtViewer.setDocument(document);
 	}
 	
 	public IDocument getDocument() {
@@ -76,20 +77,36 @@ public class LogFileViewer {
 	}
 	
 	public TextViewer getActualViewer() {
-		return viewer;
+		return txtViewer;
 	}
 	
 	public Control getControl() {
-		return viewer.getControl();
+		return txtViewer.getControl();
 	}
 	
+	public ISelection getSelection() {
+		return txtViewer.getSelection();
+	}
+
+	public int getTopIndex() {
+		return txtViewer.getTopIndex();
+	}
+
+	public void setSelection(ISelection sel) {
+		txtViewer.setSelection(sel);
+	}
+
+	public void setTopIndex(int index) {
+		txtViewer.setTopIndex(index);
+	}
+
 	// Private -----------------------------------------------------------------
 	
 	private void createCursorLinePainter() {
-		cursorLinePainter = new CursorLinePainter(viewer);
+		cursorLinePainter = new CursorLinePainter(txtViewer);
 		Color color = new Color(Display.getCurrent(),PreferenceConverter.getColor(store,ILogViewerConstants.PREF_CURSORLINE_COLOR));
 		cursorLinePainter.setHighlightColor(color);
-		ITextViewerExtension2 extension = (ITextViewerExtension2)viewer;
+		ITextViewerExtension2 extension = (ITextViewerExtension2)txtViewer;
 		extension.addPainter(cursorLinePainter);
 	}
 	
@@ -98,7 +115,7 @@ public class LogFileViewer {
 		DamageRepairer dr = new DamageRepairer(new DynamicRuleBasedScanner(LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_COLORING_ITEMS)));
 		presentationReconciler.setDamager(dr,IDocument.DEFAULT_CONTENT_TYPE);
 		presentationReconciler.setRepairer(dr,IDocument.DEFAULT_CONTENT_TYPE);
-		presentationReconciler.install(viewer);
+		presentationReconciler.install(txtViewer);
 	}
 
 	// Inner classes ----------------------------------------------------------------
@@ -115,7 +132,7 @@ public class LogFileViewer {
 			}
 			if(event.getProperty().equals(ILogViewerConstants.PREF_EDITOR_FONT_STYLE)) {
 				FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE);
-				viewer.getTextWidget().setFont(new Font(Display.getCurrent(),fontData));
+				txtViewer.getTextWidget().setFont(new Font(Display.getCurrent(),fontData));
 			}
 		}
 	}

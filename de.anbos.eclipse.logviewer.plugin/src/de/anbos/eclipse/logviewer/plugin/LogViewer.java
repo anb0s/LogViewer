@@ -16,6 +16,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.IFindReplaceTarget;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -90,6 +91,7 @@ public class LogViewer extends ViewPart {
     private LogFileViewer viewer;
     
     private Map logTab;
+    private TabItem oldTabItem;
     
     private ViewDocumentListener documentListener;
     
@@ -111,8 +113,8 @@ public class LogViewer extends ViewPart {
     public LogViewer() {
         logger = LogViewerPlugin.getDefault().getLogger();
         logTab = new Hashtable();
+        oldTabItem = null;
         console = null;
-        //createConsole();
     }
 
     // Public ------------------------------------------------------------------
@@ -329,8 +331,9 @@ public class LogViewer extends ViewPart {
         // show active document
         LogFileTab tab = (LogFileTab)logTab.get(key);
         try {
-            showDocument(tab.getDocument(),true);
+            showDocument(tab.getDocument(),null,0,true);
         	tabfolder.setSelection(new TabItem[] {tab.getItem()});
+        	oldTabItem = tab.getItem();
         	// send event to refresh encoding
         	Event event = new Event();
     		event.item = tab.getItem();
@@ -489,11 +492,16 @@ public class LogViewer extends ViewPart {
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
-    protected void showDocument(LogDocument document, boolean monitor) {
+    protected void showDocument(LogDocument document, ISelection sel, int index, boolean monitor) {
         viewer.setDocument(document);
-        viewer.getActualViewer().setTopIndex(document.getNumberOfLines());
+        if (monitor) {
+            viewer.getActualViewer().setTopIndex(document.getNumberOfLines());        	
+        } else {
+        	viewer.setSelection(sel);
+        	viewer.setTopIndex(index);
+        }
 	}
-	
+
     private LogFileTab getSelectedTab(TabItem item) {
         if(item != null) {
             for(Iterator iter = logTab.values().iterator(); iter.hasNext();) {
@@ -503,9 +511,9 @@ public class LogViewer extends ViewPart {
                 }
             }        	
         }
-        return null;       	
+        return null;
     }
-    
+
     private LogFileTab getSelectedTab() {
         TabItem item = getSelectedItem();
         return getSelectedTab(item);
@@ -629,15 +637,27 @@ public class LogViewer extends ViewPart {
 			if(item == null) {
 				return;
 			}
-			LogFileTab tab = getSelectedTab(item);
+			// get new
+			LogFileTab tab = getSelectedTab(item);			
 			if(tab == null || tab.getDocument() == null) {
 				return;
 			}
+			// save old selection
+			if (oldTabItem != null) {
+				LogFileTab oldTab = getSelectedTab(oldTabItem);
+				if((oldTab != null) && (oldTab.getDocument() != null)) {
+					oldTab.setSelection(viewer.getSelection());
+					oldTab.setTopIndex(viewer.getTopIndex());
+				}
+			}
+			// restore
 			fileEncodingAction.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] {tab.getDocument().getEncoding()})); //$NON-NLS-1$
-			showDocument(tab.getDocument(),false);
+			showDocument(tab.getDocument(),tab.getSelection(),tab.getTopIndex(),false);
 			startTailOnCurrentFile.setEnabled(!tab.getDocument().isMonitor());
 			stopTailOnCurrentFile.setEnabled(tab.getDocument().isMonitor());
 			refreshCurrentFileAction.setEnabled(true);
+			// set act tab item
+			oldTabItem = item;
 		}
     }
 }

@@ -2,6 +2,7 @@ package de.anbos.eclipse.logviewer.plugin;
 
 import java.io.IOException;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.TabItem;
 
 import de.anbos.eclipse.logviewer.plugin.file.document.LogDocument;
@@ -27,7 +28,9 @@ public class LogFileTab {
     
     private String key;
     private TabItem item;
-    private LogDocument document; 
+    private LogDocument document;
+    private ISelection selection;
+    private int topIndex;
     
     // Constructor -------------------------------------------------------------
     
@@ -35,6 +38,8 @@ public class LogFileTab {
         this.key = key;
         this.item = item;
         this.document = document;
+        this.selection = null;
+        this.topIndex = 0;
     }
     
     // Public ------------------------------------------------------------------
@@ -54,4 +59,21 @@ public class LogFileTab {
     public LogDocument getDocument() {
         return document;
     }
+
+	public ISelection getSelection() {
+		return selection;
+	}
+
+	public int getTopIndex() {
+		return topIndex;
+	}
+
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+	}
+
+	public void setTopIndex(int topIndex) {
+		this.topIndex = topIndex;
+	}
+    
 }
