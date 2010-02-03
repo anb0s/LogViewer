@@ -113,6 +113,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	protected void performDefaults() {
 		backlogEditor.loadDefault();
 		bufferEditor.loadDefault();
+		readWaitEditor.loadDefault();
 		encodingComboEditor.loadDefault();
 		colorFieldEditor.loadDefault();
 		fontTypeEditor.loadDefault();
@@ -127,6 +128,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	public boolean performOk() {
 		backlogEditor.store();		
 		bufferEditor.store();
+		readWaitEditor.store();
 		encodingComboEditor.store();
 		colorFieldEditor.store();
 		fontTypeEditor.store();
@@ -136,11 +138,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	// Private -----------------------------------------------------------------
 	
 	private void createBacklogField(Composite composite) {
-		
-		
-		
 		backlogEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_BACKLOG,LogViewerPlugin.getResourceString("preferences.backlog.label.text"),composite); //$NON-NLS-1$
-
 		backlogEditor.setPreferenceStore(doGetPreferenceStore());
 		backlogEditor.setPage(this);
 		backlogEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_BACKLOG).length());
@@ -152,9 +150,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	}
 	
 	private void createReadBufferField(Composite composite) {
-		
 		bufferEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_BUFFER,LogViewerPlugin.getResourceString("preferences.buffer.label.text"),composite); //$NON-NLS-1$
-
 		bufferEditor.setPreferenceStore(doGetPreferenceStore());
 		bufferEditor.setPage(this);
 		bufferEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_TAIL_BUFFER_SIZE).length());
@@ -166,14 +162,13 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	}
 	
 	private void createReadWaitField(Composite composite) {
-		readWaitEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_READWAIT,LogViewerPlugin.getResourceString("preferences.readwait.label.text"),composite); //$NON-NLS-1$
-		
+		readWaitEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_READWAIT,LogViewerPlugin.getResourceString("preferences.readwait.label.text"),composite); //$NON-NLS-1$		
 		readWaitEditor.setPreferenceStore(doGetPreferenceStore());
 		readWaitEditor.setPage(this);
 		readWaitEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_READWAIT_SIZE).length());
 		readWaitEditor.setErrorMessage(LogViewerPlugin.getResourceString("preferences.readwait.label.errortext",new Object[]{new Integer(ILogViewerConstants.MAX_READWAIT_SIZE)})); //$NON-NLS-1$
 		readWaitEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
-		readWaitEditor.setValidRange(0,ILogViewerConstants.MAX_TAIL_BUFFER_SIZE);
+		readWaitEditor.setValidRange(0,ILogViewerConstants.MAX_READWAIT_SIZE);
 		readWaitEditor.load();
 		readWaitEditor.setPropertyChangeListener(validityChangeListener);		
 	}
@@ -184,7 +179,10 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 			setValid(false);
 		} else if (!bufferEditor.isValid()) {
 			setErrorMessage(bufferEditor.getErrorMessage());
-			setValid(false);			
+			setValid(false);
+		} else if (!readWaitEditor.isValid()) {
+			setErrorMessage(readWaitEditor.getErrorMessage());
+			setValid(false);
 		} else {
 			setValid(true);
 		}
