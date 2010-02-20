@@ -29,14 +29,17 @@ public class RuleFactory {
 	// Public ------------------------------------------------------------------
 	
 	public static ILogFileToolRule getRule(String ruleName, LogToolRuleDesc ruleDesc) {
-		if(isWordRule(ruleName)) {
-			return getWordRule(ruleDesc);
-		}
-		if(isJakartaRegExpRule(ruleName)) {
-			return getJakartaRegExpRule(ruleDesc);
-		}
-		if(isJavaRegExpRule(ruleName)) {
-			return getJavaRegExpRule(ruleDesc);
+		if (ruleDesc.isEnabled())
+		{
+			if(isWordRule(ruleName)) {
+				return getWordRule(ruleDesc);
+			}
+			if(isJakartaRegExpRule(ruleName)) {
+				return getJakartaRegExpRule(ruleDesc);
+			}
+			if(isJavaRegExpRule(ruleName)) {
+				return getJavaRegExpRule(ruleDesc);
+			}
 		}
 		return null;
 	}

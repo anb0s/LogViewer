@@ -256,7 +256,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
 		 */
 		public void propertyChange(PropertyChangeEvent event) {
-			if(event.getProperty().equals(ILogViewerConstants.PREF_CURSORLINE_COLOR)) {
+			if(event.getProperty().equals(ILogViewerConstants.PREF_BACKLOG)) {
 				backlogLines = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BACKLOG);
 			}
 		}
