@@ -33,7 +33,7 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 	private RE regexp;
 	private Token successToken;
 	private int priority;
-	
+
 	// Constructor -------------------------------------------------------------
 	
 	public JakartaRegExpRule(LogToolRuleDesc ruleDesc) {
@@ -43,7 +43,7 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 			flags = org.apache.regexp.RE.MATCH_CASEINDEPENDENT;
 		regexp.setMatchFlags(flags);
 		priority = ruleDesc.getPriority();
-		successToken = new Token(new TokenData(new TextAttribute(new Color(Display.getDefault(),ruleDesc.getForegroundColor()),new Color(Display.getDefault(),ruleDesc.getBackgroundColor()),SWT.NORMAL),priority));
+		successToken = new Token(new TokenData(TextAttributeFactory.getTextAttribute(ruleDesc),priority));
 	}
 
 	// Static ------------------------------------------------------------------

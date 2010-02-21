@@ -25,7 +25,7 @@ public class RuleFactory {
 		LogViewerPlugin.getResourceString(JakartaRegExpRule.class.getName()),
 		LogViewerPlugin.getResourceString(JavaRegExpRule.class.getName())
 	};
-	
+
 	// Public ------------------------------------------------------------------
 	
 	public static ILogFileToolRule getRule(String ruleName, LogToolRuleDesc ruleDesc) {

@@ -12,6 +12,7 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -54,6 +55,8 @@ public class LogFileViewer {
 	
 	public LogFileViewer(Composite parent,int style) {
 		store = LogViewerPlugin.getDefault().getPreferenceStore();
+		if (store.getBoolean(ILogViewerConstants.PREF_WORD_WRAP))
+			style |= SWT.WRAP;
 		txtViewer = new SourceViewer(parent,null,style);
 		FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE);
 		if(fontData == null) {
@@ -112,7 +115,7 @@ public class LogFileViewer {
 	
 	private void createAndInstallPresentationReconciler() {
 		presentationReconciler = new PresentationReconciler();
-		DamageRepairer dr = new DamageRepairer(new DynamicRuleBasedScanner(LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_COLORING_ITEMS)));
+		DamageRepairer dr = new DamageRepairer(new DynamicRuleBasedScanner(store.getString(ILogViewerConstants.PREF_COLORING_ITEMS)));
 		presentationReconciler.setDamager(dr,IDocument.DEFAULT_CONTENT_TYPE);
 		presentationReconciler.setRepairer(dr,IDocument.DEFAULT_CONTENT_TYPE);
 		presentationReconciler.install(txtViewer);
@@ -133,6 +136,10 @@ public class LogFileViewer {
 			if(event.getProperty().equals(ILogViewerConstants.PREF_EDITOR_FONT_STYLE)) {
 				FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE);
 				txtViewer.getTextWidget().setFont(new Font(Display.getCurrent(),fontData));
+			}
+			if(event.getProperty().equals(ILogViewerConstants.PREF_WORD_WRAP)) {
+				boolean wordWrap = store.getBoolean(ILogViewerConstants.PREF_WORD_WRAP);
+				txtViewer.getTextWidget().setWordWrap(wordWrap);
 			}
 		}
 	}

@@ -83,4 +83,9 @@ public interface ILogViewerConstants {
 	/* defines the maximum amount of files in the drop down history */
 	public static final int		MAX_FILES_IN_HISTORY		= 10;
 	public static final String 	PREF_HISTORY_FILES			= "HISTORY_FILES"; //$NON-NLS-1$
+	
+	/* word wrap */
+	public static boolean DEAFULT_WORD_WRAP                 = false;
+	public static final String	PREF_WORD_WRAP				= "WORD_WRAP"; //$NON-NLS-1$
+	
 }

@@ -195,7 +195,7 @@ public class RuleDialog extends StatusDialog {
     }
 
     // Private ----------------------------------------------------------------------
-    
+
     private void createEnabledCheckBox(Composite parent) {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);

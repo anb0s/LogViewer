@@ -130,7 +130,8 @@ public class LogViewer extends ViewPart {
         tabfolder = new TabFolder(parent,0);
         tabfolder.addSelectionListener(new TabSelectionListener());
         viewer = new LogFileViewer(tabfolder,SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-        
+        //viewer
+
         // DnD
     	DropTarget target = new DropTarget(parent, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
     	target.setTransfer(new Transfer[] {FileTransfer.getInstance(), TextTransfer.getInstance()});

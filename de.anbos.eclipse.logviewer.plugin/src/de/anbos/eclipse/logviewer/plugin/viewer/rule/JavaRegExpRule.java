@@ -45,7 +45,7 @@ public class JavaRegExpRule implements IPredicateRule, ILogFileToolRule {
 			find = true;
 		regexp = Pattern.compile(ruleDesc.getRuleValue(),flags);
 		priority = ruleDesc.getPriority();
-		successToken = new Token(new TokenData(new TextAttribute(new Color(Display.getDefault(),ruleDesc.getForegroundColor()),new Color(Display.getDefault(),ruleDesc.getBackgroundColor()),SWT.NORMAL),priority));
+		successToken = new Token(new TokenData(TextAttributeFactory.getTextAttribute(ruleDesc),priority));
 	}
 	
 	// Static ------------------------------------------------------------------

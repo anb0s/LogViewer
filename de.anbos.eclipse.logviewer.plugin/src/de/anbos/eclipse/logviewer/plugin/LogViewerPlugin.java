@@ -157,8 +157,9 @@ public class LogViewerPlugin extends AbstractUIPlugin {
 		store.setDefault(ILogViewerConstants.PREF_BACKLOG,ILogViewerConstants.DEFAULT_BACKLOG);
 		store.setDefault(ILogViewerConstants.PREF_BUFFER,ILogViewerConstants.DEFAULT_BUFFER_CAPACITY);
 		store.setDefault(ILogViewerConstants.PREF_READWAIT,ILogViewerConstants.DEFAULT_READWAIT_SIZE);
-		store.setDefault(ILogViewerConstants.PREF_ENCODING,System.getProperty("file.encoding")); //$NON-NLS-1$
-		PreferenceConverter.setValue(store,ILogViewerConstants.PREF_CURSORLINE_COLOR,new RGB(233,233,235));
+		store.setDefault(ILogViewerConstants.PREF_ENCODING,System.getProperty("file.encoding"));
+		store.setDefault(ILogViewerConstants.PREF_WORD_WRAP,ILogViewerConstants.DEAFULT_WORD_WRAP);
+		PreferenceConverter.setDefault(store,ILogViewerConstants.PREF_CURSORLINE_COLOR,new RGB(192,192,192));
 		PreferenceConverter.setDefault(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE,JFaceResources.getDefaultFont().getFontData());
 	}
 }

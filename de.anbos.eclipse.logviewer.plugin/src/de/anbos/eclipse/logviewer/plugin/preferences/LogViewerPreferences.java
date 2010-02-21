@@ -10,11 +10,14 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+//import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -50,6 +53,8 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	private EncodingComboEditor encodingComboEditor;
 	private ColorFieldEditor colorFieldEditor;
 	private FontFieldEditor fontTypeEditor;
+
+    private Button wordWrap;	
 	
 	// Public ------------------------------------------------------------------
 	
@@ -100,6 +105,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         createFontSettings(viewerGroup);
         createColorChooser(viewerGroup);
 		createEncodingCombo(viewerGroup);
+		createWordWarp(viewerGroup);
 		
 		updateValidState();
 		
@@ -117,12 +123,13 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		encodingComboEditor.loadDefault();
 		colorFieldEditor.loadDefault();
 		fontTypeEditor.loadDefault();
+		wordWrap.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_WORD_WRAP));
 	}
 	
 	protected void performApply() {
 		performOk();
 	}
-	
+
 	// Public ------------------------------------------------------------------
 	
 	public boolean performOk() {
@@ -131,10 +138,13 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		readWaitEditor.store();
 		encodingComboEditor.store();
 		colorFieldEditor.store();
+		// debug
+		//RGB color = colorFieldEditor.getColorSelector().getColorValue();
 		fontTypeEditor.store();
+		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_WORD_WRAP, wordWrap.getSelection());
 		return super.performOk();
 	}
-	
+
 	// Private -----------------------------------------------------------------
 	
 	private void createBacklogField(Composite composite) {
@@ -190,7 +200,6 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	
 	private void createEncodingCombo(Composite composite) {
 		encodingComboEditor = new EncodingComboEditor(ILogViewerConstants.PREF_ENCODING,LogViewerPlugin.getResourceString("preferences.contenteditor.combo.label.text"),composite); //$NON-NLS-1$
-		
 		encodingComboEditor.setPreferenceStore(doGetPreferenceStore());
 		encodingComboEditor.setPage(this);
 		encodingComboEditor.load();
@@ -198,7 +207,6 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	
 	private void createColorChooser(Composite composite) {
 		colorFieldEditor = new ColorFieldEditor(ILogViewerConstants.PREF_CURSORLINE_COLOR,LogViewerPlugin.getResourceString("preferences.contenteditor.cursorline.color.chooser.text"),composite); //$NON-NLS-1$
-		
 		colorFieldEditor.setPreferenceStore(doGetPreferenceStore());
 		colorFieldEditor.setPage(this);
 		colorFieldEditor.load();
@@ -223,4 +231,15 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		fontTypeEditor.setPage(this);
 		fontTypeEditor.load();
 	}
+	
+	private void createWordWarp(Composite composite) {
+        // draw label
+        Label comboLabel = new Label(composite,SWT.LEFT);
+        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        comboLabel.setText(LogViewerPlugin.getResourceString("preferences.contenteditor.wordWrap.button.text")); //$NON-NLS-1$
+        // draw checkbox
+        wordWrap = new Button(composite,SWT.CHECK);
+        wordWrap.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_WORD_WRAP));      
+	}
+
 }

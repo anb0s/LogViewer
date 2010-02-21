@@ -42,6 +42,10 @@ public class RulePreferenceData {
     private boolean coloringEnabled;
 	private RGB backgroundColor;
 	private RGB foregroundColor;
+	private boolean italic;
+	private boolean bold;
+	private boolean strikethrough;
+	private boolean underline;
     
     // Constructor ------------------------------------------------------------------
     
@@ -140,6 +144,38 @@ public class RulePreferenceData {
 	
 	public void setForegroundColor(RGB foregroundColor) {
 		this.foregroundColor = foregroundColor;
+	}
+
+	public boolean isItalic() {
+		return italic;
+	}
+
+	public boolean isBold() {
+		return bold;
+	}
+
+	public boolean isStrikethrough() {
+		return strikethrough;
+	}
+
+	public boolean isUnderline() {
+		return underline;
+	}
+
+	public void setItalic(boolean italic) {
+		this.italic = italic;
+	}
+
+	public void setBold(boolean bold) {
+		this.bold = bold;
+	}
+
+	public void setStrikethrough(boolean strikethrough) {
+		this.strikethrough = strikethrough;
+	}
+
+	public void setUnderline(boolean underline) {
+		this.underline = underline;
 	}
 
 	public boolean equals(Object object) {
