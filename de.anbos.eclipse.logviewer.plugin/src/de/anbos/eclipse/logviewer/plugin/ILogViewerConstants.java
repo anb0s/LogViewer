@@ -91,5 +91,9 @@ public interface ILogViewerConstants {
 	/* show when updated */
 	public static boolean DEAFULT_SHOW_WHEN_UPDATED         = false;
 	public static final String	PREF_SHOW_WHEN_UPDATED   	= "SHOW_WHEN_UPDATED"; //$NON-NLS-1$
+
+	/* filter extensions */
+	public static String DEFAULT_FILTER_EXTENSIONS     	    = "*.log;*.txt;*.er?";
+	public static final String	PREF_FILTER_EXTENSIONS   	= "SHOW_WHEN_UPDATED"; //$NON-NLS-1$
 	
 }
