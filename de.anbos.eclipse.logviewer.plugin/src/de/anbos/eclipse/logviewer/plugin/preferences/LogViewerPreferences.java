@@ -54,7 +54,8 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	private ColorFieldEditor colorFieldEditor;
 	private FontFieldEditor fontTypeEditor;
 
-    private Button wordWrap;	
+    private Button wordWrap;
+    private Button showWhenUpdated;
 	
 	// Public ------------------------------------------------------------------
 	
@@ -106,6 +107,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         createColorChooser(viewerGroup);
 		createEncodingCombo(viewerGroup);
 		createWordWarp(viewerGroup);
+		createShowWhenUpdated(viewerGroup);
 		
 		updateValidState();
 		
@@ -124,6 +126,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		colorFieldEditor.loadDefault();
 		fontTypeEditor.loadDefault();
 		wordWrap.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_WORD_WRAP));
+		showWhenUpdated.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));
 	}
 	
 	protected void performApply() {
@@ -142,6 +145,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		//RGB color = colorFieldEditor.getColorSelector().getColorValue();
 		fontTypeEditor.store();
 		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_WORD_WRAP, wordWrap.getSelection());
+		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED, showWhenUpdated.getSelection());		
 		return super.performOk();
 	}
 
@@ -240,6 +244,16 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         // draw checkbox
         wordWrap = new Button(composite,SWT.CHECK);
         wordWrap.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_WORD_WRAP));      
+	}
+
+	private void createShowWhenUpdated(Composite composite) {
+        // draw label
+        Label comboLabel = new Label(composite,SWT.LEFT);
+        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        comboLabel.setText(LogViewerPlugin.getResourceString("preferences.contenteditor.showwhenupdated.button.text")); //$NON-NLS-1$
+        // draw checkbox
+        showWhenUpdated = new Button(composite,SWT.CHECK);
+        showWhenUpdated.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));      
 	}
 
 }

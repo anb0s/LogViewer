@@ -87,5 +87,9 @@ public interface ILogViewerConstants {
 	/* word wrap */
 	public static boolean DEAFULT_WORD_WRAP                 = false;
 	public static final String	PREF_WORD_WRAP				= "WORD_WRAP"; //$NON-NLS-1$
+
+	/* show when updated */
+	public static boolean DEAFULT_SHOW_WHEN_UPDATED         = false;
+	public static final String	PREF_SHOW_WHEN_UPDATED   	= "SHOW_WHEN_UPDATED"; //$NON-NLS-1$
 	
 }

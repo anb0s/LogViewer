@@ -51,12 +51,15 @@ public class LogFileViewer {
 	private CursorLinePainter cursorLinePainter;
 	private PresentationReconciler presentationReconciler;
 	
+	private boolean showWhenUpdated;
+	
 	// Constructor -------------------------------------------------------------
 	
-	public LogFileViewer(Composite parent,int style) {
+	public LogFileViewer(Composite parent, int style) {
 		store = LogViewerPlugin.getDefault().getPreferenceStore();
 		if (store.getBoolean(ILogViewerConstants.PREF_WORD_WRAP))
 			style |= SWT.WRAP;
+		showWhenUpdated = store.getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED);
 		txtViewer = new SourceViewer(parent,null,style);
 		FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE);
 		if(fontData == null) {
@@ -103,8 +106,12 @@ public class LogFileViewer {
 		txtViewer.setTopIndex(index);
 	}
 
-	// Private -----------------------------------------------------------------
+	public boolean isShowWhenUpdated() {
+		return showWhenUpdated;
+	}
 	
+	// Private -----------------------------------------------------------------
+
 	private void createCursorLinePainter() {
 		cursorLinePainter = new CursorLinePainter(txtViewer);
 		Color color = new Color(Display.getCurrent(),PreferenceConverter.getColor(store,ILogViewerConstants.PREF_CURSORLINE_COLOR));
@@ -140,6 +147,9 @@ public class LogFileViewer {
 			if(event.getProperty().equals(ILogViewerConstants.PREF_WORD_WRAP)) {
 				boolean wordWrap = store.getBoolean(ILogViewerConstants.PREF_WORD_WRAP);
 				txtViewer.getTextWidget().setWordWrap(wordWrap);
+			}
+			if(event.getProperty().equals(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED)) {
+				showWhenUpdated = store.getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED);
 			}
 		}
 	}

@@ -34,6 +34,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
@@ -125,12 +127,12 @@ public class LogViewer extends ViewPart {
      * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl(Composite parent) {
+        //viewer    	
         this.parent = parent;
         documentListener = new ViewDocumentListener();
         tabfolder = new TabFolder(parent,0);
         tabfolder.addSelectionListener(new TabSelectionListener());
         viewer = new LogFileViewer(tabfolder,SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-        //viewer
 
         // DnD
     	DropTarget target = new DropTarget(parent, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK);
@@ -608,7 +610,40 @@ public class LogViewer extends ViewPart {
                 if(!isAvailable()) {
                     return;
                 }
+                
                 LogFileTab tab = getSelectedTab();
+                
+                // activate / show the view and tab
+                if (viewer.isShowWhenUpdated()) {
+	    			//LogViewer view = null;
+	    			try {
+	    				//view = (LogViewer)
+	    				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("de.anbos.eclipse.logviewer.plugin.LogViewer");
+	    			} catch (PartInitException e) {
+	    				e.printStackTrace();
+	    			}
+	    			
+	    			// change selection 
+	                if (event.getDocument() != tab.getDocument()) {
+	                    // show active document
+	                	Iterator keyIterator = logTab.keySet().iterator();
+	                	while(keyIterator.hasNext()) {
+	                		Object key = keyIterator.next();
+	                		LogFileTab newTab = (LogFileTab)logTab.get(key);
+	                		if (event.getDocument() == newTab.getDocument()) {
+		                        showDocument(newTab.getDocument(),null,0,true);
+		                    	tabfolder.setSelection(new TabItem[] {newTab.getItem()});
+		                    	// send event to refresh encoding
+		                    	Event newEvent = new Event();
+		                    	newEvent.item = newTab.getItem();
+		                		tabfolder.notifyListeners(SWT.Selection, newEvent);
+		                		break;
+	                		}
+	                	}	                	
+	                }
+	    			
+                }
+                
                 if(logTab != null && event.getDocument() == tab.getDocument() && viewer.getDocument() != null) {
                     viewer.getActualViewer().refresh();
                     viewer.getActualViewer().setTopIndex(event.getDocument().getNumberOfLines());
