@@ -2,7 +2,7 @@
 <feature
       id="de.anbos.eclipse.logviewer.feature"
       label="Eclipse Log Viewer Feature"
-      version="0.9.8.2"
+      version="0.9.8.3"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.logviewer.plugin">
 
