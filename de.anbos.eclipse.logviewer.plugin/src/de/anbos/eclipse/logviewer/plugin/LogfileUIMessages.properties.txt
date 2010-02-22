@@ -1,0 +1,150 @@
+ # Copyright (c) 2007 - 2011 by Michael Mimo Moratti
+ # Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ # http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing,
+ # software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions
+ # and limitations under the License.
+
+# see plugin.properties
+logviewer.action.openwith.name=Open with Log Viewer
+logviewer.plugin.console.name=Log Viewer Console
+
+# messages
+error.fatal.title=Log Viewer Error
+error.info.title=Log Viewer Information
+error.warning.title=Log Viewer Warning
+
+# menus
+menu.file.close.text=Close
+menu.file.close.tooltip=Close current Logfile
+menu.file.closeall.text=Close All
+menu.file.closeall.tooltip=Close All Logfiles
+menu.file.open.text=Open...
+menu.file.open.tooltip=Open Logfile
+menu.file.clearhistory.text=Clear History...
+menu.file.clearhistory.tooltip=Clear History
+menu.preferences.text=Preferences...
+menu.preferences.tooltip=Show rule preferences
+menu.file.refresh.text=Refresh
+menu.file.refresh.tooltip=Refresh current Logfile
+menu.file.start.text=Start
+menu.file.start.tooltip=Start tailing on the current Logfile
+menu.file.stop.text=Stop
+menu.file.stop.tooltip=Stop tailing on the current Logfile
+menu.file.startall.text=Start All
+menu.file.startall.tooltip=Start tailing on all Logfiles
+menu.file.stopall.text=Stop All
+menu.file.stopall.tooltip=Stop tailing on all Logfiles
+menu.encodingchange.text=Encoding\: {0}
+menu.encodingchange.tooltip=let's you change the current encoding
+menu.content.copy.text=Copy
+menu.content.copy.tooltip=Copy current text selection to Clipboard
+menu.findreplace.text=Find
+menu.findreplace.tooltip=Find any string
+menu.tabrename.text=Rename tab...
+menu.tabrename.tooltip=Rename active tab
+
+main.error.open.file=Unable to open resource {0}
+
+tail.loading.file=INFO: loading resource {0} ...\n-------------------------------------------------------------\n
+tail.loading.file.warning=WARNING: resource {0} (temporarily) not available ...\n
+tail.loading.file.error=\nERROR: unable to load resource {0} !\n
+tail.loading.file.encoding.error=\nERROR: unable to load resource {0} with {0} encoding !\n
+
+preferences.main.tailsettings.title=Tail settings
+preferences.main.viewersettings.title=View settings
+
+preferences.backlog.label.errortext=invalid amount of backlog rows. The maximum value is {0} rows
+preferences.backlog.label.text=backlog rows\:
+preferences.buffer.label.errortext=invalid read buffer size. The maximum size is {0} bytes.
+preferences.buffer.label.text=read buffer size\:
+preferences.readwait.label.errortext="invalid read wait timespan. The maximum timespan is {0} milliseconds
+preferences.readwait.label.text=read wait (milliseconds)\:
+
+preferences.contenteditor.combo.label.text=default encoding\:
+preferences.contenteditor.cursorline.color.chooser.text=cursor line color\:
+preferences.contenteditor.font.style.text=font style\:
+preferences.contenteditor.fontl.style.button.text=change font...
+preferences.contenteditor.wordWrap.label.text=word wrap
+preferences.contenteditor.showwhenupdated.label.text=show when updated
+preferences.contenteditor.filterextensions.label.text=file extensions filter
+
+preferences.ruleseditor.table.header.column0.title=type
+preferences.ruleseditor.table.header.column1.title=content
+
+preferences.ruleseditor.dialog.new.title=Create new rule
+preferences.ruleseditor.dialog.edit.title=Edit existing rule
+preferences.ruleseditor.dialog.group.lineselection=Line selection
+preferences.ruleseditor.dialog.priority.label=set priority:
+preferences.ruleseditor.dialog.active.label=set active:
+preferences.ruleseditor.dialog.combo.label=select rule:
+preferences.ruleseditor.dialog.case.label=case insensitive:
+preferences.ruleseditor.dialog.group.actions=Actions
+preferences.ruleseditor.dialog.group.exclude=Exclude / Replace
+preferences.ruleseditor.dialog.group.highlighting=Highlighting
+preferences.ruleseditor.dialog.excluded.label=exclude:
+preferences.ruleseditor.dialog.coloring.label=enabled:
+preferences.ruleseditor.dialog.matchmode.label=match mode:
+preferences.ruleseditor.dialog.background.label=choose background color:
+preferences.ruleseditor.dialog.foreground.label=choose foreground color:
+preferences.ruleseditor.dialog.value.label=enter matching value:
+preferences.ruleseditor.dialog.error.incompletedata.title=Missing or Wrong value detected
+preferences.ruleseditor.dialog.error.priority.text=Please enter a valid priority value
+preferences.ruleseditor.dialog.error.rule.text=Please choose a rule
+preferences.ruleseditor.dialog.error.value.text=Please enter a valid rule value
+
+preferences.ruleseditor.button.add=Add...
+preferences.ruleseditor.button.edit=Edit...
+preferences.ruleseditor.button.remove=Remove
+preferences.ruleseditor.button.up=Up
+preferences.ruleseditor.button.down=Down
+preferences.ruleseditor.button.export.selected=Export selected...
+preferences.ruleseditor.button.export.all=Export all...
+preferences.ruleseditor.button.import=Import...
+preferences.ruleseditor.backgroundcolorbutton.title=background color
+preferences.ruleseditor.foregroundcolorbutton.title=foreground color
+
+preferences.ruleseditor.export.title=Exporting rule schema
+preferences.ruleseditor.export.extension=*.xml
+preferences.ruleseditor.export.filename=EclipseLogViewerRules.xml
+preferences.ruleseditor.export.error.title=Exporting rule schema
+preferences.ruleseditor.export.error.select.items.text=Please select at least one rule to export
+preferences.ruleseditor.export.error.hidden.text=Export failed.\n{0} is a hidden file.
+preferences.ruleseditor.export.error.cannotWrite.text=Export failed.\n{0} cannot be modified.
+preferences.ruleseditor.export.error.exists.text= {0} already exists.\nDo you want to replace it?
+preferences.ruleseditor.export.error.general.text=Failed to export the rule schema!
+
+preferences.ruleseditor.export.dialog.selectall.title=No rules selected
+preferences.ruleseditor.export.dialog.selectall.text=Do You want to export all rules?
+
+preferences.ruleseditor.import.title=Import rule schema
+preferences.ruleseditor.import.extension=*.xml
+preferences.ruleseditor.import.error.title=Import rule schema
+preferences.ruleseditor.import.error.text=Failed to import rule schema!
+preferences.ruleseditor.import.dialog.overwrite.title=Overwrite existing rules?
+preferences.ruleseditor.import.dialog.overwrite.text=Do You want to overwrite the existing rules?
+
+# rules
+de.anbos.eclipse.logviewer.plugin.viewer.rule.WordRule=WORD
+WORD=de.anbos.eclipse.logviewer.plugin.viewer.rule.WordRule
+de.anbos.eclipse.logviewer.plugin.viewer.rule.JakartaRegExpRule=JakartaRegExp
+JakartaRegExp=de.anbos.eclipse.logviewer.plugin.viewer.rule.JakartaRegExpRule
+de.anbos.eclipse.logviewer.plugin.viewer.rule.JavaRegExpRule=JavaRegExp
+JavaRegExp=de.anbos.eclipse.logviewer.plugin.viewer.rule.JavaRegExpRule
+
+#
+view.title=Log File View
+
+#encoding
+dialog.encoding.title=choose encoding
+dialog.tabrename.title=rename tab
+
+# misc
+misc.clearhisrory.title=Clear history
+misc.clearhisrory.text=Do You want to clear the log history?
