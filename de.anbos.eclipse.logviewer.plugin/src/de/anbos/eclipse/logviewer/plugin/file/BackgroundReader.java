@@ -27,14 +27,9 @@ public class BackgroundReader {
 	private FileTail fileTail;
 	private ConsoleTail consoleTail;
 	private LogFileType type;
-	//private String name;
-	//private IFileChangedListener listener;
 
 	public BackgroundReader(LogFileType type, String name, Charset charset, IFileChangedListener listener) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
 		this.type = type;
-		//this.name = name;
-		//this.listener = listener;
-
 		if (type == LogFileType.LOGFILE_SYSTEM_FILE) {
 			fileTail = new FileTail(name,charset,listener);
 		} else if (type == LogFileType.LOGFILE_ECLIPSE_CONSOLE) {
