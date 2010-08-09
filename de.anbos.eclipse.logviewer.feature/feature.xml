@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.anbos.eclipse.logviewer.feature"
-      label="Eclipse Log Viewer Feature"
-      version="0.9.8.3"
+      label="Log Viewer Feature"
+      version="0.9.8.4"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.logviewer.plugin">
 
-   <description url="http://code.google.com/p/eclipselogviewer/">
-      The Eclipse Log Viewer is a non blocking IO stream reader that can tail any number of files and eclipse consoles.
-It allows to syntax color the log files with either a regular expression or a word match.
+   <description url="http://code.google.com/a/eclipselabs.org/p/logviewer/">
+      The Eclipse Log Viewer is a non blocking IO stream reader that
+can tail any number of files and eclipse consoles.
+It allows to syntax color the log files with either a regular
+expression or a word match.
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -45,15 +47,15 @@ and limitations under the License.
    </license>
 
    <url>
-      <update label="Eclipse Log Viewer Update Site" url="http://eclipselogviewer.googlecode.com/svn/trunk/de.anbos.eclipse.logviewer.update/"/>
-      <discovery label="Eclipse Log Viewer Update Site" url="http://eclipselogviewer.googlecode.com/svn/trunk/de.anbos.eclipse.logviewer.update/"/>
+      <update label="Eclipse Log Viewer Update Site" url="http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/"/>
+      <discovery label="Eclipse Log Viewer Update Site" url="http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/"/>
    </url>
 
    <plugin
          id="de.anbos.eclipse.logviewer.plugin"
          download-size="0"
          install-size="0"
-         version="0.9.8.3"
+         version="0.9.8.4"
          unpack="false"/>
 
 </feature>
