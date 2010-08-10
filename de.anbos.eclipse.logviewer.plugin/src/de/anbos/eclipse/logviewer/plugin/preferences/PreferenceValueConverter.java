@@ -175,7 +175,9 @@ public class PreferenceValueConverter {
 
 	public static LogFileType asType(String logTypeStr) {
 		LogFileType type = LogFileType.LOGFILE_SYSTEM_FILE;
-		if (logTypeStr != null && !logTypeStr.isEmpty()) {
+		// issue 42: isEmpty method is available since java6 according to Sun's API Doc. So, it does not work on java5.
+		//if (logTypeStr != null && !logTypeStr.isEmpty()) {
+		if ((logTypeStr != null) && (logTypeStr.length() != 0)) {
 			LogFileType[] types = LogFileType.values();
 			for (int i=0;i<types.length;i++) {
 				if (types[i].toString().equals(logTypeStr)) {

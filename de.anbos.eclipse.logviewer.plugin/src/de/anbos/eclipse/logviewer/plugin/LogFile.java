@@ -68,7 +68,9 @@ public class LogFile {
     }
 
     public void setTabName(String tabName) {
-        if (tabName == null || tabName.isEmpty()) {
+		// issue 42: isEmpty method is available since java6 according to Sun's API Doc. So, it does not work on java5.
+        //if (tabName == null || tabName.isEmpty()) {
+    	if ((tabName == null) || (tabName.length() == 0)) {
         	this.tabName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")) + 1);
         } else {
         	this.tabName = tabName;

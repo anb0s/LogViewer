@@ -412,7 +412,9 @@ public class LogViewer extends ViewPart {
 	}
 
     public void printDefaultMessage() {
-    	if (getConsole().getDocument().get().isEmpty()) {
+    	// issue 42: isEmpty method is available since java6 according to Sun's API Doc. So, it does not work on java5.
+    	//if (getConsole().getDocument().get().isEmpty()) {
+    	if (getConsole().getDocument().get().length() == 0) {
         	//getConsoleStream().println("Log Viewer started!");
     		try {
 				getConsoleStream().write("Paste messages into this console and check rules and filters in Log Viewer.\n");
