@@ -25,6 +25,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.MalformedInputException;
 
 import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
@@ -56,6 +57,7 @@ public class FileTail implements Runnable {
 		filePath = myFilePath;
 		listener = myListener;
 		decoder = charset.newDecoder();
+		decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
 		bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
 	}
 	
