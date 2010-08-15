@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -119,7 +120,7 @@ public class ResourceUtils {
         }
         return null;
     }
-    
+
     static public File getResource(Object myObj) {
     	Object object = null;
     	
@@ -142,7 +143,7 @@ public class ResourceUtils {
     	}
 
 		if (object instanceof IFile) {
-			return ((IFile) object).getLocation().toFile();
+			return toFile(((IFile)object).getLocation());
 		}
 		if (object instanceof File) {
 			return (File) object;
@@ -151,11 +152,11 @@ public class ResourceUtils {
 			IAdaptable adaptable = (IAdaptable) object;
 			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
 			if (ifile != null) {
-				return ifile.getLocation().toFile();
+				return toFile(ifile.getLocation());
 			}
 			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
 			if (ires != null) {
-				return ires.getLocation().toFile();
+				return toFile(ires.getLocation());
 			}
 			/*
 			if (adaptable instanceof PackageFragment
@@ -176,6 +177,14 @@ public class ResourceUtils {
 		}
 		return null;
 	}
+    
+    static public File toFile(IPath iPath)
+    {    
+    	if (iPath != null)
+    		return iPath.toFile();
+    	return null;
+    }
+    
 	/*
 	protected File getJarFile(IAdaptable adaptable) {
 		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
