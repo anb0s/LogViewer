@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
@@ -164,7 +165,7 @@ public class RuleDialog extends StatusDialog {
 
         return pageComponent;
     }
-    
+
     // Protected --------------------------------------------------------------------
     
     protected void okPressed() {
@@ -303,6 +304,8 @@ public class RuleDialog extends StatusDialog {
     }
 
     private void createBackgroundColorSelector(Composite parent) {
+    	// Fix for issue 38: Cannot enter colors using Mac OS X
+    	createEmptyTable(parent,2);    	
         // draw label
         Label label = new Label(parent,SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
@@ -315,8 +318,10 @@ public class RuleDialog extends StatusDialog {
             backgroundColorSelector.setColorValue(this.data.getBackgroundColor());
         }
     }
-    
+
     private void createForegroundColorSelector(Composite parent) {
+    	// Fix for issue 38: Cannot enter colors using Mac OS X
+    	createEmptyTable(parent,2);
         // draw label
         Label label = new Label(parent,SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
@@ -328,6 +333,24 @@ public class RuleDialog extends StatusDialog {
         if(edit) {
             foregroundColorSelector.setColorValue(this.data.getForegroundColor());
         }      
+    }
+    
+	// workaround for bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=279840
+	// Bug 279840 -  ColorDialog fails to return a selection
+	// Eclipse 3.5, Mac OSX with cocoa
+	// issue 38: Cannot enter colors using Mac OS X
+    protected Table createEmptyTable(Composite composite, int horizontalSpan)
+    {
+        Table table = new Table(composite, SWT.None);
+
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = horizontalSpan;
+        gridData.verticalSpan = 1;
+        gridData.widthHint = 1;
+        gridData.heightHint = 1;
+        table.setLayoutData(gridData);
+        table.setBackground (composite.getBackground());
+        return table;
     }
     
     private void createValueTextField(Composite parent) {
