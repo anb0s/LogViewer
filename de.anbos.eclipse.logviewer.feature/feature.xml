@@ -2,7 +2,7 @@
 <feature
       id="de.anbos.eclipse.logviewer.feature"
       label="Log Viewer Feature"
-      version="0.9.8.6_issue38"
+      version="0.9.8.7"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.logviewer.plugin">
 
@@ -55,7 +55,7 @@ and limitations under the License.
          id="de.anbos.eclipse.logviewer.plugin"
          download-size="0"
          install-size="0"
-         version="0.9.8.6_issue38"
+         version="0.9.8.7"
          unpack="false"/>
 
 </feature>
