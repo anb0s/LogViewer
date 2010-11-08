@@ -37,7 +37,7 @@ public class TableItemColorController implements PaintListener {
 	
 	// Public ------------------------------------------------------------------
 	
-	public void paintControl(PaintEvent e) {
+	public void paintControl(PaintEvent event) {
 		colorItems();
 	}
 	
