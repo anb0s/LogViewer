@@ -143,7 +143,9 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         data.widthHint = TABLE_WIDTH;
         table.setLayoutData(data);
         
-        new TableItemColorController(table);
+        @SuppressWarnings("unused")
+		TableItemColorController tableItemColorController = new TableItemColorController(table);
+        //tableItemColorController.notifyAll();
         
         tableViewer = new CheckboxTableViewer(table);
         tableViewer.setLabelProvider(new RuleLabelProvider());
@@ -309,9 +311,10 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         
     	// send event to refresh tableViewer
     	Event event = new Event();
-		event.item = null;		
+		event.item = null;
 		tableViewer.getTable().notifyListeners(SWT.Selection, event);
-        
+		//tableViewer.getControl().setEnabled(true);
+
         return pageComponent;
     }
     
