@@ -44,6 +44,7 @@ public class LogViewerConsole extends IOConsole implements Runnable {
 					byte[] readed = new byte[available];
 					inStream.read(readed, 0, available);
 					outStream.write(readed);
+					//continue;
 				}
 				wait(readwait);
 			}

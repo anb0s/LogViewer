@@ -647,8 +647,11 @@ public class LogViewer extends ViewPart {
                 }
                 
                 if(logTab != null && event.getDocument() == tab.getDocument() && viewer.getDocument() != null) {
+                	//viewer.getActualViewer().setRedraw(false);
                     viewer.getActualViewer().refresh();
+                    //viewer.getActualViewer().invalidateTextPresentation(event.fOffset, event.fLength);
                     viewer.getActualViewer().setTopIndex(event.getDocument().getNumberOfLines());
+                    //viewer.getActualViewer().setRedraw(true);
                 }
         		if (stopAfterChange) {
             		stopAfterChange = false;

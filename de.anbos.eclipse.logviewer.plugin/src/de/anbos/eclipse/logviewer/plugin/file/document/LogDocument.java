@@ -217,7 +217,8 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
         			getStore().set(currentText);
         			getTracker().set(currentText);
         		}
-        		DocumentEvent event = new DocumentEvent(LogDocument.this,getStore().getLength(),content.length,text);
+        		//int newOffset = getStore().getLength() > content.length ? getStore().getLength() - content.length : 0;
+        		DocumentEvent event = new DocumentEvent(LogDocument.this, getStore().getLength(), content.length, text);
         		fireDocumentChanged(event);
             }
         };

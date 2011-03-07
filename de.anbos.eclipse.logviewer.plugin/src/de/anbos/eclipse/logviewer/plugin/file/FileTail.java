@@ -33,37 +33,37 @@ import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.Logger;
 
 public class FileTail implements Runnable {
-	
+
     // Constant ----------------------------------------------------------------
-    
+
     private static final int INITIAL_LOAD_SIZE  = 1000000;
-    
-	// Attribute ---------------------------------------------------------------
-	
+
+    // Attribute ---------------------------------------------------------------
+
     private Logger logger;
-	private String filePath;
-	private IFileChangedListener listener;
-	
-	private CharsetDecoder decoder;
-	private boolean isRunning;
-	private boolean isFirstTimeRead;
-	
-	private int bufferCapacity;
-	
-	// Constructor -------------------------------------------------------------
-	
-	public FileTail(String myFilePath, Charset charset, IFileChangedListener myListener) {
+    private String filePath;
+    private IFileChangedListener listener;
+
+    private CharsetDecoder decoder;
+    private boolean isRunning;
+    private boolean isFirstTimeRead;
+
+    private int bufferCapacity;
+
+    // Constructor -------------------------------------------------------------
+
+    public FileTail(String myFilePath, Charset charset, IFileChangedListener myListener) {
         logger = LogViewerPlugin.getDefault().getLogger();
-		filePath = myFilePath;
-		listener = myListener;
-		decoder = charset.newDecoder();
-		decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-		bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
-	}
-	
-	// Public ------------------------------------------------------------------
-	
-	public void setMonitorStatus(boolean monitor) {
+        filePath = myFilePath;
+        listener = myListener;
+        decoder = charset.newDecoder();
+        decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+        bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
+    }
+
+    // Public ------------------------------------------------------------------
+
+    public void setMonitorStatus(boolean monitor) {
         if(isRunning == monitor) {
             return;
         }
@@ -73,99 +73,106 @@ public class FileTail implements Runnable {
             tailThread.setDaemon(true);
             tailThread.start();
         }
-	}
+    }
 
-	public synchronized void run() {
-		isRunning = true;
-		RandomAccessFile file = null;
-		try {
-			int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
-			file = openFile();
-			if(file == null) {
-				throw new ThreadInterruptedException("file was null"); //$NON-NLS-1$
-			}
-			FileChannel channel = file.getChannel();
-			while(isRunning) {
-				if(channel.size() - channel.position() > 0) {
-					listener.contentAboutToBeChanged();
-					read(channel);
-				}
-				wait(readwait);
-			}
-		} catch(ThreadInterruptedException tie) {
-			logger.logError(tie);
-			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{filePath}).toCharArray(),true);
-		} catch(MalformedInputException mie) { 
-			logger.logError(mie);
-			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.encoding.error",new String[]{decoder.charset().displayName()}).toCharArray(),true);
-		} catch(IOException ioe) {
-			logger.logError(ioe);
-		} catch(InterruptedException ie) {
-			logger.logError(ie);
-		} finally {
-			try {
-				if(file != null) {
-					file.close();
-				}
-			} catch(Exception e) {
-				// ignore this
-			}
-		}
-		isRunning = false;
-	}
+    public synchronized void run() {
+        isRunning = true;
+        RandomAccessFile file = null;
+        try {
+            int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
+            file = openFile();
+            if(file == null) {
+                throw new ThreadInterruptedException("file was null"); //$NON-NLS-1$
+            }
+            FileChannel channel = file.getChannel();
+            while(isRunning) {
+                if(channel.size() - channel.position() > 0) {
+                    listener.contentAboutToBeChanged();
+                    read(channel);
+                    continue;
+                }
+                wait(readwait);
+            }
+        } catch(ThreadInterruptedException tie) {
+            logger.logError(tie);
+            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{filePath}).toCharArray(),true);
+        } catch(MalformedInputException mie) {
+            logger.logError(mie);
+            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.encoding.error",new String[]{decoder.charset().displayName()}).toCharArray(),true);
+        } catch(IOException ioe) {
+            logger.logError(ioe);
+        } catch(InterruptedException ie) {
+            logger.logError(ie);
+        } finally {
+            try {
+                if(file != null) {
+                    file.close();
+                }
+            } catch(Exception e) {
+                // ignore this
+            }
+        }
+        isRunning = false;
+    }
 
-	// Private -----------------------------------------------------------------
-	
-	private synchronized RandomAccessFile openFile() throws ThreadInterruptedException {
-		boolean firstExec = true;
-		while(isRunning) {
-			try {
-				RandomAccessFile file = new RandomAccessFile(filePath,"r"); //$NON-NLS-1$
-				isFirstTimeRead = true;
-				return file;
-			} catch(FileNotFoundException fnfe) {
-				try {
-					if (firstExec) {
-						listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.warning",new String[]{filePath}).toCharArray(),true);
-						firstExec = false;
-					}
-					wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
-				} catch(InterruptedException ie) {
-					throw new ThreadInterruptedException(ie);
-				}
-			}
-		}
-		throw new ThreadInterruptedException("no file found"); //$NON-NLS-1$
-	}
+    // Private -----------------------------------------------------------------
 
-	/**
-	 * reads bytes from the currently open nio file input stream
-	 * @param channel
-	 * @throws IOException
-	 */
-	private void read(FileChannel channel) throws IOException {
-		if(isFirstTimeRead) {
-			listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{filePath}).toCharArray(),true);
-			synchronized (channel) {
-				long startPosition = 0l;
-				long size = channel.size();
-				if(channel.size() > INITIAL_LOAD_SIZE) {
-					startPosition = channel.size() - INITIAL_LOAD_SIZE;
-					size = INITIAL_LOAD_SIZE;
-				} 
-				MappedByteBuffer mappedBuffer = channel.map(MapMode.READ_ONLY,startPosition,size);
-				CharBuffer mappedChars = decoder.decode(mappedBuffer);
-				channel.position(channel.size());
-				listener.fileChanged(mappedChars.array(),true);
-			}
-			bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
-			isFirstTimeRead = false;
-			return;
-		}
-		ByteBuffer buffer = ByteBuffer.allocate(bufferCapacity);
-		channel.read(buffer);
-		buffer.flip();
-		CharBuffer chars = decoder.decode(buffer);
-		listener.fileChanged(chars.array(),false);
-	}
+    private synchronized RandomAccessFile openFile() throws ThreadInterruptedException {
+        boolean firstExec = true;
+        while(isRunning) {
+            try {
+                RandomAccessFile file = new RandomAccessFile(filePath,"r"); //$NON-NLS-1$
+                isFirstTimeRead = true;
+                return file;
+            } catch(FileNotFoundException fnfe) {
+                try {
+                    if (firstExec) {
+                        listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.warning",new String[]{filePath}).toCharArray(),true);
+                        firstExec = false;
+                    }
+                    wait(ILogViewerConstants.TAIL_FILEOPEN_ERROR_WAIT);
+                } catch(InterruptedException ie) {
+                    throw new ThreadInterruptedException(ie);
+                }
+            }
+        }
+        throw new ThreadInterruptedException("no file found"); //$NON-NLS-1$
+    }
+
+    /**
+     * reads bytes from the currently open nio file input stream
+     * @param channel
+     * @throws IOException
+     */
+    private void read(FileChannel channel) throws IOException {
+        // first time just print some header info
+        if(isFirstTimeRead) {
+            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file",new String[]{filePath}).toCharArray(),true);
+            bufferCapacity = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_BUFFER);
+        }
+        // get positions and size
+        long startPosition = channel.position();
+        long endPosition = channel.size();
+        long size =  endPosition - startPosition;
+        // if first time or big change then read only the rest
+        if (isFirstTimeRead || size > INITIAL_LOAD_SIZE) {
+        	isFirstTimeRead = false;
+            synchronized (channel) {
+                if(size > INITIAL_LOAD_SIZE) {
+                    startPosition = endPosition - INITIAL_LOAD_SIZE;
+                    size = INITIAL_LOAD_SIZE;
+                }
+                MappedByteBuffer mappedBuffer = channel.map(MapMode.READ_ONLY, startPosition, size);
+                CharBuffer mappedChars = decoder.decode(mappedBuffer);
+                channel.position(endPosition);
+                listener.fileChanged(mappedChars.array(), true);
+            }
+            return;
+        }
+        ByteBuffer buffer = ByteBuffer.allocate(bufferCapacity);
+        channel.read(buffer);
+        buffer.flip();
+        CharBuffer chars = decoder.decode(buffer);
+        listener.fileChanged(chars.array(),false);
+    }
 }

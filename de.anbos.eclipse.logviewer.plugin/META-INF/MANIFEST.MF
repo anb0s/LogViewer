@@ -5,7 +5,6 @@ Bundle-SymbolicName: de.anbos.eclipse.logviewer.plugin;singleton:=true
 Bundle-Version: 0.9.8.7
 Bundle-ClassPath: bin,
  lib/jakarta-regexp-1.5.jar,
- lib/jpathwatch-0-93-rc1.jar,
  .
 Bundle-Activator: de.anbos.eclipse.logviewer.plugin.LogViewerPlugin
 Bundle-Localization: plugin
