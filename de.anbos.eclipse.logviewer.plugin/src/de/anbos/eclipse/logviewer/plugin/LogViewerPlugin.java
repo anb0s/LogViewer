@@ -161,6 +161,7 @@ public class LogViewerPlugin extends AbstractUIPlugin {
 		store.setDefault(ILogViewerConstants.PREF_WORD_WRAP,ILogViewerConstants.DEAFULT_WORD_WRAP);
 		store.setDefault(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED,ILogViewerConstants.DEAFULT_SHOW_WHEN_UPDATED);
 		store.setDefault(ILogViewerConstants.PREF_FILTER_EXTENSIONS,ILogViewerConstants.DEFAULT_FILTER_EXTENSIONS);
+		store.setDefault(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE,ILogViewerConstants.DEAFULT_SHOW_TOP_OF_FILE);		
 		PreferenceConverter.setDefault(store,ILogViewerConstants.PREF_CURSORLINE_COLOR,new RGB(192,192,192));
 		PreferenceConverter.setDefault(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE,JFaceResources.getDefaultFont().getFontData());
 	}

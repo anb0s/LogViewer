@@ -52,6 +52,7 @@ public class LogFileViewer {
 	private PresentationReconciler presentationReconciler;
 	
 	private boolean showWhenUpdated;
+	private boolean showTopOfFile;
 	
 	// Constructor -------------------------------------------------------------
 	
@@ -60,6 +61,7 @@ public class LogFileViewer {
 		if (store.getBoolean(ILogViewerConstants.PREF_WORD_WRAP))
 			style |= SWT.WRAP;
 		showWhenUpdated = store.getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED);
+		showTopOfFile = store.getBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE);
 		txtViewer = new SourceViewer(parent,null,style);
 		FontData[] fontData = PreferenceConverter.getFontDataArray(store,ILogViewerConstants.PREF_EDITOR_FONT_STYLE);
 		if(fontData == null) {
@@ -81,11 +83,11 @@ public class LogFileViewer {
 	public IDocument getDocument() {
 		return document;
 	}
-	
+
 	public TextViewer getActualViewer() {
 		return txtViewer;
 	}
-	
+
 	public Control getControl() {
 		return txtViewer.getControl();
 	}
@@ -98,10 +100,29 @@ public class LogFileViewer {
 		return txtViewer.getTopIndex();
 	}
 
+	public void refresh() {
+		txtViewer.refresh();
+	}
+	
 	public void setSelection(ISelection sel) {
 		txtViewer.setSelection(sel);
 	}
 
+	public void showTopOfFile() {
+		txtViewer.setTopIndex(0);
+	}
+
+	public void showBottomOfFile() {
+		txtViewer.setTopIndex(document.getNumberOfLines());
+	}
+	
+	public void showTopOrBottomOfFile() {
+        if (isShowTopOfFile())
+        	showTopOfFile();
+        else
+        	showBottomOfFile();
+	}
+	
 	public void setTopIndex(int index) {
 		txtViewer.setTopIndex(index);
 	}
@@ -109,7 +130,11 @@ public class LogFileViewer {
 	public boolean isShowWhenUpdated() {
 		return showWhenUpdated;
 	}
-	
+
+	public boolean isShowTopOfFile() {
+		return showTopOfFile;
+	}
+
 	// Private -----------------------------------------------------------------
 
 	private void createCursorLinePainter() {
@@ -151,6 +176,9 @@ public class LogFileViewer {
 			if(event.getProperty().equals(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED)) {
 				showWhenUpdated = store.getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED);
 			}
+			if(event.getProperty().equals(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE)) {
+				showTopOfFile = store.getBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE);
+			}			
 		}
 	}
 }

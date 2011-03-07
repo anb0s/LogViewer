@@ -95,5 +95,9 @@ public interface ILogViewerConstants {
 	/* filter extensions */
 	public static String DEFAULT_FILTER_EXTENSIONS     	    = "*.log;*.txt;*.er?";
 	public static final String	PREF_FILTER_EXTENSIONS   	= "FILTER_EXTENSIONS"; //$NON-NLS-1$
-	
+
+	/* show top of file */
+	public static boolean DEAFULT_SHOW_TOP_OF_FILE         = false;
+	public static final String	PREF_SHOW_TOP_OF_FILE   	= "SHOW_TOP_OF_FILE"; //$NON-NLS-1$
+
 }

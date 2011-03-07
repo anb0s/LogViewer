@@ -500,10 +500,13 @@ public class LogViewer extends ViewPart {
     protected void showDocument(LogDocument document, ISelection sel, int index, boolean monitor) {
         viewer.setDocument(document);
         if (monitor) {
-            viewer.getActualViewer().setTopIndex(document.getNumberOfLines());        	
-        } else {
+            viewer.showTopOrBottomOfFile();
+        } else {        	
         	viewer.setSelection(sel);
-        	viewer.setTopIndex(index);
+        	if (viewer.isShowTopOfFile())
+        		viewer.showTopOrBottomOfFile();
+        	else
+        		viewer.setTopIndex(index);
         }
 	}
 
@@ -643,15 +646,11 @@ public class LogViewer extends ViewPart {
 	                		}
 	                	}	                	
 	                }
-	    			
                 }
                 
                 if(logTab != null && event.getDocument() == tab.getDocument() && viewer.getDocument() != null) {
-                	//viewer.getActualViewer().setRedraw(false);
-                    viewer.getActualViewer().refresh();
-                    //viewer.getActualViewer().invalidateTextPresentation(event.fOffset, event.fLength);
-                    viewer.getActualViewer().setTopIndex(event.getDocument().getNumberOfLines());
-                    //viewer.getActualViewer().setRedraw(true);
+                    viewer.refresh();
+                    viewer.showBottomOfFile();
                 }
         		if (stopAfterChange) {
             		stopAfterChange = false;
@@ -693,7 +692,7 @@ public class LogViewer extends ViewPart {
 			}
 			// restore
 			fileEncodingAction.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] {tab.getDocument().getEncoding()})); //$NON-NLS-1$
-			showDocument(tab.getDocument(),tab.getSelection(),tab.getTopIndex(),false);
+			showDocument(tab.getDocument(), tab.getSelection(), tab.getTopIndex(),false);
 			startTailOnCurrentFile.setEnabled(!tab.getDocument().isMonitor());
 			stopTailOnCurrentFile.setEnabled(tab.getDocument().isMonitor());
 			refreshCurrentFileAction.setEnabled(true);

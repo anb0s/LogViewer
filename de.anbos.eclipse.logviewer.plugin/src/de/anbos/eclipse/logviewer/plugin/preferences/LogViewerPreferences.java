@@ -53,6 +53,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	private FontFieldEditor fontTypeEditor;
     private Button wordWrap;
     private Button showWhenUpdated;
+    private Button showTopOfFile;
 	
 	private IPropertyChangeListener validityChangeListener;
     
@@ -108,6 +109,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		createEncodingCombo(viewerGroup);
 		createWordWarp(viewerGroup);
 		createShowWhenUpdated(viewerGroup);
+		createShowTopOfFile(viewerGroup);
 		
 		updateValidState();
 
@@ -128,6 +130,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		fontTypeEditor.loadDefault();
 		wordWrap.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_WORD_WRAP));
 		showWhenUpdated.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));
+		showTopOfFile.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE));
 	}
 	
 	protected void performApply() {
@@ -147,7 +150,8 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		//RGB color = colorFieldEditor.getColorSelector().getColorValue();
 		fontTypeEditor.store();
 		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_WORD_WRAP, wordWrap.getSelection());
-		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED, showWhenUpdated.getSelection());		
+		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED, showWhenUpdated.getSelection());
+		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE, showTopOfFile.getSelection());		
 		return super.performOk();
 	}
 
@@ -270,5 +274,14 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         showWhenUpdated = new Button(composite,SWT.CHECK);
         showWhenUpdated.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));      
 	}
-	
+
+	private void createShowTopOfFile(Composite composite) {
+        // draw label
+        Label comboLabel = new Label(composite,SWT.LEFT);
+        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        comboLabel.setText(LogViewerPlugin.getResourceString("preferences.contenteditor.showtopoffile.label.text")); //$NON-NLS-1$
+        // draw checkbox
+        showTopOfFile = new Button(composite,SWT.CHECK);
+        showTopOfFile.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE));      
+	}
 }
