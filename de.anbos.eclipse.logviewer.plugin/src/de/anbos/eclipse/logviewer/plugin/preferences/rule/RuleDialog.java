@@ -89,7 +89,7 @@ public class RuleDialog extends StatusDialog {
         pageComponent.setFont(parent.getFont());
     	// define group1 
     	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText("Line selection");
+    	pageGroup1.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.lineselection.title"));    	
         GridLayout layout1 = new GridLayout();
         layout1.numColumns = 2;
         layout1.makeColumnsEqualWidth = true;
@@ -113,7 +113,7 @@ public class RuleDialog extends StatusDialog {
         createMatchModeCombo(pageGroup1);
     	// define group2        
     	Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup2.setText("Actions");
+    	pageGroup2.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.actions.title"));
         GridLayout layout2 = new GridLayout();
         layout2.numColumns = 1;
         layout2.makeColumnsEqualWidth = true;
@@ -125,7 +125,7 @@ public class RuleDialog extends StatusDialog {
         pageGroup2.setFont(parent.getFont());
     	// define group2.1
     	Group pageGroup21 = new Group(pageGroup2, SWT.SHADOW_ETCHED_IN);
-    	pageGroup21.setText("Highlighting");
+    	pageGroup21.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.highlighting.title"));
         GridLayout layout21 = new GridLayout();
         layout21.numColumns = 2;
         layout21.makeColumnsEqualWidth = true;
@@ -289,8 +289,8 @@ public class RuleDialog extends StatusDialog {
         // draw combo
         matchModeCombo = new CCombo(parent,SWT.BORDER);
         matchModeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        matchModeCombo.setEditable(false);
-        String[] matchModes = {"Find sequence", "Match complete text"};
+        matchModeCombo.setEditable(false);        
+        String[] matchModes = {LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.matchmode.entry.find"), LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.matchmode.entry.match")};
         matchModeCombo.setItems(matchModes);
         if(edit) {
             String[] items = matchModeCombo.getItems();

@@ -246,6 +246,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		fontTypeEditor = new FontFieldEditor(ILogViewerConstants.PREF_EDITOR_FONT_STYLE,LogViewerPlugin.getResourceString("preferences.contenteditor.font.style.text"),panel); //$NON-NLS-1$
 		fontTypeEditor.setChangeButtonText(LogViewerPlugin.getResourceString("preferences.contenteditor.fontl.style.button.text")); //$NON-NLS-1$
 		fontTypeEditor.setPreferenceStore(doGetPreferenceStore());
+		fontTypeEditor.fillIntoGrid(panel, 3);
 		fontTypeEditor.setPage(this);
 		fontTypeEditor.load();
 	}

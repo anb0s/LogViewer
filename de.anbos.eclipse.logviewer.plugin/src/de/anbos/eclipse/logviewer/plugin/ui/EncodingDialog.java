@@ -95,9 +95,9 @@ public class EncodingDialog extends Dialog {
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
 		// create OK and Cancel buttons by default
-		createButton(parent, IDialogConstants.OK_ID,IDialogConstants.OK_LABEL, true);
-		createButton(parent, 3,"Restore Default", false);
-		createButton(parent, IDialogConstants.CANCEL_ID,IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, 3, LogViewerPlugin.getResourceString("dialog.encoding.defaults.button"), false);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 		//do this here because setting the text will set enablement on the ok
 		// button
 		encodingCombo.setFocus();
