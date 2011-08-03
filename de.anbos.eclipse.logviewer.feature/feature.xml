@@ -2,7 +2,7 @@
 <feature
       id="de.anbos.eclipse.logviewer.feature"
       label="Log Viewer Feature"
-      version="0.9.8.7"
+      version="0.9.8.8"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.logviewer.plugin">
 
@@ -44,15 +44,15 @@ and limitations under the License.
    </license>
 
    <url>
-      <update label="Eclipse Log Viewer Update Site" url="http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/"/>
-      <discovery label="Eclipse Log Viewer Update Site" url="http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/"/>
+      <update label="Eclipse Log Viewer Update Site" url="http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/"/>
+      <discovery label="Eclipse Log Viewer Update Site" url="http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/"/>
    </url>
 
    <plugin
          id="de.anbos.eclipse.logviewer.plugin"
          download-size="0"
          install-size="0"
-         version="0.9.8.7"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
