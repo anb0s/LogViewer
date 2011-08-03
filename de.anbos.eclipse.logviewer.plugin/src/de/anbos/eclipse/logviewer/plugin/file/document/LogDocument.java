@@ -36,19 +36,19 @@ import de.anbos.eclipse.logviewer.plugin.file.BackgroundReader;
 import de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener;
 
 public class LogDocument extends AbstractDocument implements IFileChangedListener {
-	
+
 	// Attribute ---------------------------------------------------------------
-	
+
 	private LogFile file;
 	private Charset charset;
 	private String encoding;
 	private BackgroundReader reader;
 	private boolean monitor;
-	
-	private int backlogLines; 
-	
+
+	private int backlogLines;
+
 	// Constructor -------------------------------------------------------------
-	
+
 	public LogDocument(LogFile file, String encoding) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
 		super();
 		if (file.getEncoding() == null)
@@ -61,12 +61,12 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		backlogLines = store.getInt(ILogViewerConstants.PREF_BACKLOG);
 		setTextStore(new GapTextStore(50, 300));
 		setLineTracker(new DefaultLineTracker());
-		completeInitialization();		
+		completeInitialization();
 		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
 	}
-	
+
 	// Public ------------------------------------------------------------------
-	
+
 	/**
 	 * invoking that setter will cause the tail thread to stop and a new FileTail
 	 * instance is created with the given charset.
@@ -105,14 +105,14 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		}
 		setMonitor(true);
 	}
-	
+
 	/**
 	 * @return the current content encoding
 	 */
 	public String getEncoding() {
 		return encoding;
 	}
-	
+
 	/**
 	 * invoking that method will cause the tail thread to stop and a new FileTail
 	 * instance is create.
@@ -148,7 +148,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		setMonitor(true);		
+		setMonitor(true);
 	}
 
 	/**
@@ -161,29 +161,30 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	public void setBacklog(int lines) {
 		backlogLines = lines;
 	}
-	
+
 	/**
 	 * if the monitor parameter is true and the current FileTail instance thread
 	 * is not running the Thread will be inovked and the tail begins to update
 	 * this document.
-	 * 
+	 *
 	 * if the monitor parameter is false the FileTail instance thread is notified
 	 * to stop at the next possbile exit point.
 	 * @param monitor
 	 */
-	public void setMonitor(boolean monitor) {
-		this.monitor = monitor;
-		if(monitor) {
+	public void setMonitor(boolean monitorIn) {
+		if(monitorIn && !monitor) {
 			getStore().set(""); //$NON-NLS-1$
 			getTracker().set(""); //$NON-NLS-1$
 		}
+		monitor = monitorIn;
 		reader.setMonitorStatus(monitor);
+		file.setMonitor(monitor);
 	}
-	
+
 	public boolean isMonitor() {
 		return monitor;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener#contentAboutToBeChanged()
 	 */
@@ -198,7 +199,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
             Display.getDefault().asyncExec(runnable);
         }
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.anbos.eclipse.logviewer.plugin.file.IFileChangedListener#fileChanged(char[])
 	 */
@@ -226,13 +227,13 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
             Display.getDefault().asyncExec(runnable);
         }
 	}
-	
+
 	public LogFile getFile() {
 		return file;
 	}
-	
+
 	// Private -----------------------------------------------------------------
-	
+
 	/**
 	 * @return the offset from where we have to read on in the Store
 	 */
@@ -250,9 +251,9 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 	}
 
 	// Inner classes ----------------------------------------------------------------
-	
+
 	private class PropertyChangeListener implements IPropertyChangeListener {
-		
+
 			/* (non-Javadoc)
 		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
 		 */

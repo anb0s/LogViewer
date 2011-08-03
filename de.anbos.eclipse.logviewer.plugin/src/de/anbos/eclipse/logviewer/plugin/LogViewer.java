@@ -81,22 +81,22 @@ import org.eclipse.ui.console.IOConsoleOutputStream;
 public class LogViewer extends ViewPart {
 
     // Attribute ---------------------------------------------------------------
-    
+
     private Logger logger;
     private Composite parent;
-    
+
     private LogViewerConsole console;
 
     private boolean stopAfterChange = false;
-    
+
     private TabFolder tabfolder;
     private LogFileViewer viewer;
-    
+
     private Map logTab;
     private TabItem oldTabItem;
-    
+
     private ViewDocumentListener documentListener;
-    
+
     private FileOpenViewAction fileOpenAction;
     private ClearHistoryAction clearHistoryAction;
     private PreferencesViewAction preferencesAction;
@@ -109,25 +109,29 @@ public class LogViewer extends ViewPart {
     private StopTailOnAllFileViewAction stopTailOnAllFiles;
     private FileEncondingViewAction fileEncodingAction;
     private TabRenameAction tabRenameAction;
-    
+
+    private int monitorCounter;
+    private int monitorCounterMax;
+
     // Constructor -------------------------------------------------------------
-    
+
     public LogViewer() {
         logger = LogViewerPlugin.getDefault().getLogger();
         logTab = new Hashtable();
         oldTabItem = null;
         console = null;
+        resetMonitorCounter();
     }
 
     // Public ------------------------------------------------------------------
-    
-    
-    
+
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl(Composite parent) {
-        //viewer    	
+        //viewer
         this.parent = parent;
         documentListener = new ViewDocumentListener();
         tabfolder = new TabFolder(parent,0);
@@ -163,7 +167,7 @@ public class LogViewer extends ViewPart {
 	public void closeCurrentLogFile() {
         try {
             LogFileTab tab = getSelectedTab();
-            //getConsoleStream().println("Close Tab: " + tab.getKey() + "...");
+            removeMonitorCounter(tab.getDocument().isMonitor());
             tab.close();
             logTab.remove(tab.getKey());
         } catch(IOException e) {
@@ -171,17 +175,7 @@ public class LogViewer extends ViewPart {
         }
         int index = tabfolder.getSelectionIndex();
         getSelectedItem().dispose();
-        if(tabfolder.getItemCount() == 0) {
-        	fileCloseAction.setEnabled(false);
-        	closeAllFilesAction.setEnabled(false);
-            refreshCurrentFileAction.setEnabled(false);
-            fileEncodingAction.setEnabled(false);
-            startTailOnCurrentFile.setEnabled(false);
-            stopTailOnCurrentFile.setEnabled(false);
-	        startTailOnAllFiles.setEnabled(false);
-	        stopTailOnAllFiles.setEnabled(false);
-            tabRenameAction.setEnabled(false);
-        } else {
+        if (!greyAllOutIfNoFiles()) {
             if(index == 0) {
                 tabfolder.setSelection(0);
             } else {
@@ -189,7 +183,7 @@ public class LogViewer extends ViewPart {
             }
         }
     }
-    
+
     public void closeAllLogFiles() {
     	Iterator keyIterator = logTab.keySet().iterator();
     	while(keyIterator.hasNext()) {
@@ -203,6 +197,64 @@ public class LogViewer extends ViewPart {
 			}
     	}
     	logTab.clear();
+    	greyAllOutIfNoFiles();
+    }
+
+    public void refreshCurrentLogFile() {
+        try {
+        	boolean wasMonitor = getSelectedTab().getDocument().isMonitor();
+        	if (!wasMonitor)
+        		stopAfterChange = true;
+        	getSelectedTab().getDocument().synchronize();
+        } catch(Exception e) {
+            logger.logError("unable to refresh the current tab's content",e); //$NON-NLS-1$
+        }
+    }
+
+    public void startTailOnAllDocuments() {
+    	Iterator keyIterator = logTab.keySet().iterator();
+    	while(keyIterator.hasNext()) {
+    		Object key = keyIterator.next();
+    		LogFileTab tab = (LogFileTab)logTab.get(key);
+    		tab.getDocument().setMonitor(true);
+    	}
+    	setMonitorCounterToMax();
+    	updateTailStartStopButtons(true);
+    }
+
+    public void stopTailOnAllDocuments() {
+    	Iterator keyIterator = logTab.keySet().iterator();
+    	while(keyIterator.hasNext()) {
+    		Object key = keyIterator.next();
+    		LogFileTab tab = (LogFileTab)logTab.get(key);
+    		tab.getDocument().setMonitor(false);
+
+    	}
+    	setMonitorCounterToMin();
+    	updateTailStartStopButtons(false);
+    }
+
+    public void startTail() {
+        try {
+        	getSelectedTab().getDocument().setMonitor(true);
+        	increaseMonitorCounter();
+        	updateTailStartStopButtons(true);
+        } catch(Exception e) {
+            logger.logError("unable to start tailing",e); //$NON-NLS-1$
+        }
+    }
+
+    public void stopTail() {
+        try {
+        	getSelectedTab().getDocument().setMonitor(false);
+        	decreaseMonitorCounter();
+        	updateTailStartStopButtons(false);
+        } catch(Exception e) {
+            logger.logError("unable to stop tailing",e); //$NON-NLS-1$
+        }
+    }
+
+    boolean greyAllOutIfNoFiles() {
     	if(tabfolder.getItemCount() == 0) {
     		fileCloseAction.setEnabled(false);
     		closeAllFilesAction.setEnabled(false);
@@ -213,71 +265,69 @@ public class LogViewer extends ViewPart {
 	        startTailOnAllFiles.setEnabled(false);
 	        stopTailOnAllFiles.setEnabled(false);
 	        tabRenameAction.setEnabled(false);
+	        resetMonitorCounter();
+	        return true;
     	}
+    	return false;
     }
-    
-    public void refreshCurrentLogFile() {
-        try {
-        	boolean wasMonitor = getSelectedTab().getDocument().isMonitor();
-        	if (!wasMonitor)
-        		stopAfterChange = true;
-        	getSelectedTab().getDocument().synchronize();        	
-        } catch(Exception e) {
-            logger.logError("unable to refresh the current tab's content",e); //$NON-NLS-1$
+
+    void updateTailStartStopButtons(boolean monitor) {
+        stopTailOnCurrentFile.setEnabled(monitor);
+        startTailOnCurrentFile.setEnabled(!monitor);
+        if (monitorCounter == 0)
+        {
+        	startTailOnAllFiles.setEnabled(true);
+        	stopTailOnAllFiles.setEnabled(false);
+        } else if (monitorCounter == monitorCounterMax) {
+        	startTailOnAllFiles.setEnabled(false);
+        	stopTailOnAllFiles.setEnabled(true);
+        } else {
+        	startTailOnAllFiles.setEnabled(true);
+        	stopTailOnAllFiles.setEnabled(true);
         }
     }
-    
-    public void startTailOnAllDocuments() {
-    	Iterator keyIterator = logTab.keySet().iterator();
-    	while(keyIterator.hasNext()) {
-    		Object key = keyIterator.next();
-    		LogFileTab tab = (LogFileTab)logTab.get(key);
-    		tab.getDocument().setMonitor(true);
-    	}    	
-    	stopTailOnCurrentFile.setEnabled(true);
-    	startTailOnCurrentFile.setEnabled(false);
-    }
-    
-    public void stopTailOnAllDocuments() {
-    	Iterator keyIterator = logTab.keySet().iterator();
-    	while(keyIterator.hasNext()) {
-    		Object key = keyIterator.next();
-    		LogFileTab tab = (LogFileTab)logTab.get(key);
-    		tab.getDocument().setMonitor(false);
-    	}    	
-    	stopTailOnCurrentFile.setEnabled(false);
-    	startTailOnCurrentFile.setEnabled(true);
-    }
-    
-    public void startTail() {
-        try {
-            //getConsoleStream().println("Start Tail...");        	
-        	getSelectedTab().getDocument().setMonitor(true);
-        	getSelectedTab().getDocument().getFile().setMonitor(true);
-            stopTailOnCurrentFile.setEnabled(true);
-            startTailOnCurrentFile.setEnabled(false);
-        } catch(Exception e) {
-            logger.logError("unable to start tailing",e); //$NON-NLS-1$
-        }    	
-    }
-    
-    public void stopTail() {
-        try {
-            //getConsoleStream().println("Stop Tail...");        	
-        	getSelectedTab().getDocument().setMonitor(false);
-        	getSelectedTab().getDocument().getFile().setMonitor(false);
-            stopTailOnCurrentFile.setEnabled(false);
-            startTailOnCurrentFile.setEnabled(true);
-        } catch(Exception e) {
-            logger.logError("unable to stop tailing",e); //$NON-NLS-1$
-        }      	
-    }
-    
+
     public boolean hasLogFile(LogFile file) {
         if(file == null) {
             return false;
         }
         return logTab.containsKey(file.getFileName());
+    }
+
+    void increaseMonitorCounter() {
+    	if (monitorCounter < monitorCounterMax)
+    		monitorCounter++;
+    }
+
+    void decreaseMonitorCounter() {
+    	if (monitorCounter > 0)
+    		monitorCounter--;
+    }
+
+    void setMonitorCounterToMax() {
+    	monitorCounter = monitorCounterMax;
+    }
+
+    void setMonitorCounterToMin() {
+    	monitorCounter = 0;
+    }
+
+    void resetMonitorCounter() {
+    	monitorCounter = 0;
+    	monitorCounterMax = 0;
+    }
+
+    void removeMonitorCounter(boolean monitor) {
+    	if (monitorCounterMax > 0)
+    		monitorCounterMax--;
+    	if (monitor)
+    		decreaseMonitorCounter();
+    }
+
+    void addMonitorCounter(boolean monitor) {
+  		monitorCounterMax++;
+    	if (monitor)
+    		increaseMonitorCounter();
     }
 
     public boolean checkAndOpenFile(LogFileType type, String fullPath, boolean fromAction) {
@@ -314,10 +364,11 @@ public class LogViewer extends ViewPart {
                 document.addDocumentListener(documentListener);
 
             	// restore monitor status
-                document.setMonitor(file.getMonitor());
-                stopTailOnCurrentFile.setEnabled(file.getMonitor());
-                startTailOnCurrentFile.setEnabled(!file.getMonitor());                
-                
+                boolean monitorState = file.getMonitor();
+                document.setMonitor(monitorState);
+                addMonitorCounter(monitorState);
+                updateTailStartStopButtons(monitorState);
+
                 refreshCurrentFileAction.setEnabled(true);
                 fileEncodingAction.setEnabled(true);
                 fileCloseAction.setEnabled(true);
@@ -349,7 +400,7 @@ public class LogViewer extends ViewPart {
         if (!file.getMonitor())
         	refreshCurrentLogFile();
     }
-    
+
     public boolean isAvailable() {
         return viewer != null && viewer.getControl() != null && !viewer.getControl().isDisposed();
     }
@@ -368,10 +419,10 @@ public class LogViewer extends ViewPart {
     public LogFileViewer getViewer() {
     	return viewer;
     }
-    
+
     /**
      * makes shure that the correct find/replace target is returned.
-     * the actual viewer is returned if an adapter of type 
+     * the actual viewer is returned if an adapter of type
      * FindReplaceTarget is searched
      */
     public Object getAdapter(Class adapter) {
@@ -384,21 +435,21 @@ public class LogViewer extends ViewPart {
     	}
     	return null;
     }
-    
+
     public String getCurrentLogFileTabName() {
     	return getSelectedTab().getItem().getText();
     }
-    
+
     public void setCurrentLogFileTabName(String name) {
     	getSelectedTab().getItem().setText(name);
     	getSelectedTab().getDocument().getFile().setTabName(name);
     }
-    
+
     public void dispose() {
     	storeAllCurrentlyOpenFiles();
     	super.dispose();
     }
-    
+
     public IOConsoleOutputStream getConsoleStream() {
         if (console == null)
         	createConsole();
@@ -424,9 +475,9 @@ public class LogViewer extends ViewPart {
 			}
     	}
     }
-    
+
     // Private -----------------------------------------------------------------
-    
+
 	private void hookContextMenu() {
 		MenuManager manager = new MenuManager();
 		manager.setRemoveAllWhenShown(true);
@@ -441,13 +492,13 @@ public class LogViewer extends ViewPart {
 
 		getSite().registerContextMenu(manager,null);
 	}
-    
+
 	private void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
 		fillLocalPullDown(bars.getMenuManager());
 		fillLocalToolBar(bars.getToolBarManager());
 	}
-	
+
 	private void fillLocalPullDown(IMenuManager manager) {
 		LocalPullDownMenu menu = new LocalPullDownMenu(manager,this,parent.getShell());
 		menu.addAction(fileOpenAction);
@@ -471,7 +522,7 @@ public class LogViewer extends ViewPart {
 		menu.finalize();
 	}
 
-	private void fillContextMenu(IMenuManager manager) {		
+	private void fillContextMenu(IMenuManager manager) {
 		manager.add(refreshCurrentFileAction);
 		manager.add(startTailOnCurrentFile);
 		manager.add(stopTailOnCurrentFile);
@@ -496,12 +547,12 @@ public class LogViewer extends ViewPart {
 		manager.add(closeAllFilesAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
-	
+
     protected void showDocument(LogDocument document, ISelection sel, int index, boolean monitor) {
         viewer.setDocument(document);
         if (monitor) {
             viewer.showTopOrBottomOfFile();
-        } else {        	
+        } else {
         	viewer.setSelection(sel);
         	if (viewer.isShowTopOfFile())
         		viewer.showTopOrBottomOfFile();
@@ -517,7 +568,7 @@ public class LogViewer extends ViewPart {
                 if(logTab.getItem() == item) {
                     return logTab;
                 }
-            }        	
+            }
         }
         return null;
     }
@@ -526,7 +577,7 @@ public class LogViewer extends ViewPart {
         TabItem item = getSelectedItem();
         return getSelectedTab(item);
     }
-    
+
     private TabItem getSelectedItem() {
         TabItem items[] = tabfolder.getSelection();
         if(items.length > 0) {
@@ -535,7 +586,7 @@ public class LogViewer extends ViewPart {
             return null;
         }
 	}
-    
+
     private void makeActions() {
     		// open
     		fileOpenAction = new FileOpenViewAction(this,parent.getShell());
@@ -545,13 +596,13 @@ public class LogViewer extends ViewPart {
     		clearHistoryAction.setEnabled(true);
     		// preferences
     		preferencesAction = new PreferencesViewAction(this,parent.getShell());
-    		preferencesAction.setEnabled(true);    		
+    		preferencesAction.setEnabled(true);
     		// close
     		fileCloseAction = new FileCloseViewAction(this,parent.getShell());
     		fileCloseAction.setEnabled(false);
     		// close all
     		closeAllFilesAction = new CloseAllFilesViewAction(this,parent.getShell());
-    		closeAllFilesAction.setEnabled(false);		
+    		closeAllFilesAction.setEnabled(false);
     		// refresh
     		refreshCurrentFileAction = new RefreshCurrentFileViewAction(this,parent.getShell());
     		refreshCurrentFileAction.setEnabled(false);
@@ -574,7 +625,7 @@ public class LogViewer extends ViewPart {
     		tabRenameAction = new TabRenameAction(this,parent.getShell());
     		tabRenameAction.setEnabled(false);
     }
-    
+
     private void storeAllCurrentlyOpenFiles() {
     	List fileList = new Vector();
     	Iterator keyIterator = logTab.keySet().iterator();
@@ -586,7 +637,7 @@ public class LogViewer extends ViewPart {
     	}
     	LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_LAST_OPEN_FILES,PreferenceValueConverter.asLogFileListString(fileList));
     }
-    
+
     private void openAllLastOpenFiles() {
     	List logFiles = PreferenceValueConverter.asLogFileList(LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_LAST_OPEN_FILES));
     	Iterator it = logFiles.iterator();
@@ -595,12 +646,12 @@ public class LogViewer extends ViewPart {
     		openLogFile(logFile);
     	}
     }
-	
+
     private void createConsole() {
     	console = new LogViewerConsole(LogViewerPlugin.getResourceString("logviewer.plugin.console.name"), null);
     	//console.activate();
     	//console.setMonitorStatus(true);
-    	ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });    	
+    	ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{ console });
     	printDefaultMessage();
     }
 
@@ -615,9 +666,9 @@ public class LogViewer extends ViewPart {
                 if(!isAvailable()) {
                     return;
                 }
-                
+
                 LogFileTab tab = getSelectedTab();
-                
+
                 // activate / show the view and tab
                 if (viewer.isShowWhenUpdated()) {
 	    			//LogViewer view = null;
@@ -627,8 +678,8 @@ public class LogViewer extends ViewPart {
 	    			} catch (PartInitException e) {
 	    				e.printStackTrace();
 	    			}
-	    			
-	    			// change selection 
+
+	    			// change selection
 	                if (event.getDocument() != tab.getDocument()) {
 	                    // show active document
 	                	Iterator keyIterator = logTab.keySet().iterator();
@@ -644,10 +695,10 @@ public class LogViewer extends ViewPart {
 		                		tabfolder.notifyListeners(SWT.Selection, newEvent);
 		                		break;
 	                		}
-	                	}	                	
+	                	}
 	                }
                 }
-                
+
                 if(logTab != null && event.getDocument() == tab.getDocument() && viewer.getDocument() != null) {
                     viewer.refresh();
                     viewer.showBottomOfFile();
@@ -661,9 +712,9 @@ public class LogViewer extends ViewPart {
             protected ViewDocumentListener() {
             }
     }
-    
+
     private class TabSelectionListener implements SelectionListener {
-    	
+
 		/* (non-Javadoc)
 		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 		 */
@@ -678,7 +729,7 @@ public class LogViewer extends ViewPart {
 				return;
 			}
 			// get new
-			LogFileTab tab = getSelectedTab(item);			
+			LogFileTab tab = getSelectedTab(item);
 			if(tab == null || tab.getDocument() == null) {
 				return;
 			}
@@ -693,8 +744,7 @@ public class LogViewer extends ViewPart {
 			// restore
 			fileEncodingAction.setText(LogViewerPlugin.getResourceString("menu.encodingchange.text",new Object[] {tab.getDocument().getEncoding()})); //$NON-NLS-1$
 			showDocument(tab.getDocument(), tab.getSelection(), tab.getTopIndex(),false);
-			startTailOnCurrentFile.setEnabled(!tab.getDocument().isMonitor());
-			stopTailOnCurrentFile.setEnabled(tab.getDocument().isMonitor());
+			updateTailStartStopButtons(tab.getDocument().isMonitor());
 			refreshCurrentFileAction.setEnabled(true);
 			// set act tab item
 			oldTabItem = item;
