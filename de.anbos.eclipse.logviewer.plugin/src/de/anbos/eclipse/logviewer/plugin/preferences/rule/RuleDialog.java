@@ -1,5 +1,13 @@
 package de.anbos.eclipse.logviewer.plugin.preferences.rule;
 
+import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
+import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
+
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import org.apache.regexp.RECompiler;
+import org.apache.regexp.RESyntaxException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.jface.preference.ColorSelector;
@@ -20,9 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
-import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
-import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
-
 /*
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -41,10 +46,10 @@ import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
 public class RuleDialog extends StatusDialog {
 
     // Attribute --------------------------------------------------------------------
-    
+
     private RulePreferenceData data;
     private boolean edit;
-    
+
 //    private Text priority;
     private Button enabledCheckBox;
     private Button caseInsensitiveCheckBox;
@@ -56,7 +61,7 @@ public class RuleDialog extends StatusDialog {
     private Text valueText;
 
     // Constructor ------------------------------------------------------------------
-    
+
     public RuleDialog(Shell parent, RulePreferenceData data, boolean edit) {
         super(parent);
         this.data = data;
@@ -73,9 +78,9 @@ public class RuleDialog extends StatusDialog {
         setTitle(title);
     }
 
-    
+
     // Public -----------------------------------------------------------------------
-    
+
     public Control createDialogArea(Composite parent) {
     	Composite pageComponent = new Composite(parent,SWT.NULL);
         GridLayout layout0 = new GridLayout();
@@ -83,13 +88,13 @@ public class RuleDialog extends StatusDialog {
         layout0.makeColumnsEqualWidth = true;
         layout0.marginWidth = 5;
         layout0.marginHeight = 4;
-        pageComponent.setLayout(layout0);    	
+        pageComponent.setLayout(layout0);
         GridData data0 = new GridData(GridData.FILL_HORIZONTAL);
         pageComponent.setLayoutData(data0);
         pageComponent.setFont(parent.getFont());
-    	// define group1 
+    	// define group1
     	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.lineselection.title"));    	
+    	pageGroup1.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.lineselection.title"));
         GridLayout layout1 = new GridLayout();
         layout1.numColumns = 2;
         layout1.makeColumnsEqualWidth = true;
@@ -111,7 +116,7 @@ public class RuleDialog extends StatusDialog {
         createCaseInsensitiveCheckBox(pageGroup1);
         // create match mode combo
         createMatchModeCombo(pageGroup1);
-    	// define group2        
+    	// define group2
     	Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
     	pageGroup2.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.actions.title"));
         GridLayout layout2 = new GridLayout();
@@ -155,7 +160,7 @@ public class RuleDialog extends StatusDialog {
         pageGroup22.setLayoutData(data22);
         pageGroup22.setFont(parent.getFont());
         */
-        
+
         //if (edit) {
 	    	// send event to refresh matchMode
 	    	Event event = new Event();
@@ -167,20 +172,12 @@ public class RuleDialog extends StatusDialog {
     }
 
     // Protected --------------------------------------------------------------------
-    
+
     protected void okPressed() {
         int position = -1;
 
-        if(ruleTypeCombo.getText() == null || ruleTypeCombo.getText().length() <= 0) {
-        	MessageDialog.openError(getShell(),
-        			LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
-        			LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.rule.text")); //$NON-NLS-1$
-            return;
-        }
-        if(valueText.getText() == null || valueText.getText().length() <= 0) {
-        	MessageDialog.openError(getShell(),
-        			LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.incompletedata.title"), //$NON-NLS-1$
-        			LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.value.text")); //$NON-NLS-1$
+        boolean rulesOK = validateRuleValues();
+        if (!rulesOK) {
             return;
         }
         data.setPosition(position);
@@ -193,6 +190,51 @@ public class RuleDialog extends StatusDialog {
         data.setBackgroundColor(backgroundColorSelector.getColorValue());
         data.setForegroundColor(foregroundColorSelector.getColorValue());
         super.okPressed();
+    }
+
+    private boolean validateRuleValues() {
+
+    	final String title = LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.incompletedata.title");
+
+    	// check rule type
+        if ( (ruleTypeCombo.getText() == null) || (ruleTypeCombo.getText().length() <= 0)) {
+        	MessageDialog.openError(getShell(), title, LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.rule.text"));
+        	return false;
+        }
+
+        // check rule value
+    	boolean valid = true;
+    	String text  = LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.error.value.text");
+        if ( (valueText.getText() == null) || (valueText.getText().length() <= 0)) {
+        	valid = false;
+        } else {
+            final String ruleClassName = LogViewerPlugin.getResourceString(ruleTypeCombo.getText());
+            // compile
+            if (RuleFactory.isJavaRegExpRule(ruleClassName)) {
+                try {
+                    Pattern.compile(valueText.getText(), 0);
+                }
+                catch (PatternSyntaxException ex) {
+                	text += "" + "\n\n" + ex.getLocalizedMessage();
+                    valid = false;
+                }
+            } else /* if (RuleFactory.isJakartaRegExpRule(ruleClassName) || RuleFactory.isWordRule(ruleClassName)) */ {
+                try {
+                    RECompiler compiler = new RECompiler();
+                    compiler.compile(valueText.getText());
+                }
+                catch (RESyntaxException ex) {
+                	text += "" + "\n\n" + ex.getLocalizedMessage();
+                    valid = false;
+                }
+            }
+        }
+
+        // show error message
+        if (!valid) {
+            MessageDialog.openError(getShell(), title, text);
+        }
+        return valid;
     }
 
     // Private ----------------------------------------------------------------------
@@ -235,9 +277,9 @@ public class RuleDialog extends StatusDialog {
         }
     	// TODO: remove after implementing more filters / actions !!!
     	coloringEnabledCheckBox.setSelection(true);
-    	coloringEnabledCheckBox.setEnabled(false);        
+    	coloringEnabledCheckBox.setEnabled(false);
     }
-    
+
     private void createRuleCombo(Composite parent) {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
@@ -252,20 +294,20 @@ public class RuleDialog extends StatusDialog {
 
 			public void widgetSelected(SelectionEvent e) {
 				String text = ruleTypeCombo.getItem(ruleTypeCombo.getSelectionIndex());
-				// word / jakarta regexp support only 'find' mode				
+				// word / jakarta regexp support only 'find' mode
 				if (text.toLowerCase().indexOf("word")    !=-1 ||
 					text.toLowerCase().indexOf("jakarta") !=-1  ) {
 					matchModeCombo.setEnabled(false);
 					matchModeCombo.select(0);
 				}
-				else {					
+				else {
 					matchModeCombo.setEnabled(true);
 				}
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
         if(edit) {
@@ -289,7 +331,7 @@ public class RuleDialog extends StatusDialog {
         // draw combo
         matchModeCombo = new CCombo(parent,SWT.BORDER);
         matchModeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        matchModeCombo.setEditable(false);        
+        matchModeCombo.setEditable(false);
         String[] matchModes = {LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.matchmode.entry.find"), LogViewerPlugin.getResourceString("preferences.ruleseditor.dialog.matchmode.entry.match")};
         matchModeCombo.setItems(matchModes);
         if(edit) {
@@ -305,7 +347,7 @@ public class RuleDialog extends StatusDialog {
 
     private void createBackgroundColorSelector(Composite parent) {
     	// Fix for issue 38: Cannot enter colors using Mac OS X
-    	createEmptyTable(parent,2);    	
+    	createEmptyTable(parent,2);
         // draw label
         Label label = new Label(parent,SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
@@ -332,9 +374,9 @@ public class RuleDialog extends StatusDialog {
         foregroundColorSelector.getButton().setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
         if(edit) {
             foregroundColorSelector.setColorValue(this.data.getForegroundColor());
-        }      
+        }
     }
-    
+
 	// workaround for bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=279840
 	// Bug 279840 -  ColorDialog fails to return a selection
 	// Eclipse 3.5, Mac OSX with cocoa
@@ -352,7 +394,7 @@ public class RuleDialog extends StatusDialog {
         table.setBackground (composite.getBackground());
         return table;
     }
-    
+
     private void createValueTextField(Composite parent) {
         // draw label
         Label label = new Label(parent,SWT.LEFT);
