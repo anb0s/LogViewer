@@ -82,7 +82,8 @@ public class FileTail implements Runnable {
             int readwait = LogViewerPlugin.getDefault().getPreferenceStore().getInt(ILogViewerConstants.PREF_READWAIT);
             file = openFile();
             if(file == null) {
-                throw new ThreadInterruptedException("file was null"); //$NON-NLS-1$
+            	// should not happen, see Issue 55: Improve FileTail's exception handling
+            	throw new FileNotFoundException();
             }
             FileChannel channel = file.getChannel();
             while(isRunning) {
@@ -93,6 +94,11 @@ public class FileTail implements Runnable {
                 }
                 wait(readwait);
             }
+        } catch(FileNotFoundException fnf) {
+        	// no exeption if file not found, because it's predictable
+        	// see Issue 55: Improve FileTail's exception handling
+            //logger.logError(fnf);
+            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.notfound",new String[]{filePath}).toCharArray(),true);        	
         } catch(ThreadInterruptedException tie) {
             logger.logError(tie);
             listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{filePath}).toCharArray(),true);
@@ -117,8 +123,8 @@ public class FileTail implements Runnable {
 
     // Private -----------------------------------------------------------------
 
-    private synchronized RandomAccessFile openFile() throws ThreadInterruptedException {
-        boolean firstExec = true;
+    private synchronized RandomAccessFile openFile() throws ThreadInterruptedException, FileNotFoundException {
+        boolean firstExec = true;        
         while(isRunning) {
             try {
                 RandomAccessFile file = new RandomAccessFile(filePath,"r"); //$NON-NLS-1$
@@ -136,7 +142,8 @@ public class FileTail implements Runnable {
                 }
             }
         }
-        throw new ThreadInterruptedException("no file found"); //$NON-NLS-1$
+        // right exeption, see Issue 55: Improve FileTail's exception handling
+        throw new FileNotFoundException();
     }
 
     /**
