@@ -59,7 +59,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		IPreferenceStore store = LogViewerPlugin.getDefault().getPreferenceStore();
 		store.addPropertyChangeListener(new PropertyChangeListener());
 		backlogLines = store.getInt(ILogViewerConstants.PREF_BACKLOG);
-		setTextStore(new GapTextStore(50, 300));
+		setTextStore(new GapTextStore(50, 300, 1f));
 		setLineTracker(new DefaultLineTracker());
 		completeInitialization();
 		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);

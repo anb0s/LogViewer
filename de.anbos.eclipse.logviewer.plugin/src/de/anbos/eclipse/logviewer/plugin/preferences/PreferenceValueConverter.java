@@ -31,12 +31,12 @@ import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
 public class PreferenceValueConverter {
 
 	// Constant ----------------------------------------------------------------
-	
+
 	public static String VALUE_DELIMITER	= "|"; //$NON-NLS-1$
 	public static String ITEM_DELIMITER		= "#"; //$NON-NLS-1$
-	
+
 	// Static ------------------------------------------------------------------
-	
+
     public static String asString(RulePreferenceData[] items) {
         StringBuffer buffer = new StringBuffer();
         for(int i = 0 ; i < items.length ; i++) {
@@ -45,7 +45,7 @@ public class PreferenceValueConverter {
         }
         return buffer.toString();
     }
-    
+
     public static final String asString(RulePreferenceData data) {
         String position = Base64.encode(Integer.toString(data.getPosition()));
         String checked = Base64.encode(Boolean.toString(data.isEnabled()));
@@ -54,10 +54,10 @@ public class PreferenceValueConverter {
         String foreground = Base64.encode(StringConverter.asString(data.getForegroundColor()));
         String value = Base64.encode(data.getRuleValue());
 		String matchMode = Base64.encode(data.getMatchMode());
-		String caseInsensitive = Base64.encode(Boolean.toString(data.isCaseInsensitive()));        
+		String caseInsensitive = Base64.encode(Boolean.toString(data.isCaseInsensitive()));
         return position + VALUE_DELIMITER + checked + VALUE_DELIMITER + rule + VALUE_DELIMITER + background + VALUE_DELIMITER + foreground + VALUE_DELIMITER + value + VALUE_DELIMITER + matchMode + VALUE_DELIMITER + caseInsensitive;
     }
-    
+
     public static RulePreferenceData[] asRulePreferenceDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
         RulePreferenceData[] items = new RulePreferenceData[tokenizer.countTokens()];
@@ -66,13 +66,13 @@ public class PreferenceValueConverter {
         }
         return items;
     }
-    
+
     public static RulePreferenceData asRulePreferenceData(String value) {
         RulePreferenceData data = new RulePreferenceData();
         data.fillTokens(value, VALUE_DELIMITER);
         return data;
     }
-	
+
 	public static ILogFileToolRule asRule(String value) {
 		if(value == null || value.length() <= 0) {
 			return null;
@@ -82,27 +82,27 @@ public class PreferenceValueConverter {
 		ruleDesc.fillTokens(value, VALUE_DELIMITER);
 		return RuleFactory.getRule(ruleDesc.getRuleName(), ruleDesc);
 	}
-	
-	public static List asRuleArray(String value) {
-		List rules = new Vector();
+
+	public static List<ILogFileToolRule> asRuleArray(String value) {
+		List<ILogFileToolRule> rules = new Vector<ILogFileToolRule>();
 		StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
 		while(tokenizer.hasMoreTokens()) {
 			ILogFileToolRule rule = asRule(tokenizer.nextToken());
 			if(rule != null) {
 				rules.add(rule);
 			}
-		}		
+		}
 		return rules;
 	}
-	
+
 	public static String asString(HistoryFile historyFile) {
 		return historyFile.getPath() + VALUE_DELIMITER + historyFile.getCount() + VALUE_DELIMITER + historyFile.getType();
 	}
-	
+
 	public static HistoryFile asHistoryFile(String value) {
 		String str[] = new String[3];
 		StringTokenizer tokenizer = new StringTokenizer(value,VALUE_DELIMITER);
-		for (int i=0;i<3;i++) {			
+		for (int i=0;i<3;i++) {
 			if(tokenizer.hasMoreTokens()) {
 				str[i] = tokenizer.nextToken();
 			} else {
@@ -111,9 +111,9 @@ public class PreferenceValueConverter {
 		}
 		return new HistoryFile(str[0],asType(str[2]),Integer.parseInt(str[1]));
 	}
-	
-	public static String asString(List historyFiles) {
-		Iterator it = historyFiles.iterator();
+
+	public static String asString(List<?> historyFiles) {
+		Iterator<?> it = historyFiles.iterator();
 		StringBuffer buffer = new StringBuffer();
 		while(it.hasNext()) {
 			HistoryFile file = (HistoryFile)it.next();
@@ -122,9 +122,9 @@ public class PreferenceValueConverter {
 		}
 		return buffer.toString();
 	}
-	
-	public static List asUnsortedHistoryFileList(String value) {
-		List files = new Vector();
+
+	public static List<HistoryFile> asUnsortedHistoryFileList(String value) {
+		List<HistoryFile> files = new Vector<HistoryFile>();
 		StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
 		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
@@ -147,8 +147,8 @@ public class PreferenceValueConverter {
 		return buffer.toString();
 	}
 
-	public static String asLogFileListString(List logFiles) {
-		Iterator it = logFiles.iterator();
+	public static String asLogFileListString(List<?> logFiles) {
+		Iterator<?> it = logFiles.iterator();
 		StringBuffer buffer = new StringBuffer();
 		while(it.hasNext()) {
 			LogFile logFile = (LogFile)it.next();
@@ -157,11 +157,11 @@ public class PreferenceValueConverter {
 		}
 		return buffer.toString();
 	}
-	
+
 	public static LogFile asLogFile(String logFileStr) {
 		String str[] = new String[5];
 		StringTokenizer tokenizer = new StringTokenizer(logFileStr,VALUE_DELIMITER);
-		for (int i=0;i<5;i++) {			
+		for (int i=0;i<5;i++) {
 			if(tokenizer.hasMoreTokens()) {
 				str[i] = tokenizer.nextToken();
 			} else {
@@ -189,8 +189,8 @@ public class PreferenceValueConverter {
 		return type;
 	}
 
-	public static List asLogFileList(String logFileList) {
-		List files = new Vector();
+	public static List<LogFile> asLogFileList(String logFileList) {
+		List<LogFile> files = new Vector<LogFile>();
 		StringTokenizer tokenizer = new StringTokenizer(logFileList,ITEM_DELIMITER);
 		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();

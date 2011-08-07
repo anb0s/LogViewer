@@ -17,10 +17,10 @@ import java.util.Comparator;
  * and limitations under the License.
  */
 
-public class HistoryFileComparator implements Comparator {
+public class HistoryFileComparator implements Comparator<Object> {
 
 	// Public ------------------------------------------------------------------
-	
+
 	public int compare(Object arg0, Object arg1) {
 		if(!(arg0 instanceof HistoryFile) || !(arg1 instanceof HistoryFile)) {
 			return -1;

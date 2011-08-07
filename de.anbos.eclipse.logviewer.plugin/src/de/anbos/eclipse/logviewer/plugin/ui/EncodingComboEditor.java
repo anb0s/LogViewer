@@ -35,38 +35,38 @@ import de.anbos.eclipse.logviewer.plugin.Logger;
 public class EncodingComboEditor extends FieldEditor {
 
 	// Constant ----------------------------------------------------------------
-	
+
 	/**
 	 * Text limit constant (value <code>-1</code>) indicating unlimited
 	 * text limit and width.
 	 */
 	public static int UNLIMITED = -1;
-	
+
 	// Attribute ---------------------------------------------------------------
-	
+
     private Logger logger;
 	private Combo combo;
-	
+
 	/**
 	 * Width of text field in characters; initially unlimited.
 	 */
 	private int widthInChars = UNLIMITED;
-	
+
 	// Constructor -------------------------------------------------------------
-	
+
 	public EncodingComboEditor(String name, String labelText, int width, Composite parent) {
         logger = LogViewerPlugin.getDefault().getLogger();
 		init(name, labelText);
 		widthInChars = width;
 		createControl(parent);
 	}
-	
+
 	public EncodingComboEditor(String name, String labelText, Composite parent) {
 		this(name,labelText,UNLIMITED,parent);
 	}
-	
+
 	// Protected ---------------------------------------------------------------
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditor#adjustForNumColumns(int)
 	 */
@@ -83,7 +83,7 @@ public class EncodingComboEditor extends FieldEditor {
 	 */
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 		getLabelControl(parent);
-		
+
 		combo = getComboControl(parent);
 		GridData gd = new GridData();
 		gd.horizontalSpan = numColumns - 1;
@@ -107,13 +107,13 @@ public class EncodingComboEditor extends FieldEditor {
 	protected void doLoad() {
 		if(combo != null) {
 			// fill the encoding data
-			SortedMap charsets = Charset.availableCharsets();
-			Set keys = charsets.keySet();
+			SortedMap<?, ?> charsets = Charset.availableCharsets();
+			Set<?> keys = charsets.keySet();
 			// fill the combo with all available encoding types
-			Iterator keyIterator = keys.iterator();
+			Iterator<?> keyIterator = keys.iterator();
 			while(keyIterator.hasNext()) {
 				Object obj = charsets.get(keyIterator.next());
-				try {				
+				try {
 					Method method = obj.getClass().getMethod("displayName",new Class[]{}); //$NON-NLS-1$
 					String encoding = (String)method.invoke(obj,new Object[]{});
 					combo.add(encoding);
@@ -133,18 +133,18 @@ public class EncodingComboEditor extends FieldEditor {
 			combo.setText(value);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditor#doStore()
 	 */
 	protected void doStore() {
 		getPreferenceStore().setValue(getPreferenceName(),getComboControl().getText());
 	}
-	
+
 	protected Combo getComboControl() {
 		return combo;
 	}
-	
+
 	protected Combo getComboControl(Composite parent) {
 		if(combo != null) {
 			return combo;
@@ -153,9 +153,9 @@ public class EncodingComboEditor extends FieldEditor {
 		combo.setFont(parent.getFont());
 		return combo;
 	}
-	
+
 	// Public ------------------------------------------------------------------
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditor#getNumberOfControls()
 	 */

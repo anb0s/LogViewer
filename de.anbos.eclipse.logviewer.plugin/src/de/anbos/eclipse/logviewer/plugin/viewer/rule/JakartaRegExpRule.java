@@ -17,14 +17,10 @@ package de.anbos.eclipse.logviewer.plugin.viewer.rule;
 
 import org.apache.regexp.RE;
 import org.apache.regexp.REUtil;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
 
 public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 
@@ -35,7 +31,7 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 	private int priority;
 
 	// Constructor -------------------------------------------------------------
-	
+
 	public JakartaRegExpRule(LogToolRuleDesc ruleDesc) {
 		regexp = REUtil.createRE(ruleDesc.getRuleValue());
 		int flags = regexp.getMatchFlags();
@@ -47,9 +43,9 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 	}
 
 	// Static ------------------------------------------------------------------
-	
+
 	// Public ------------------------------------------------------------------
-	
+
 	public IToken getSuccessToken() {
 		return successToken;
 	}
@@ -67,17 +63,17 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 	public IToken evaluate(ICharacterScanner scanner) {
 		return evaluate(scanner,false);
 	}
-	
+
 	public int getPriority() {
 		return priority;
 	}
-	
+
 	// Private -----------------------------------------------------------------
-	
+
 	private String returnNextCompleteLine(ICharacterScanner scanner) {
 
 		char[][] lineDelimiters= scanner.getLegalLineDelimiters();
-		
+
 		int c;
 		StringBuffer buffer = new StringBuffer();
 		while((c = scanner.read()) != ICharacterScanner.EOF) {
@@ -88,7 +84,7 @@ public class JakartaRegExpRule implements IPredicateRule, ILogFileToolRule {
 		}
 		return null;
 	}
-	
+
 	private boolean isEOLCharacter(int c, char[][] eolChars) {
 		for (int i= 0; i < eolChars.length; i++) {
 			if (c == eolChars[i][0])

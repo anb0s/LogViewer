@@ -29,22 +29,22 @@ import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
 public class RuleStore {
 
     // Constant ---------------------------------------------------------------------
-    
+
     // Attribute --------------------------------------------------------------------
-    
+
     private IPreferenceStore store;
-    private List items;
+    private List<RulePreferenceData> items;
     private DataObjectComparator comparator;
-    
+
     // Constructor ------------------------------------------------------------------
-    
+
     public RuleStore(IPreferenceStore store) {
-        items = new ArrayList();
+        items = new ArrayList<RulePreferenceData>();
         this.store = store;
     }
-    
+
     // Public -----------------------------------------------------------------------
-    
+
     public RulePreferenceData[] getAllRuleDetails() {
         RulePreferenceData[] data = new RulePreferenceData[items.size()];
         for(int i = 0 ; i < data.length ; i++) {
@@ -52,10 +52,10 @@ public class RuleStore {
         }
         return data;
     }
-    
+
     public RulePreferenceData[] getAllCheckedRuleDetails() {
-        List checkedItems = new ArrayList();
-        Iterator dataIterator = items.iterator();
+        List<RulePreferenceData> checkedItems = new ArrayList<RulePreferenceData>();
+        Iterator<RulePreferenceData> dataIterator = items.iterator();
         while(dataIterator.hasNext()) {
             RulePreferenceData data = (RulePreferenceData)dataIterator.next();
             if(data.isEnabled()) {
@@ -71,7 +71,7 @@ public class RuleStore {
         }
         return checked;
     }
-    
+
     public RulePreferenceData getPreviousElement(RulePreferenceData data) {
     	sort();
         for(int i = 0 ; i < items.size() ; i++) {
@@ -82,11 +82,11 @@ public class RuleStore {
             	} catch(Throwable t) {
             		return null;
             	}
-            }           
+            }
         }
         return null;
     }
-    
+
     public RulePreferenceData getNextElement(RulePreferenceData data) {
     	sort();
         for(int i = 0 ; i < items.size() ; i++) {
@@ -97,11 +97,11 @@ public class RuleStore {
             	} catch(Throwable t) {
             		return null;
             	}
-            }           
+            }
         }
         return null;
     }
-    
+
     public RulePreferenceData getLastElement() {
     	sort();
     	int index = items.size() - 1;
@@ -110,7 +110,7 @@ public class RuleStore {
     	}
     	return (RulePreferenceData)items.get(index);
     }
-    
+
     /**
      * adds the prioprity automaticaly
      */
@@ -124,17 +124,17 @@ public class RuleStore {
         items.add(data);
         sort();
     }
-    
+
     public void delete(RulePreferenceData data) {
         items.remove(data);
         sort();
     }
-    
+
     public void save() {
         store.setValue(ILogViewerConstants.PREF_COLORING_ITEMS,PreferenceValueConverter.asString(getAllRuleDetails()));
     }
-    
-    public void loadDefault() { 
+
+    public void loadDefault() {
         RulePreferenceData[] items = PreferenceValueConverter.asRulePreferenceDataArray(store.getDefaultString(ILogViewerConstants.PREF_COLORING_ITEMS));
         this.items.clear();
         for(int i = 0 ; i < items.length ; i++) {
@@ -142,7 +142,7 @@ public class RuleStore {
         }
         sort();
     }
-    
+
     public void load() {
         RulePreferenceData[] items = PreferenceValueConverter.asRulePreferenceDataArray(store.getString(ILogViewerConstants.PREF_COLORING_ITEMS));
         this.items.clear();
@@ -151,13 +151,13 @@ public class RuleStore {
         }
         sort();
     }
-    
+
     public void removeAll() {
     	items.clear();
     }
-    
+
     // Private ----------------------------------------------------------------------
-    
+
     private void sort() {
     	if(comparator == null) {
     		comparator = new DataObjectComparator();
@@ -168,11 +168,11 @@ public class RuleStore {
     		((RulePreferenceData)items.get(i)).setPosition(i);
     	}
     }
-    
+
     // Inner Classe -----------------------------------------------------------------
-    
-    
-    private class DataObjectComparator implements Comparator {
+
+
+    private class DataObjectComparator implements Comparator<Object> {
 
 		public int compare(Object object1, Object object2) {
 			RulePreferenceData data1 = null;
@@ -197,6 +197,6 @@ public class RuleStore {
 			}
 			return -1;
 		}
-    	
+
     }
 }

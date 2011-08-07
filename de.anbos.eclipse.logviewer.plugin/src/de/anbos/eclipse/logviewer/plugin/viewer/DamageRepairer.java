@@ -1,6 +1,6 @@
 package de.anbos.eclipse.logviewer.plugin.viewer;
 
-import org.eclipse.jface.text.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -37,25 +37,25 @@ import de.anbos.eclipse.logviewer.plugin.viewer.rule.TokenData;
  */
 
 public class DamageRepairer implements IPresentationDamager, IPresentationRepairer {
-    
+
     // Attribute --------------------------------------------------------------------
-    
+
     private Logger logger;
     private ITokenScanner scanner;
     private TextAttribute defaultTextAttribute;
     private IDocument document;
 
     // Constructor ------------------------------------------------------------------
-    
+
     public DamageRepairer(ITokenScanner scanner) {
         logger = LogViewerPlugin.getDefault().getLogger();
         Assert.isNotNull(scanner);
         this.scanner = scanner;
         defaultTextAttribute = new TextAttribute(null);
     }
-    
+
     // Public -----------------------------------------------------------------------
-    
+
     public void setDocument(IDocument document) {
         this.document = document;
     }
@@ -84,7 +84,7 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
         }
         return partition;
     }
-     
+
     public void createPresentation(TextPresentation presentation, ITypedRegion region) {
         int start= region.getOffset();
         int length= 0;
@@ -111,9 +111,9 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
         }
         addRange(presentation,start,length,attribute,true);
     }
-    
+
     // Private ----------------------------------------------------------------------
-    
+
     /**
      * Returns the end offset of the line that contains the specified offset or
      * if the offset is inside a line delimiter, the end offset of the next line.
@@ -136,7 +136,7 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
             return document.getLength();
         }
     }
-    
+
     /**
      * Returns a text attribute encoded in the given token. If the token's
      * data is not <code>null</code> and a text attribute it is assumed that
@@ -153,7 +153,7 @@ public class DamageRepairer implements IPresentationDamager, IPresentationRepair
         }
         return defaultTextAttribute;
     }
-    
+
     /**
      * Adds style information to the given text presentation.
      *

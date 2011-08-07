@@ -34,55 +34,55 @@ import de.anbos.eclipse.logviewer.plugin.preferences.HistoryFile;
 public class LocalPullDownMenu implements IMenuListener {
 
 	// Constant ----------------------------------------------------------------
-	
+
 	private static final String FILELIST	= "Filelist";
 	private static final String SEPARATOR	= "Separator";
-	
+
 	// Attribute ---------------------------------------------------------------
-	
+
 	private IMenuManager menuManager;
 	private LogViewer view;
 	private Shell shell;
-	private List actionList;
-	
+	private List<Object> actionList;
+
 	// Constructor -------------------------------------------------------------
-	
+
 	public LocalPullDownMenu(IMenuManager menuManager, LogViewer view, Shell shell) {
 		this.menuManager = menuManager;
 		this.view = view;
 		this.shell = shell;
-		actionList = new Vector();
+		actionList = new Vector<Object>();
 		this.menuManager.setRemoveAllWhenShown(true);
 		this.menuManager.addMenuListener(this);
 	}
-	
+
 	// Public ------------------------------------------------------------------
-	
+
 	public void addAction(IAction action) {
 		actionList.add(action);
 	}
-	
+
 	public void addSeparator() {
 		actionList.add(SEPARATOR);
 	}
-	
+
 	public void addFilelist() {
 		actionList.add(FILELIST);
 	}
-	
+
 	public void finalize() {
 		fillMenu();
 	}
-	
+
 	public void menuAboutToShow(IMenuManager manager) {
 		fillMenu();
 	}
-	
+
 	// Private -----------------------------------------------------------------
-	
+
 	private void fillMenu() {
 		boolean historyIsEmpty = true;
-		Iterator it = actionList.iterator();
+		Iterator<Object> it = actionList.iterator();
 		while(it.hasNext()) {
 			Object object = it.next();
 			if(object instanceof String) {
@@ -91,7 +91,7 @@ public class LocalPullDownMenu implements IMenuListener {
 					menuManager.add(new Separator());
 				}
 				if(value.equals(FILELIST)) {
-					List files = FileHistoryTracker.getInstance().getFiles();
+					List<?> files = FileHistoryTracker.getInstance().getFiles();
 					for(int i = 0 ; i < files.size() ; i++) {
 						HistoryFile file = (HistoryFile)files.get(i);
 						if(file != null) {
