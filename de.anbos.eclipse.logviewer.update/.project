@@ -3,6 +3,8 @@
 	<name>de.anbos.eclipse.logviewer.update</name>
 	<comment></comment>
 	<projects>
+		<project>de.anbos.eclipse.logviewer.feature</project>
+		<project>de.anbos.eclipse.logviewer.plugin</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

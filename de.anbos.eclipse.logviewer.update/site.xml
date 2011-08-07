@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Eclipse Log Viewer Update Site" url="http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/">
+   <description name="Eclipse Log Viewer Update Site" url="http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/">
       Eclipse Plug-in for tailing log files and eclipse consoles, including syntax coloring. It allows you to have multiple logs open concurrently.
    </description>
    <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.5.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.5">
@@ -30,8 +30,12 @@
    <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.7.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.7">
       <category name="Log Viewer"/>
    </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.8.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.8">
+   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.8.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.8" arch="">
       <category name="Log Viewer"/>
    </feature>
-   <category-def name="Log Viewer" label="Log Viewer"/>
+   <category-def name="Log Viewer" label="Log Viewer">
+      <description>
+         Eclipse Log Viewer
+      </description>
+   </category-def>
 </site>
