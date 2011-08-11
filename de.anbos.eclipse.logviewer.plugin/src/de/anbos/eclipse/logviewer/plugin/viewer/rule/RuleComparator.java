@@ -17,7 +17,7 @@ import java.util.Comparator;
  * and limitations under the License.
  */
 
-public class RuleComparator implements Comparator {
+public class RuleComparator implements Comparator<Object> {
 
 	public int compare(Object arg0, Object arg1) {
 		if(!(arg0 instanceof ILogFileToolRule)) {
@@ -28,7 +28,7 @@ public class RuleComparator implements Comparator {
 		}
 		ILogFileToolRule rule0 = (ILogFileToolRule)arg0;
 		ILogFileToolRule rule1 = (ILogFileToolRule)arg1;
-		
+
 		if(rule0.getPriority() > rule1.getPriority()) {
 			return 1;
 		}

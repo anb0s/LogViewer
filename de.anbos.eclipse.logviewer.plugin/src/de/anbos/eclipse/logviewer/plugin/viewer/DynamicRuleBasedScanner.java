@@ -18,6 +18,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import de.anbos.eclipse.logviewer.plugin.ILogViewerConstants;
 import de.anbos.eclipse.logviewer.plugin.LogViewerPlugin;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
+import de.anbos.eclipse.logviewer.plugin.viewer.rule.ILogFileToolRule;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleComparator;
 
 /*
@@ -38,12 +39,12 @@ import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleComparator;
 public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner {
 
     // Constant ---------------------------------------------------------------------
-    
+
 	/** Internal setting for the uninitialized column cache. */
 	private static final int UNDEFINED= -1;
-    
+
     // Attribute --------------------------------------------------------------------
-    
+
     private IToken defaultToken;
     private IDocument document;
     private int offset;
@@ -51,19 +52,19 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
     private int rangeEnd;
     private int tokenOffset;
     private char[][] delimiter;
-    private List rules;
-    
+    private List<ILogFileToolRule> rules;
+
     // Constructor ------------------------------------------------------------------
-    
+
     public DynamicRuleBasedScanner(String rulesPreferenceString) {
     	LogViewerPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(new PropertyChangeListener());
-        rules = new Vector();
-        loadRules(rulesPreferenceString);  
+        rules = new Vector<ILogFileToolRule>();
+        loadRules(rulesPreferenceString);
         defaultToken= Token.UNDEFINED;
     }
-    
+
     // Public -----------------------------------------------------------------------
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.text.rules.ITokenScanner#setRange(org.eclipse.jface.text.IDocument, int, int)
      */
@@ -72,14 +73,14 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 		this.offset = offset;
 		this.column = UNDEFINED;
 		this.rangeEnd = Math.min(this.document.getLength(), offset + length);
-		
+
 		String[] delimiters= this.document.getLegalLineDelimiters();
 		this.delimiter = new char[delimiters.length][];
 		for (int i= 0; i < delimiters.length; i++) {
 			this.delimiter[i]= delimiters[i].toCharArray();
 		}
     }
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.text.rules.ICharacterScanner#getLegalLineDelimiters()
      */
@@ -95,9 +96,9 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 			try {
 				int line = document.getLineOfOffset(offset);
 				int start = document.getLineOffset(line);
-				
+
 				column = offset - start;
-				
+
 			} catch (BadLocationException ex) {
 			}
 		}
@@ -109,7 +110,7 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
      */
     public int read() {
 		try {
-			
+
 			if (offset < rangeEnd) {
 				try {
 					return document.getChar(offset);
@@ -117,7 +118,7 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 				}
 			}
 			return EOF;
-		
+
 		} finally {
 			++offset;
 			column = UNDEFINED;
@@ -138,7 +139,7 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 		IToken token;
 		tokenOffset = offset;
 		column = UNDEFINED;
-		Iterator ruleIterator = rules.iterator();
+		Iterator<?> ruleIterator = rules.iterator();
 		while(ruleIterator.hasNext()) {
 		    IRule rule = (IRule)ruleIterator.next();
 		    token = rule.evaluate(this);
@@ -176,20 +177,20 @@ public class DynamicRuleBasedScanner implements ICharacterScanner, ITokenScanner
 		}
 		return rangeEnd - getTokenOffset();
     }
-    
+
     // Private -----------------------------------------------------------------
-    
+
     private void loadRules(String newRules) {
-		List newRulesList = PreferenceValueConverter.asRuleArray(newRules);
+		List<ILogFileToolRule> newRulesList = PreferenceValueConverter.asRuleArray(newRules);
 		rules.clear();
-		rules.addAll(newRulesList); 
+		rules.addAll(newRulesList);
 		Collections.sort(rules,new RuleComparator());
     }
-    
+
 	// Inner classes ----------------------------------------------------------------
-	
+
 	private class PropertyChangeListener implements IPropertyChangeListener {
-		
+
 			/* (non-Javadoc)
 		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
 		 */

@@ -52,7 +52,7 @@ and limitations under the License.
          id="de.anbos.eclipse.logviewer.plugin"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.9.8.8"
          unpack="false"/>
 
 </feature>

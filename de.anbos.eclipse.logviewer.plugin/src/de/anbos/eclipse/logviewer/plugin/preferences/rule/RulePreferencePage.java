@@ -68,11 +68,11 @@ import de.anbos.eclipse.logviewer.plugin.preferences.RuleItemReadWriter;
 public class RulePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
 	// Constant ---------------------------------------------------------------------
-	
+
 	private static final int TABLE_WIDTH = 400;
-	
+
     // Attribute --------------------------------------------------------------------
-    
+
     private Logger logger;
     private Table table;
     private ItemMover itemMover;
@@ -87,31 +87,31 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
     private Button exportSelectedButton;
     private Button exportAllButton;
     private Button removeButton;
-    
+
     // Constructor ------------------------------------------------------------------
-    
+
     // Public -----------------------------------------------------------------------
-    
+
     public void init(IWorkbench workbench) {
         logger = LogViewerPlugin.getDefault().getLogger();
     }
-    
+
     public boolean performOk() {
         store.save();
         return true;
     }
-    
+
     // Protected --------------------------------------------------------------------
-    
+
     protected void performDefaults() {
         store.loadDefault();
         tableViewer.refresh();
     }
-    
+
     protected void performApply() {
     	performOk();
     }
-    
+
     protected Control createContents(Composite parent) {
         Font font = parent.getFont();
         // define default grid
@@ -121,7 +121,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         pageComponent.setLayout(layout);
-        
+
         // list
         GridData data = new GridData(GridData.FILL_BOTH);
         // create table
@@ -129,24 +129,24 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
         table.setFont(parent.getFont());
-        
+
         TableColumn column1 = new TableColumn(table,SWT.LEFT);
         column1.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.table.header.column0.title")); //$NON-NLS-1$
         column1.setResizable(false);
 
         TableColumn column2 = new TableColumn(table,SWT.LEFT);
         column2.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.table.header.column1.title")); //$NON-NLS-1$
-        column2.setResizable(false);     
-        
+        column2.setResizable(false);
+
         int availableRows = availableRows(pageComponent);
         data.heightHint = table.getItemHeight()* (availableRows / 8);
         data.widthHint = TABLE_WIDTH;
         table.setLayoutData(data);
-        
+
         @SuppressWarnings("unused")
 		TableItemColorController tableItemColorController = new TableItemColorController(table);
         //tableItemColorController.notifyAll();
-        
+
         tableViewer = new CheckboxTableViewer(table);
         tableViewer.setLabelProvider(new RuleLabelProvider());
         tableViewer.setContentProvider(new RuleContentProvider());
@@ -155,25 +155,25 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         tableViewer.setInput(store);
         tableViewer.setAllChecked(false);
         tableViewer.setCheckedElements(store.getAllCheckedRuleDetails());
-        
+
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent e) {
                 edit();
             }
         });
-        
+
         tableViewer.addCheckStateListener(new ICheckStateListener() {
             public void checkStateChanged(CheckStateChangedEvent event) {
                 RulePreferenceData data = (RulePreferenceData)event.getElement();
                 data.setEnabled(event.getChecked());
             }
         });
-        
+
         tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
+
 			public void selectionChanged(SelectionChangedEvent event) {
 		    	IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
-		    	boolean selected = !selection.isEmpty();		    	
+		    	boolean selected = !selection.isEmpty();
 	    		editButton.setEnabled(selected);
 	    		removeButton.setEnabled(selected);
 	    		upButton.setEnabled(selected);
@@ -181,7 +181,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 	    		exportSelectedButton.setEnabled(selected);
 			}
 		});
-        
+
         tableViewer.setSorter(new ViewerSorter() {
             public int compare(Viewer viewer, Object object1, Object object2) {
                 if(!(object1 instanceof RulePreferenceData) || !(object2 instanceof RulePreferenceData)) {
@@ -205,9 +205,9 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
                 return true;
             }
         });
-        
+
         itemMover = new ItemMover(table,store);
-        
+
         // button pageComponent
         Composite groupComponent= new Composite(pageComponent, SWT.NULL);
         GridLayout groupLayout = new GridLayout();
@@ -219,7 +219,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         data.horizontalAlignment = GridData.FILL;
         groupComponent.setLayoutData(data);
         groupComponent.setFont(font);
-        
+
         // buttons
         addButton = new Button(groupComponent, SWT.PUSH);
         addButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.add")); //$NON-NLS-1$
@@ -231,7 +231,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         addButton.setLayoutData(data);
         addButton.setFont(font);
         setButtonLayoutData(addButton);
-        
+
         editButton = new Button(groupComponent, SWT.PUSH);
         editButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.edit")); //$NON-NLS-1$
         editButton.addSelectionListener(new SelectionAdapter() {
@@ -242,7 +242,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         editButton.setLayoutData(data);
         editButton.setFont(font);
         setButtonLayoutData(editButton);
-        
+
         removeButton = new Button(groupComponent, SWT.PUSH);
         removeButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.remove")); //$NON-NLS-1$
         removeButton.addSelectionListener(new SelectionAdapter() {
@@ -252,7 +252,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         });
         removeButton.setFont(font);
         setButtonLayoutData(removeButton);
-        
+
         upButton = new Button(groupComponent, SWT.PUSH);
         upButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.up")); //$NON-NLS-1$
         upButton.addSelectionListener(new SelectionAdapter() {
@@ -262,7 +262,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         });
         upButton.setFont(font);
         setButtonLayoutData(upButton);
-        
+
         downButton = new Button(groupComponent, SWT.PUSH);
         downButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.down")); //$NON-NLS-1$
         downButton.addSelectionListener(new SelectionAdapter() {
@@ -272,14 +272,14 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         });
         downButton.setFont(font);
         setButtonLayoutData(downButton);
-        
+
         exportSelectedButton = new Button(groupComponent, SWT.PUSH);
         exportSelectedButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.export.selected")); //$NON-NLS-1$
         exportSelectedButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
             	exportSelected();
             }
-        });      
+        });
         exportSelectedButton.setFont(font);
         setButtonLayoutData(exportSelectedButton);
 
@@ -289,26 +289,26 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
             public void widgetSelected(SelectionEvent event) {
             	exportAll();
             }
-        });      
+        });
         exportAllButton.setFont(font);
         setButtonLayoutData(exportAllButton);
-        
+
         importButton = new Button(groupComponent, SWT.PUSH);
         importButton.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.button.import")); //$NON-NLS-1$
         importButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 inport();
             }
-        });      
+        });
         importButton.setFont(font);
         setButtonLayoutData(importButton);
-        
+
         configureTableResizing(table);
-        
+
         Dialog.applyDialogFont(pageComponent);
         // trigger the resize
         table.getHorizontalBar().setVisible(true);
-        
+
     	// send event to refresh tableViewer
     	Event event = new Event();
 		event.item = null;
@@ -317,18 +317,18 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 
         return pageComponent;
     }
-    
+
     // Private ----------------------------------------------------------------------
-    
+
     private int availableRows(Composite parent) {
         int fontHeight = (parent.getFont().getFontData())[0].getHeight();
         int displayHeight = parent.getDisplay().getClientArea().height;
         return displayHeight / fontHeight;
     }
-    
+
     /**
      * Correctly resizes the table so no phantom columns appear
-     * 
+     *
      * @param table the table
      * @since 3.1
      */
@@ -346,18 +346,18 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
                         int clientAreaWidth= table.getClientArea().width;
                         TableColumn[] columns= table.getColumns();
                         int calculatedtableWidth= 0;
-                        
+
                         if (e.widget == table) {
                             int initial[]= {120,280};
                             int minimums[]= new int[columns.length];
                             int minSum= 0;
                             for (int i= 0; i < columns.length; i++) {
-                                // don't make a column narrower than the minimum, 
+                                // don't make a column narrower than the minimum,
                                 // or than what it is currently if less than the minimum
                                 minimums[i]= Math.min(fWidths[i], initial[i]);
                                 minSum+= minimums[i];
                             }
-                            
+
                             int newWidth= fSum < clientAreaWidth ? clientAreaWidth : Math.max(clientAreaWidth, minSum);
                             final int toDistribute= newWidth - fSum;
                             int lastPart= toDistribute;
@@ -395,7 +395,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
                             }
                             fSum= calculatedtableWidth;
                         }
-                        
+
                         // set scroll bar visible
                         table.getHorizontalBar().setVisible(calculatedtableWidth > clientAreaWidth);
                     } finally {
@@ -409,7 +409,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
                 columns[i].addControlListener(resizer);
             }
         }
-    
+
     private void add() {
         RulePreferenceData data = new RulePreferenceData();
         RuleDialog dialog = new RuleDialog(getShell(),data,false);
@@ -421,18 +421,18 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
             return;
         }
     }
-    
+
     private void remove() {
         IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
 
-        Iterator elements= selection.iterator();
+        Iterator<?> elements= selection.iterator();
         while (elements.hasNext()) {
             RulePreferenceData data = (RulePreferenceData)elements.next();
             store.delete(data);
         }
         tableViewer.refresh();
     }
-    
+
     private void edit() {
         IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
         RulePreferenceData data = (RulePreferenceData)selection.getFirstElement();
@@ -444,18 +444,19 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
             return;
         }
     }
-    
+
     private void up() {
     	itemMover.moveCurrentSelectionUp();
     	tableViewer.refresh();
      }
-    
+
     private void down() {
     	itemMover.moveCurrentSelectionDown();
     	tableViewer.refresh();
     }
-    
-    private void exportSelected() {
+
+    @SuppressWarnings("unchecked")
+	private void exportSelected() {
     	IStructuredSelection selection= (IStructuredSelection)tableViewer.getSelection();
     	if(selection.isEmpty()) {
     		if (askSelectAll()) {
@@ -469,12 +470,13 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
     		}
     	}
 
-    	Collection itemArray= new ArrayList();
+    	Collection<RulePreferenceData> itemArray= new ArrayList<RulePreferenceData>();
     	itemArray.addAll(selection.toList());
-    	export((RulePreferenceData[])itemArray.toArray(new RulePreferenceData[itemArray.size()]));
+    	export(itemArray.toArray(new RulePreferenceData[itemArray.size()]));
     }
 
-    private void exportAll() {
+    @SuppressWarnings("unchecked")
+	private void exportAll() {
     	// save selection
 		IStructuredSelection selectionSave= (IStructuredSelection)tableViewer.getSelection();
 		// select all
@@ -487,16 +489,16 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
         			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.select.items.text")); //$NON-NLS-1$
     		return;
 		} else {
-			//export 
-	    	Collection itemArray= new ArrayList();
+			//export
+	    	Collection<RulePreferenceData> itemArray= new ArrayList<RulePreferenceData>();
 	    	itemArray.addAll(selection.toList());
-	    	export((RulePreferenceData[])itemArray.toArray(new RulePreferenceData[itemArray.size()]));
+	    	export(itemArray.toArray(new RulePreferenceData[itemArray.size()]));
 		}
 
 		// restore selection
 		tableViewer.setSelection(selectionSave, true);
     }
-    
+
     private void export(RulePreferenceData[] data) {
 		FileDialog dialog= new FileDialog(getShell(), SWT.SAVE);
 		dialog.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.export.title")); //$NON-NLS-1$
@@ -509,7 +511,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 
 		File file= new File(path);
-		
+
 		if (file.isHidden()) {
 			String title= LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.title"); //$NON-NLS-1$
 			String message= LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.hidden.text", new String[]{file.getAbsolutePath()}); //$NON-NLS-1$
@@ -523,7 +525,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 			MessageDialog.openError(getShell(),title,message);
 			return;
 		}
-		
+
 		if (!file.exists() || confirmOverwrite(file)) {
 			// first save outstanding changes
 			performApply();
@@ -545,7 +547,7 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		}
     }
-    
+
     private void inport() {
 		FileDialog dialog= new FileDialog(getShell());
 		dialog.setText(LogViewerPlugin.getResourceString("preferences.ruleseditor.import.title")); //$NON-NLS-1$
@@ -591,31 +593,31 @@ public class RulePreferencePage extends PreferencePage implements IWorkbenchPref
 			openReadErrorDialog(e);
 		}
     }
-    
+
     private boolean askOverwriteImport() {
     	return MessageDialog.openQuestion(getShell(),
     			LogViewerPlugin.getResourceString("preferences.ruleseditor.import.dialog.overwrite.title"),
     			LogViewerPlugin.getResourceString("preferences.ruleseditor.import.dialog.overwrite.text"));
     }
-    
+
 	private boolean confirmOverwrite(File file) {
 		return MessageDialog.openQuestion(getShell(),
 				LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.title"), //$NON-NLS-1$
 				LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.exists.text",new String[]{file.getAbsolutePath()})); //$NON-NLS-1$
 	}
-	
+
 	private void openWriteErrorDialog(Exception e) {
 		String title= LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.title"); //$NON-NLS-1$
 		String message= LogViewerPlugin.getResourceString("preferences.ruleseditor.export.error.general.text"); //$NON-NLS-1$
 		MessageDialog.openError(getShell(),title,message);
 	}
-	
+
 	private void openReadErrorDialog(Exception e) {
 		String title= LogViewerPlugin.getResourceString("preferences.ruleseditor.import.error.title"); //$NON-NLS-1$
 		String message= LogViewerPlugin.getResourceString("preferences.ruleseditor.import.error.text"); //$NON-NLS-1$
 		MessageDialog.openError(getShell(),title,message);
 	}
-	
+
     private boolean askSelectAll() {
     	return MessageDialog.openQuestion(getShell(),
     			LogViewerPlugin.getResourceString("preferences.ruleseditor.export.dialog.selectall.title"),

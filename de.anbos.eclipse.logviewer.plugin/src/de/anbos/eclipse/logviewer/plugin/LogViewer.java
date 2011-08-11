@@ -92,7 +92,7 @@ public class LogViewer extends ViewPart {
     private TabFolder tabfolder;
     private LogFileViewer viewer;
 
-    private Map logTab;
+    private Map<String, LogFileTab> logTab;
     private TabItem oldTabItem;
 
     private ViewDocumentListener documentListener;
@@ -117,7 +117,7 @@ public class LogViewer extends ViewPart {
 
     public LogViewer() {
         logger = LogViewerPlugin.getDefault().getLogger();
-        logTab = new Hashtable();
+        logTab = new Hashtable<String, LogFileTab>();
         oldTabItem = null;
         console = null;
         resetMonitorCounter();
@@ -185,7 +185,7 @@ public class LogViewer extends ViewPart {
     }
 
     public void closeAllLogFiles() {
-    	Iterator keyIterator = logTab.keySet().iterator();
+    	Iterator<String> keyIterator = logTab.keySet().iterator();
     	while(keyIterator.hasNext()) {
     		Object key = keyIterator.next();
     		LogFileTab tab = (LogFileTab)logTab.get(key);
@@ -212,7 +212,7 @@ public class LogViewer extends ViewPart {
     }
 
     public void startTailOnAllDocuments() {
-    	Iterator keyIterator = logTab.keySet().iterator();
+    	Iterator<String> keyIterator = logTab.keySet().iterator();
     	while(keyIterator.hasNext()) {
     		Object key = keyIterator.next();
     		LogFileTab tab = (LogFileTab)logTab.get(key);
@@ -223,7 +223,7 @@ public class LogViewer extends ViewPart {
     }
 
     public void stopTailOnAllDocuments() {
-    	Iterator keyIterator = logTab.keySet().iterator();
+    	Iterator<String> keyIterator = logTab.keySet().iterator();
     	while(keyIterator.hasNext()) {
     		Object key = keyIterator.next();
     		LogFileTab tab = (LogFileTab)logTab.get(key);
@@ -425,7 +425,8 @@ public class LogViewer extends ViewPart {
      * the actual viewer is returned if an adapter of type
      * FindReplaceTarget is searched
      */
-    public Object getAdapter(Class adapter) {
+    @SuppressWarnings("rawtypes")
+	public Object getAdapter(Class adapter) {
     	Object object = super.getAdapter(adapter);
     	if(object != null) {
     		return object;
@@ -563,7 +564,7 @@ public class LogViewer extends ViewPart {
 
     private LogFileTab getSelectedTab(TabItem item) {
         if(item != null) {
-            for(Iterator iter = logTab.values().iterator(); iter.hasNext();) {
+            for(Iterator<LogFileTab> iter = logTab.values().iterator(); iter.hasNext();) {
                 LogFileTab logTab = (LogFileTab)iter.next();
                 if(logTab.getItem() == item) {
                     return logTab;
@@ -627,8 +628,8 @@ public class LogViewer extends ViewPart {
     }
 
     private void storeAllCurrentlyOpenFiles() {
-    	List fileList = new Vector();
-    	Iterator keyIterator = logTab.keySet().iterator();
+    	List<LogFile> fileList = new Vector<LogFile>();
+    	Iterator<String> keyIterator = logTab.keySet().iterator();
     	while(keyIterator.hasNext()) {
     		Object key = keyIterator.next();
     		LogFileTab tab = (LogFileTab)logTab.get(key);
@@ -639,8 +640,8 @@ public class LogViewer extends ViewPart {
     }
 
     private void openAllLastOpenFiles() {
-    	List logFiles = PreferenceValueConverter.asLogFileList(LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_LAST_OPEN_FILES));
-    	Iterator it = logFiles.iterator();
+    	List<?> logFiles = PreferenceValueConverter.asLogFileList(LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_LAST_OPEN_FILES));
+    	Iterator<?> it = logFiles.iterator();
     	while(it.hasNext()) {
     		LogFile logFile = (LogFile)it.next();
     		openLogFile(logFile);
@@ -682,7 +683,7 @@ public class LogViewer extends ViewPart {
 	    			// change selection
 	                if (event.getDocument() != tab.getDocument()) {
 	                    // show active document
-	                	Iterator keyIterator = logTab.keySet().iterator();
+	                	Iterator<String> keyIterator = logTab.keySet().iterator();
 	                	while(keyIterator.hasNext()) {
 	                		Object key = keyIterator.next();
 	                		LogFileTab newTab = (LogFileTab)logTab.get(key);

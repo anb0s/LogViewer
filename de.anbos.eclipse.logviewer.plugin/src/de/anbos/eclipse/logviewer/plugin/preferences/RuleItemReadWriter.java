@@ -17,7 +17,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.jface.resource.StringConverter;
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
@@ -48,7 +48,7 @@ import de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferenceData;
 public class RuleItemReadWriter {
 
 	// Constant ----------------------------------------------------------------
-	
+
 	private static final String NODE_ROOT		= "rule-items"; //$NON-NLS-1$
 	private static final String NODE_ITEM		= "item"; //$NON-NLS-1$
 	private static final String NODE_RULE		= "rule"; //$NON-NLS-1$
@@ -60,42 +60,42 @@ public class RuleItemReadWriter {
 
 	private static final String ATTR_POSITION	= "position"; //$NON-NLS-1$
 	private static final String ATTR_CHECKED	= "checked"; //$NON-NLS-1$
-	
+
 	// Attribute ---------------------------------------------------------------
-	
+
 	// Constructor -------------------------------------------------------------
-	
+
 	public RuleItemReadWriter() {
 	}
-	
+
 	// Public ------------------------------------------------------------------
-	
+
 	public RulePreferenceData[] read(InputStream stream) throws IOException {
 		return read(new InputSource(stream));
 	}
-	
+
 	public void write(RulePreferenceData[] data, OutputStream stream) throws IOException {
 		write(data,new StreamResult(stream));
 	}
-	
+
 	// Private -----------------------------------------------------------------
-	
+
 	private RulePreferenceData[] read(InputSource input) throws IOException {
 		boolean errorInParsing = false;
-		Collection itemArray= new ArrayList();
+		Collection<RulePreferenceData> itemArray= new ArrayList<RulePreferenceData>();
 		try {
 			DocumentBuilderFactory factory= DocumentBuilderFactory.newInstance();
 			DocumentBuilder parser= factory.newDocumentBuilder();
 			Document document= parser.parse(input);
-			
+
 			NodeList items= document.getElementsByTagName(NODE_ITEM);
-			
+
 			for (int i= 0; i != items.getLength(); i++) {
 				int fieldCounter = 0;
 				RulePreferenceData data = new RulePreferenceData();
 				Node item= items.item(i);
 				NamedNodeMap attributes= item.getAttributes();
-				
+
 				// position
 				Node positionAttr = attributes.getNamedItem(ATTR_POSITION);
 				if(positionAttr == null) {
@@ -113,7 +113,7 @@ public class RuleItemReadWriter {
 				Node checkedAttr = attributes.getNamedItem(ATTR_CHECKED);
 				if(checkedAttr == null) {
 					errorInParsing = true;
-					break;					
+					break;
 				}
 				if(checkedAttr.getNodeValue().equals(Boolean.toString(true))) {
 					data.setEnabled(true);
@@ -125,7 +125,7 @@ public class RuleItemReadWriter {
 					errorInParsing = true;
 					break;
 				}
-				
+
 				NodeList nodes = item.getChildNodes();
 				for(int n = 0 ; n < nodes.getLength() ; n++) {
 					Node node = nodes.item(n);
@@ -158,7 +158,7 @@ public class RuleItemReadWriter {
 						data.setMatchMode(extractStringValueFromNode(node));
 						fieldCounter++;
 						continue;
-					}					
+					}
 					// case insensitive
 					if(node.getNodeName().equals(NODE_CASEINSENSITIVE)) {
 						if(extractStringValueFromNode(node).equals(Boolean.toString(true))) {
@@ -168,14 +168,14 @@ public class RuleItemReadWriter {
 						}
 						fieldCounter++;
 						continue;
-					}					
+					}
 				}
 				if(fieldCounter != 8) {
 					if (fieldCounter < 8 && fieldCounter >= 6) {
 						data.setMatchMode("match");
 						if (fieldCounter == 6)
 							data.setCaseInsensitive(false);
-					} else {						
+					} else {
 						errorInParsing = true;
 						break;
 					}
@@ -198,24 +198,24 @@ public class RuleItemReadWriter {
 		}
 		throw new IOException("unable to parse the xml"); //$NON-NLS-1$
 	}
-	
+
 	private void write(RulePreferenceData[] data, StreamResult streamResult) throws IOException {
 		try {
 			DocumentBuilderFactory factory= DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder= factory.newDocumentBuilder();
 			Document document= builder.newDocument();
-			
+
 			// create root node of document
 			Node rootNode = document.createElement(NODE_ROOT);
 			document.appendChild(rootNode);
-			
+
 			// add children
 			for(int i = 0 ; i < data.length ; i++) {
 				RulePreferenceData item = data[i];
-				
+
 				Node itemNode = document.createElement(NODE_ITEM);
 				rootNode.appendChild(itemNode);
-				
+
 				NamedNodeMap attributes= itemNode.getAttributes();
 				// position
 				Attr positionAttr= document.createAttribute(ATTR_POSITION);
@@ -225,7 +225,7 @@ public class RuleItemReadWriter {
 				Attr checkedAttr = document.createAttribute(ATTR_CHECKED);
 				checkedAttr.setValue(Boolean.toString(item.isEnabled()));
 				attributes.setNamedItem(checkedAttr);
-				
+
 				// rule
 				Node ruleNode = document.createElement(NODE_RULE);
 				itemNode.appendChild(ruleNode);
@@ -240,7 +240,7 @@ public class RuleItemReadWriter {
 				Node foregroundNode = document.createElement(NODE_FOREGROUND);
 				itemNode.appendChild(foregroundNode);
 				Text foregroundValue = document.createTextNode(StringConverter.asString(item.getForegroundColor()));
-				foregroundNode.appendChild(foregroundValue);			
+				foregroundNode.appendChild(foregroundValue);
 				// value
 				Node valueNode = document.createElement(NODE_VALUE);
 				itemNode.appendChild(valueNode);
@@ -257,7 +257,7 @@ public class RuleItemReadWriter {
 				Text caseInsensitiveValue = document.createTextNode(Boolean.toString(item.isCaseInsensitive()));
 				caseInsensitiveNode.appendChild(caseInsensitiveValue);
 			}
-			
+
 			Transformer transformer=TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8"); //$NON-NLS-1$
@@ -273,7 +273,7 @@ public class RuleItemReadWriter {
 			Assert.isTrue(false);
 		}
 	}
-	
+
 	private String extractStringValueFromNode(Node node) {
 		StringBuffer buffer = new StringBuffer();
 		NodeList children= node.getChildNodes();

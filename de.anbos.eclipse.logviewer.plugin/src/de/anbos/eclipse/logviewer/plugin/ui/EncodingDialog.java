@@ -8,7 +8,6 @@ import java.util.SortedMap;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -44,9 +43,9 @@ public class EncodingDialog extends Dialog {
 
 	private String oldValue;
 	private String value;
-	
+
 	private boolean valueChanged;
-	
+
 	// Constructor -------------------------------------------------------------
 	/**
 	 * @param parentShell
@@ -56,9 +55,9 @@ public class EncodingDialog extends Dialog {
         logger = LogViewerPlugin.getDefault().getLogger();
 		this.oldValue = currentEncoding;
 	}
-	
+
 	// Protected ---------------------------------------------------------------
-	
+
 	/*
 	 * (non-Javadoc) Method declared on Dialog.
 	 */
@@ -77,20 +76,20 @@ public class EncodingDialog extends Dialog {
 		}
 		super.buttonPressed(buttonId);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
 	 */
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(LogViewerPlugin.getResourceString("dialog.encoding.title")); //$NON-NLS-1$
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
@@ -105,7 +104,7 @@ public class EncodingDialog extends Dialog {
 			encodingCombo.setText(value);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc) Method declared on Dialog.
 	 */
@@ -117,13 +116,13 @@ public class EncodingDialog extends Dialog {
 		GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_CENTER);
 		encodingCombo.setLayoutData(data);
 		// fill the encoding data
-		SortedMap charsets = Charset.availableCharsets();
-		Set keys = charsets.keySet();
+		SortedMap<?, ?> charsets = Charset.availableCharsets();
+		Set<?> keys = charsets.keySet();
 		// fill the combo with all available encoding types
-		Iterator keyIterator = keys.iterator();
+		Iterator<?> keyIterator = keys.iterator();
 		while(keyIterator.hasNext()) {
 			Object obj = charsets.get(keyIterator.next());
-			try {				
+			try {
 				Method method = obj.getClass().getMethod("displayName",new Class[]{}); //$NON-NLS-1$
 				String encoding = (String)method.invoke(obj,new Object[]{});
 				encodingCombo.add(encoding);
@@ -151,7 +150,7 @@ public class EncodingDialog extends Dialog {
 	public boolean isNewValue() {
 		return valueChanged;
 	}
-	
+
 	public String getValue() {
 		return value;
 	}

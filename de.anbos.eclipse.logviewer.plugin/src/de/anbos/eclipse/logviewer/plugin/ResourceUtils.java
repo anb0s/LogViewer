@@ -3,14 +3,14 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 /*
@@ -57,16 +57,16 @@ public class ResourceUtils {
 		    	} catch(Exception e) {
 		    		// no op
 		    	}
-			}			
+			}
 		}
     	return selection;
     }
 
     static public ISelection getConsoleSelection(IWorkbenchPart part) {
     	ISelection selection = null;
-    	
+
     	IConsole con = getConsole(part);
-    	
+
     	if (con != null)
     		selection = new StructuredSelection(con);
 
@@ -85,12 +85,12 @@ public class ResourceUtils {
             if (viewer == null || viewer.getDocument() == null)
             	return null;
         }
-		
+
         IConsole con = null;
     	try {
     		con = ((IConsoleView)part).getConsole();
     	} catch (Exception e) {
-			
+
 		}
 
 		return con;
@@ -112,9 +112,9 @@ public class ResourceUtils {
              * org.eclipse.cdt.internal.ui.buildconsole.BuildConsolePage does not
              * extend TextConsolePage, so we get access to the viewer with dirty tricks
              */
-            Method method = page.getClass().getDeclaredMethod("getViewer", null);
+            Method method = page.getClass().getDeclaredMethod("getViewer", (Class<?>[])null);
             method.setAccessible(true);
-            return (ITextViewer) method.invoke(page, null);
+            return (ITextViewer) method.invoke(page, (Object[])null);
         } catch (Exception e) {
             // AnyEditToolsPlugin.logError("Can't get page viewer from the console page", e);
         }
@@ -123,7 +123,7 @@ public class ResourceUtils {
 
     static public File getResource(Object myObj) {
     	Object object = null;
-    	
+
     	if (myObj instanceof IEditorPart) {
 			IEditorPart editorPart = (IEditorPart)myObj;
 			IEditorInput input = editorPart.getEditorInput();
@@ -137,7 +137,7 @@ public class ResourceUtils {
 	        	} else {
 	        		object = input;
 	        	}
-	        }    		
+	        }
     	} else {
     		object = myObj;
     	}
@@ -177,14 +177,14 @@ public class ResourceUtils {
 		}
 		return null;
 	}
-    
+
     static public File toFile(IPath iPath)
-    {    
+    {
     	if (iPath != null)
     		return iPath.toFile();
     	return null;
     }
-    
+
 	/*
 	protected File getJarFile(IAdaptable adaptable) {
 		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;

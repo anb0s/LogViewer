@@ -27,29 +27,29 @@ import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 public class FileHistoryTracker {
 
 	// Constant ----------------------------------------------------------------
-	
+
 	private static final FileHistoryTracker instance = new FileHistoryTracker();
-	
+
 	// Attribute ---------------------------------------------------------------
-	
-	private List files;
-	
+
+	private List<HistoryFile> files;
+
 	// Constructor -------------------------------------------------------------
-	
+
 	private FileHistoryTracker() {
 	}
-	
+
 	// Static ------------------------------------------------------------------
-	
+
 	public static FileHistoryTracker getInstance() {
 		return instance;
 	}
-	
+
 	// Public ------------------------------------------------------------------
-	
+
 	public void storeFile(LogFileType type, String path) {
 		init();
-		HistoryFile file = new HistoryFile(path,type,0);		
+		HistoryFile file = new HistoryFile(path,type,0);
 		if(containsThenIncrement(file)) {
             LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
 			return;
@@ -58,40 +58,40 @@ public class FileHistoryTracker {
 			files.remove(ILogViewerConstants.MAX_FILES_IN_HISTORY - 1);
 			files.add(file);
 		} else {
-			files.add(file);		
+			files.add(file);
 		}
 		Collections.sort(files,new HistoryFileComparator());
 		LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
 	}
-	
-	public List getFiles() {
+
+	public List<HistoryFile> getFiles() {
 		init();
 		return files;
 	}
-	
+
 	public void clearFiles() {
 		init();
 		files.clear();
 		LogViewerPlugin.getDefault().getPreferenceStore().setValue(ILogViewerConstants.PREF_HISTORY_FILES,PreferenceValueConverter.asString(files));
-	}	
-	
+	}
+
 	// Private -----------------------------------------------------------------
-	
+
 	private void init() {
 		// initial load
 		String historyFilesPrefString = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_HISTORY_FILES);
 		if(historyFilesPrefString != null && historyFilesPrefString.length() <= 0) {
-			files = new Vector();
+			files = new Vector<HistoryFile>();
 			return;
 		}
 		files = PreferenceValueConverter.asUnsortedHistoryFileList(historyFilesPrefString);
 		Collections.sort(files,new HistoryFileComparator());
 	}
-	
+
 	private boolean containsThenIncrement(HistoryFile file) {
-		Iterator it = files.iterator();
+		Iterator<HistoryFile> it = files.iterator();
 		while(it.hasNext()) {
-			HistoryFile fileOld = (HistoryFile)it.next();
+			HistoryFile fileOld = it.next();
 			if(fileOld.equals(file)) {
 				fileOld.incrementCount();
 				Collections.sort(files,new HistoryFileComparator());
