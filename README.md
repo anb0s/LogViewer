@@ -15,7 +15,7 @@ The update site URL is: `http://logviewer.eclipselabs.org.codespot.com/git/de.an
 Install descriptions: http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/Install
 
 ##Similar software##
-[http://code.google.com/p/otroslogviewer/ Otros log viewer/parser]
+Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 
 ##Changelog##
 
@@ -47,8 +47,8 @@ Install descriptions: http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/
 * Issue 56:	Error on Tail all action with already tailing document
 
 ###0.9.8.7 (2011-03-07)###
-* Issue 32: Translation (*German translation added*)
-* Issue 35: Tail option's auto-refresh/scrolling is very slow - is unusable (*added some small fixes*)
+* Issue 32: Translation (German translation added)
+* Issue 35: Tail option's auto-refresh/scrolling is very slow - is unusable (added some small fixes)
 * Issue 38: Cannot enter colors using Mac OS X
 * Issue 52: Using java5 jre on ubuntu throws error
 
