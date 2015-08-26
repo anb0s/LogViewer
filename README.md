@@ -4,15 +4,15 @@ Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack
 <a href="https://eclipse.org/donate/" target="_blank"> <img src="http://www.eclipse.org/donate/images/friendslogo200.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0" /></a>
 <a href="http://flattr.com/thing/62009/logviewer" target="_blank"> <img src="http://api.flattr.com/button/button-static-50x60.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 
-<a href="https://github.com/anb0s/logviewer" target="_blank"> <img src="http://logviewer.eclipselabs.org.codespot.com/files/LogViewer_view_File_0.9.8.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0" /></a>
+<a href="https://github.com/anb0s/logviewer" target="_blank"> <img src="https://raw.githubusercontent.com/anb0s/logviewer/master/de.anbos.eclipse.logviewer.plugin/screens/LogViewer_view_File_0.9.8.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0" /></a>
 
 ##Install##
 
 Use the Update Manager or extract zip file to eclipse/dropin folder.
 
-The update site URL is: `http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/`
+The update site URL is: `http://anbos.de/eclipse/logviewer-updatesite`
 
-Install descriptions: http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/Install
+Install descriptions: `https://github.com/anb0s/logviewer/wiki/Install`
 
 ##Similar software##
 Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
