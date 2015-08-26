@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>LogViewer by anb0s</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/anb0s/LogViewer">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/anb0s/LogViewer/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/anb0s/LogViewer/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>LogViewer</h1>
+          <p>Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack Trace, CDT), including syntax coloring with either a regular expression or a word match. It allows you to have multiple logs open concurrently.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/anb0s">anb0s</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a id="eclipse-log-viewer" class="anchor" href="#eclipse-log-viewer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eclipse Log Viewer</h1>
+
+<p>Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack Trace, CDT), including syntax coloring with either a regular expression or a word match. It allows you to have multiple logs open concurrently.</p>
+
+<p><a href="https://eclipse.org/donate/" target="_blank"> <img src="http://www.eclipse.org/donate/images/friendslogo200.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0"></a>
+<a href="http://flattr.com/thing/62009/logviewer" target="_blank"> <img src="http://api.flattr.com/button/button-static-50x60.png" alt="Flattr this" title="Flattr this" border="0"></a></p>
+
+<p><a href="https://github.com/anb0s/logviewer" target="_blank"> <img src="https://raw.githubusercontent.com/anb0s/logviewer/master/de.anbos.eclipse.logviewer.plugin/screens/LogViewer_view_File_0.9.8.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0"></a></p>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>Use the Update Manager or extract zip file to eclipse/dropin folder.</p>
+
+<p>The update site URL is: <a href="http://anbos.de/eclipse/logviewer-updatesite">http://anbos.de/eclipse/logviewer-updatesite</a></p>
+
+<p>Install descriptions: <a href="https://github.com/anb0s/logviewer/wiki/Install">https://github.com/anb0s/logviewer/wiki/Install</a></p>
+
+<h2>
+<a id="similar-software" class="anchor" href="#similar-software" aria-hidden="true"><span class="octicon octicon-link"></span></a>Similar software</h2>
+
+<p>Otros log viewer/parser: <a href="https://github.com/otros-systems/otroslogviewer">https://github.com/otros-systems/otroslogviewer</a></p>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<h3>
+<a id="100-2014---working" class="anchor" href="#100-2014---working" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.0.0 (2014-??-??) working</h3>
+
+<ul>
+<li>See all issues from 0.9.9</li>
+<li>...</li>
+</ul>
+
+<h3>
+<a id="099-2012-11-20-broken-code-lost" class="anchor" href="#099-2012-11-20-broken-code-lost" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.9 (2012-11-20) broken, code lost</h3>
+
+<ul>
+<li>Issue 7: Log-Filter</li>
+<li>Issue 21: Support for Log Rollover</li>
+<li>Issue 22: A '#' character in logfile name crashes</li>
+<li>Issue 23: Change preference store format</li>
+<li>Issue 37: Locks log file, causing issues for external use</li>
+<li>Issue 45: Rules table is not displayed after import</li>
+<li>Issue 46: An idea for Logviewer(Clear logviewer Console)</li>
+<li>Issue 51: Provide possibility to open log file from the beginning on</li>
+<li>Issue 54: No way to enable scroll lock</li>
+<li>Issue 58: Log Viewer is corrupting the window rendering on popup</li>
+<li>Issue 61: Logviewer does not remove it's preference store PropertyChangeListener</li>
+<li>Issue 65: Unable to Open Console in LogViewer</li>
+<li>Issue 66: change default font fixed width</li>
+<li>Issue 68: Add bold and font-size options to rules</li>
+</ul>
+
+<h3>
+<a id="0988-2011-08-07" class="anchor" href="#0988-2011-08-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.8 (2011-08-07)</h3>
+
+<ul>
+<li>switched from SVN to GIT, please use GIT from now</li>
+<li>New update site URL: <a href="http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/">http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/</a>
+</li>
+<li>Issue 53: Input of invalid regular expressions is possible in the rules preferences</li>
+<li>Issue 55: Improve FileTail's exception handling</li>
+<li>Issue 56: Error on Tail all action with already tailing document</li>
+</ul>
+
+<h3>
+<a id="0987-2011-03-07" class="anchor" href="#0987-2011-03-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.7 (2011-03-07)</h3>
+
+<ul>
+<li>Issue 32: Translation (German translation added)</li>
+<li>Issue 35: Tail option's auto-refresh/scrolling is very slow - is unusable (added some small fixes)</li>
+<li>Issue 38: Cannot enter colors using Mac OS X</li>
+<li>Issue 52: Using java5 jre on ubuntu throws error</li>
+</ul>
+
+<h3>
+<a id="0986-2010-08-15" class="anchor" href="#0986-2010-08-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.6 (2010-08-15)</h3>
+
+<pre><code>* Issue 43: Null Pointer error in ResourceUtils.getResource() 
+* Issue 44: Exception if opening binary file
+</code></pre>
+
+<h3>
+<a id="0985-2010-08-10" class="anchor" href="#0985-2010-08-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.5 (2010-08-10)</h3>
+
+<ul>
+<li>Issue 42: LogViewer will not start up (isEmpty method is not available on Java5)</li>
+<li>should be compatible with Java 5 (JRE 1.5) again</li>
+</ul>
+
+<h3>
+<a id="0984-2010-05-25" class="anchor" href="#0984-2010-05-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.4 (2010-05-25)</h3>
+
+<ul>
+<li>Project moved to Eclipse Labs and renamed to logviewer: <a href="http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/MovingToEclipseLabs">http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/MovingToEclipseLabs</a>
+</li>
+<li>New update site URL: <a href="http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/">http://svn.codespot.com/a/eclipselabs.org/logviewer/trunk/de.anbos.eclipse.logviewer.update/</a>
+</li>
+<li>Issue 40: move project to Eclipse Labs</li>
+</ul>
+
+<h3>
+<a id="0983-2010-02-22" class="anchor" href="#0983-2010-02-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.3 (2010-02-22)</h3>
+
+<ul>
+<li>Issue 8: Word-wrap</li>
+<li>Default line color fixed</li>
+<li>Issue 27: Add a "Show When Updated" option</li>
+<li>Issue 36: customizable logfile extensions</li>
+</ul>
+
+<h3>
+<a id="0981-2010-02-17" class="anchor" href="#0981-2010-02-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8.1 (2010-02-17)</h3>
+
+<ul>
+<li>Issue 29: Switching between previously viewed log files resets viewing position.</li>
+<li>Issue 30: Preferences: 'read wait' can not be changed</li>
+</ul>
+
+<h3>
+<a id="098-2010-01-17" class="anchor" href="#098-2010-01-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.8 (2010-01-17)</h3>
+
+<ul>
+<li>Issue 16: show logs from a stream / console</li>
+<li>It is possible to open consoles like Java Stack Trace, CDT, SVN, CVS and compatible</li>
+<li>Log Viewer Console can be used for rule testing: one can paste text and check output in Log Viewer</li>
+<li>Issue 20: Annoying icon and menu items</li>
+<li>Context menu items appears only for resources</li>
+<li>New "Clear History" menu entry</li>
+<li>Menu and buttons reorganized for better usability</li>
+</ul>
+
+<h3>
+<a id="097-2009-12-26" class="anchor" href="#097-2009-12-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.7 (2009-12-26)</h3>
+
+<ul>
+<li>Issue 18: could not create a view</li>
+<li>Issue 19: load old preferences</li>
+<li>New shortcut button for rule preferences</li>
+<li>Rules dialog improved</li>
+<li>New "Export all" &amp; "Export selected" buttons</li>
+<li>Export and Import improved</li>
+</ul>
+
+<h3>
+<a id="096-2009-12-08" class="anchor" href="#096-2009-12-08" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.6 (2009-12-08)</h3>
+
+<ul>
+<li>Issue 11: Tailing start/stop status</li>
+<li>Issue 14: Encoding is not saved</li>
+<li>Issue 15: Make LogViewer class public to other plugins</li>
+<li>Issue 3: Regular expressions do not work</li>
+<li>Issue 4: Improve regular expression for highlighting</li>
+<li>Coloring rules redesigned and splitted to line selection rules and filters. WORD, JakartaRegExp and JavaRegExp rules are available. Actually only one filter (coloring) is implemented. I will add exclude, include and replace filters for version 1.0</li>
+<li>Export / Import extended</li>
+<li>ATTENTION: the preferences and import / export formats are not compabile to previous versions. You have to recreate the rules! I will add backward compatibility for next release.</li>
+</ul>
+
+<h3>
+<a id="095-2009-11-21" class="anchor" href="#095-2009-11-21" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.5 (2009-11-21)</h3>
+
+<ul>
+<li>First official release</li>
+<li>Issue 10 : Renamed Tabs are not saved</li>
+<li>Issue 11 : Tailing start/stop status</li>
+</ul>
+
+<h3>
+<a id="093-2009-11-10" class="anchor" href="#093-2009-11-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.3 (2009-11-10)</h3>
+
+<ul>
+<li>Issue 13 : Refresh current logfile when not tailing activates tailing</li>
+<li>Issue 5 : Drap and drop</li>
+<li>Issue 9 : Find Shortcut</li>
+</ul>
+
+<h3>
+<a id="091-2009-11-08" class="anchor" href="#091-2009-11-08" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.1 (2009-11-08)</h3>
+
+<ul>
+<li>Issue 1 : Open more than file at a time</li>
+<li>Issue 2 : Open With Log Viewer</li>
+</ul>
+
+<h3>
+<a id="090-2009-11-07" class="anchor" href="#090-2009-11-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.9.0 (2009-11-07)</h3>
+
+<ul>
+<li>CVS repo imported from Eclipse Logfile Viewer (<a href="http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/ImportingCVSrepository">http://code.google.com/a/eclipselabs.org/p/logviewer/wiki/ImportingCVSrepository</a>)</li>
+<li>Copied all bugs and enhancement requests from sourceforge project</li>
+<li>Source refactoring started</li>
+</ul>
+
+<h2>
+<a id="its-a-fork-from-eclipse-logfile-viewer-httpsourceforgenetprojectslogfiletools" class="anchor" href="#its-a-fork-from-eclipse-logfile-viewer-httpsourceforgenetprojectslogfiletools" aria-hidden="true"><span class="octicon octicon-link"></span></a>It's a fork from Eclipse Logfile Viewer: <a href="http://sourceforge.net/projects/logfiletools/">http://sourceforge.net/projects/logfiletools/</a>
+</h2>
+
+<h2>
+<a id="thank-you-jmimo" class="anchor" href="#thank-you-jmimo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thank you jmimo!</h2>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
