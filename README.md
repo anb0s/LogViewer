@@ -10,9 +10,9 @@ Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack
 
 Use the Update Manager or extract zip file to eclipse/dropin folder.
 
-The update site URL is: `http://anbos.de/eclipse/logviewer-updatesite`
+The update site URL is: http://anbos.de/eclipse/logviewer-updatesite
 
-Install descriptions: `https://github.com/anb0s/logviewer/wiki/Install`
+Install descriptions: https://github.com/anb0s/logviewer/wiki/Install
 
 ##Similar software##
 Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
