@@ -14,6 +14,8 @@ The update site URL is: http://anbos.de/eclipse/logviewer-updatesite
 
 Install descriptions: https://github.com/anb0s/logviewer/wiki/Install
 
+Eclipse Markeplace: http://marketplace.eclipse.org/content/logviewer
+
 ##Similar software##
 Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 
