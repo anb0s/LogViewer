@@ -1,4 +1,4 @@
-#Eclipse Log Viewer#
+#Eclipse Log Viewer [![Build Status](https://travis-ci.org/anb0s/LogViewer.svg)](https://travis-ci.org/anb0s/LogViewer)
 Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack Trace, CDT), including syntax coloring with either a regular expression or a word match. It allows you to have multiple logs open concurrently.
 
 <a href="https://eclipse.org/donate/" target="_blank"> <img src="http://www.eclipse.org/donate/images/friendslogo200.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0" /></a>
