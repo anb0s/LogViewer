@@ -1,41 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Eclipse Log Viewer Update Site" url="http://logviewer.eclipselabs.org.codespot.com/git/de.anbos.eclipse.logviewer.update/">
+   <description name="Eclipse Log Viewer Update Site" url="http://anbos.de/eclipse/logviewer-updatesite">
       Eclipse Plug-in for tailing log files and eclipse consoles, including syntax coloring. It allows you to have multiple logs open concurrently.
    </description>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.5.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.5">
-      <category name="Log Viewer"/>
+   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.9.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.9">
+      <category name="LogViewer1_0"/>
    </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.6.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.6">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.7.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.7">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.1.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.1">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.3.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.3">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.5.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.5">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.6.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.6">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.7.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.7">
-      <category name="Log Viewer"/>
-   </feature>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.8.8.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.8.8">
-      <category name="Log Viewer"/>
-   </feature>
-   <category-def name="Log Viewer" label="Log Viewer">
+   <category-def name="LogViewer1_0" label="Log Viewer 1.x">
       <description>
-         Eclipse Log Viewer
+         Container for Eclipse Log Viewer plugin.
       </description>
    </category-def>
 </site>
