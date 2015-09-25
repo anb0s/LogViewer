@@ -447,6 +447,7 @@ public class LogViewer extends ViewPart {
     }
 
     public void dispose() {
+    	viewer.removeListeners();
     	storeAllCurrentlyOpenFiles();
     	super.dispose();
     }
