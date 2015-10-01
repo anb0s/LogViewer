@@ -21,9 +21,13 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 
 ##Changelog##
 
-###1.0.0 (2014-??-??) working###
-* See all issues from 0.9.9
-* ...
+###1.0.0 (2015-12-01) planned ###
+* TBD
+
+###0.9.9 (2015-10-11) working ###
+* [#66: change default font fixed width](https://github.com/anb0s/LogViewer/issues/66)
+* [#83: Eclipse Mars: cannot locate the resource](https://github.com/anb0s/LogViewer/issues/83)
+* [#85: migration to GitHub](https://github.com/anb0s/LogViewer/issues/85)
 
 ###0.9.9 (2012-11-20) broken, code lost###
 * Issue 7: Log-Filter
@@ -38,7 +42,6 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 * Issue 58: Log Viewer is corrupting the window rendering on popup
 * Issue 61: Logviewer does not remove it's preference store PropertyChangeListener
 * Issue 65: Unable to Open Console in LogViewer
-* Issue 66: change default font fixed width
 * Issue 68: Add bold and font-size options to rules
 
 ###0.9.8.8 (2011-08-07)###
@@ -55,8 +58,8 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 * Issue 52: Using java5 jre on ubuntu throws error
 
 ###0.9.8.6 (2010-08-15)###
-    * Issue 43: Null Pointer error in ResourceUtils.getResource() 
-    * Issue 44: Exception if opening binary file
+* Issue 43: Null Pointer error in ResourceUtils.getResource() 
+* Issue 44: Exception if opening binary file
 
 ###0.9.8.5 (2010-08-10)###
 * Issue 42: LogViewer will not start up (isEmpty method is not available on Java5)
