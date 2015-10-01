@@ -42,39 +42,39 @@ import de.anbos.eclipse.logviewer.plugin.ui.EncodingComboEditor;
 public class LogViewerPreferences extends PreferencePage implements IWorkbenchPreferencePage {
 
 	// Attribute ---------------------------------------------------------------
-	
+
 	private IntegerFieldEditor backlogEditor;
 	private IntegerFieldEditor bufferEditor;
-	private IntegerFieldEditor readWaitEditor;	
+	private IntegerFieldEditor readWaitEditor;
     private StringFieldEditor filterExtensionsEditor;
-    
+
 	private EncodingComboEditor encodingComboEditor;
 	private ColorFieldEditor colorFieldEditor;
 	private FontFieldEditor fontTypeEditor;
     private Button wordWrap;
     private Button showWhenUpdated;
     private Button showTopOfFile;
-	
+
 	private IPropertyChangeListener validityChangeListener;
-    
+
 	// Public ------------------------------------------------------------------
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
 		validityChangeListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(FieldEditor.IS_VALID)) 
+				if (event.getProperty().equals(FieldEditor.IS_VALID))
 					updateValidState();
 			}
 		};
 	}
-	
+
 	// Protected ---------------------------------------------------------------
-	
+
 	protected Control createContents(Composite parent) {
-		
+
         Composite pageComponent = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
@@ -89,12 +89,12 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
 		tailGroup.setLayoutData(data);
-		
+
 		createBacklogField(tailGroup);
 		createReadBufferField(tailGroup);
 		createReadWaitField(tailGroup);
 		createFilterExtensions(tailGroup);
-		
+
 		Group viewerGroup = new Group(pageComponent,SWT.NONE);
 		viewerGroup.setText(LogViewerPlugin.getResourceString("preferences.main.viewersettings.title")); //$NON-NLS-1$
 		data = new GridData();
@@ -103,23 +103,23 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		viewerGroup.setLayoutData(data);
 		layout = new GridLayout(2,true);
 		viewerGroup.setLayout(layout);
-		
+
         createFontSettings(viewerGroup);
         createColorChooser(viewerGroup);
 		createEncodingCombo(viewerGroup);
 		createWordWarp(viewerGroup);
 		createShowWhenUpdated(viewerGroup);
 		createShowTopOfFile(viewerGroup);
-		
+
 		updateValidState();
 
 		return pageComponent;
 	}
-	
+
 	protected IPreferenceStore doGetPreferenceStore() {
 		return LogViewerPlugin.getDefault().getPreferenceStore();
 	}
-	
+
 	protected void performDefaults() {
 		backlogEditor.loadDefault();
 		bufferEditor.loadDefault();
@@ -132,15 +132,15 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		showWhenUpdated.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));
 		showTopOfFile.setSelection(doGetPreferenceStore().getDefaultBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE));
 	}
-	
+
 	protected void performApply() {
 		performOk();
 	}
 
 	// Public ------------------------------------------------------------------
-	
+
 	public boolean performOk() {
-		backlogEditor.store();		
+		backlogEditor.store();
 		bufferEditor.store();
 		readWaitEditor.store();
 		filterExtensionsEditor.store();
@@ -151,12 +151,12 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		fontTypeEditor.store();
 		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_WORD_WRAP, wordWrap.getSelection());
 		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED, showWhenUpdated.getSelection());
-		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE, showTopOfFile.getSelection());		
+		doGetPreferenceStore().setValue(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE, showTopOfFile.getSelection());
 		return super.performOk();
 	}
 
 	// Private -----------------------------------------------------------------
-	
+
 	private void createBacklogField(Composite composite) {
 		backlogEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_BACKLOG,LogViewerPlugin.getResourceString("preferences.backlog.label.text"),composite); //$NON-NLS-1$
 		backlogEditor.setPreferenceStore(doGetPreferenceStore());
@@ -168,7 +168,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		backlogEditor.load();
 		backlogEditor.setPropertyChangeListener(validityChangeListener);
 	}
-	
+
 	private void createReadBufferField(Composite composite) {
 		bufferEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_BUFFER,LogViewerPlugin.getResourceString("preferences.buffer.label.text"),composite); //$NON-NLS-1$
 		bufferEditor.setPreferenceStore(doGetPreferenceStore());
@@ -180,9 +180,9 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		bufferEditor.load();
 		bufferEditor.setPropertyChangeListener(validityChangeListener);
 	}
-	
+
 	private void createReadWaitField(Composite composite) {
-		readWaitEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_READWAIT,LogViewerPlugin.getResourceString("preferences.readwait.label.text"),composite); //$NON-NLS-1$		
+		readWaitEditor = new IntegerFieldEditor(ILogViewerConstants.PREF_READWAIT,LogViewerPlugin.getResourceString("preferences.readwait.label.text"),composite); //$NON-NLS-1$
 		readWaitEditor.setPreferenceStore(doGetPreferenceStore());
 		readWaitEditor.setPage(this);
 		readWaitEditor.setTextLimit(Integer.toString(ILogViewerConstants.MAX_READWAIT_SIZE).length());
@@ -194,7 +194,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 	}
 
 	private void createFilterExtensions(Composite composite) {
-		filterExtensionsEditor = new StringFieldEditor(ILogViewerConstants.PREF_FILTER_EXTENSIONS,LogViewerPlugin.getResourceString("preferences.contenteditor.filterextensions.label.text"),composite); //$NON-NLS-1$		
+		filterExtensionsEditor = new StringFieldEditor(ILogViewerConstants.PREF_FILTER_EXTENSIONS,LogViewerPlugin.getResourceString("preferences.contenteditor.filterextensions.label.text"),composite); //$NON-NLS-1$
 		filterExtensionsEditor.setPreferenceStore(doGetPreferenceStore());
 		filterExtensionsEditor.setPage(this);
 		filterExtensionsEditor.setTextLimit(128);
@@ -202,9 +202,9 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		//filterExtensionsEditor.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
 		//filterExtensionsEditor.setValidRange(0,ILogViewerConstants.MAX_READWAIT_SIZE);
 		filterExtensionsEditor.load();
-		//filterExtensionsEditor.setPropertyChangeListener(validityChangeListener);		
+		//filterExtensionsEditor.setPropertyChangeListener(validityChangeListener);
 	}
-	
+
 	private void updateValidState() {
 		if (!backlogEditor.isValid()) {
 			setErrorMessage(backlogEditor.getErrorMessage());
@@ -219,21 +219,21 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 			setValid(true);
 		}
 	}
-	
+
 	private void createEncodingCombo(Composite composite) {
 		encodingComboEditor = new EncodingComboEditor(ILogViewerConstants.PREF_ENCODING,LogViewerPlugin.getResourceString("preferences.contenteditor.combo.label.text"),composite); //$NON-NLS-1$
 		encodingComboEditor.setPreferenceStore(doGetPreferenceStore());
 		encodingComboEditor.setPage(this);
 		encodingComboEditor.load();
 	}
-	
+
 	private void createColorChooser(Composite composite) {
 		colorFieldEditor = new ColorFieldEditor(ILogViewerConstants.PREF_CURSORLINE_COLOR,LogViewerPlugin.getResourceString("preferences.contenteditor.cursorline.color.chooser.text"),composite); //$NON-NLS-1$
 		colorFieldEditor.setPreferenceStore(doGetPreferenceStore());
 		colorFieldEditor.setPage(this);
 		colorFieldEditor.load();
 	}
-	
+
 	private void createFontSettings(Composite composite) {
 		Composite panel = new Composite(composite, SWT.NULL);
 		GridLayout layout = new GridLayout();
@@ -246,7 +246,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         data.grabExcessHorizontalSpace = true;
         data.horizontalAlignment = SWT.CENTER;
 		panel.setLayoutData(data);
-		
+
 		fontTypeEditor = new FontFieldEditor(ILogViewerConstants.PREF_EDITOR_FONT_STYLE,LogViewerPlugin.getResourceString("preferences.contenteditor.font.style.text"),panel); //$NON-NLS-1$
 		fontTypeEditor.setChangeButtonText(LogViewerPlugin.getResourceString("preferences.contenteditor.fontl.style.button.text")); //$NON-NLS-1$
 		fontTypeEditor.setPreferenceStore(doGetPreferenceStore());
@@ -254,7 +254,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
 		fontTypeEditor.setPage(this);
 		fontTypeEditor.load();
 	}
-	
+
 	private void createWordWarp(Composite composite) {
         // draw label
         Label comboLabel = new Label(composite,SWT.LEFT);
@@ -262,7 +262,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         comboLabel.setText(LogViewerPlugin.getResourceString("preferences.contenteditor.wordWrap.label.text")); //$NON-NLS-1$
         // draw checkbox
         wordWrap = new Button(composite,SWT.CHECK);
-        wordWrap.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_WORD_WRAP));      
+        wordWrap.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_WORD_WRAP));
 	}
 
 	private void createShowWhenUpdated(Composite composite) {
@@ -272,7 +272,7 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         comboLabel.setText(LogViewerPlugin.getResourceString("preferences.contenteditor.showwhenupdated.label.text")); //$NON-NLS-1$
         // draw checkbox
         showWhenUpdated = new Button(composite,SWT.CHECK);
-        showWhenUpdated.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));      
+        showWhenUpdated.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_WHEN_UPDATED));
 	}
 
 	private void createShowTopOfFile(Composite composite) {
@@ -282,6 +282,6 @@ public class LogViewerPreferences extends PreferencePage implements IWorkbenchPr
         comboLabel.setText(LogViewerPlugin.getResourceString("preferences.contenteditor.showtopoffile.label.text")); //$NON-NLS-1$
         // draw checkbox
         showTopOfFile = new Button(composite,SWT.CHECK);
-        showTopOfFile.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE));      
+        showTopOfFile.setSelection(doGetPreferenceStore().getBoolean(ILogViewerConstants.PREF_SHOW_TOP_OF_FILE));
 	}
 }

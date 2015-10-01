@@ -3,7 +3,7 @@
    <description name="Eclipse Log Viewer Update Site" url="http://anbos.de/eclipse/logviewer-updatesite">
       Eclipse Plug-in for tailing log files and eclipse consoles, including syntax coloring. It allows you to have multiple logs open concurrently.
    </description>
-   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.9.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.9">
+   <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.9.qualifier.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.9.qualifier">
       <category name="LogViewer1_0"/>
    </feature>
    <category-def name="LogViewer1_0" label="Log Viewer 1.x">

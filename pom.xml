@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.anbos.eclipse.logviewer.group</groupId>
 	<artifactId>de.anbos.eclipse.logviewer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.9.9-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -18,6 +18,15 @@
 		<tycho.version>0.23.1</tycho.version>
 	</properties>
 
+	<repositories>
+		<!-- add Mars repository to resolve dependencies -->
+		<repository>
+			<id>Mars</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/mars/</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -25,6 +34,57 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-versions-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<!-- executions>
+					<execution>
+						<id>versions</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>set-version</goal>
+						</goals>
+					</execution>
+				</executions-->
+				<configuration>
+					<newVersion>0.9.9-SNAPSHOT</newVersion>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
