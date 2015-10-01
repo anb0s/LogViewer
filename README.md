@@ -21,10 +21,10 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 
 ##Changelog##
 
-###1.0.0 (2015-12-01) planned ###
+###[1.0 (2015-12-01) planned](https://github.com/anb0s/LogViewer/issues?q=milestone%3Av1.0)###
 * TBD
 
-###0.9.9 (2015-10-11) working ###
+###[0.9.9 (2015-10-11) working](https://github.com/anb0s/LogViewer/issues?q=milestone%3Av0.9.9)###
 * [#61: Logviewer does not remove it's preference store PropertyChangeListener](https://github.com/anb0s/LogViewer/issues/61)
 * [#66: change default font fixed width](https://github.com/anb0s/LogViewer/issues/66)
 * [#83: Eclipse Mars: cannot locate the resource](https://github.com/anb0s/LogViewer/issues/83)
