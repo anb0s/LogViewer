@@ -44,8 +44,8 @@ and limitations under the License.
    </license>
 
    <url>
-      <update label="Eclipse Log Viewer Update Site" url="http://anbos.de/eclipse/logviewer-updatesite"/>
-      <discovery label="Eclipse Log Viewer Update Site" url="http://anbos.de/eclipse/logviewer-updatesite"/>
+      <update label="Eclipse Log Viewer Update Site" url="http://anb0s.github.io/LogViewer"/>
+      <discovery label="Eclipse Log Viewer Update Site" url="http://anb0s.github.io/LogViewer"/>
    </url>
 
    <plugin

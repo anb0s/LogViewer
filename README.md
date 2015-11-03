@@ -10,7 +10,7 @@ Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack
 
 Use the Update Manager or extract zip file to eclipse/dropin folder.
 
-The update site URL is: http://anbos.de/eclipse/logviewer-updatesite
+The update site URL is: http://anb0s.github.io/LogViewer
 
 Install descriptions: https://github.com/anb0s/logviewer/wiki/Install
 
@@ -59,7 +59,7 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 * Issue 52: Using java5 jre on ubuntu throws error
 
 ###0.9.8.6 (2010-08-15)###
-* Issue 43: Null Pointer error in ResourceUtils.getResource() 
+* Issue 43: Null Pointer error in ResourceUtils.getResource()
 * Issue 44: Exception if opening binary file
 
 ###0.9.8.5 (2010-08-10)###
@@ -117,7 +117,7 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 * Issue 13 : Refresh current logfile when not tailing activates tailing
 * Issue 5 : Drap and drop
 * Issue 9 : Find Shortcut
- 
+
 ###0.9.1 (2009-11-08)###
 * Issue 1 : Open more than file at a time
 * Issue 2 : Open With Log Viewer
