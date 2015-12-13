@@ -21,10 +21,10 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 
 ##Changelog##
 
-###[1.0 (2015-12-01) planned](https://github.com/anb0s/LogViewer/issues?q=milestone%3Av1.0)###
+###[1.0 (2016-03-xy) planned](https://github.com/anb0s/LogViewer/issues?q=milestone%3Av1.0)###
 * TBD
 
-###[0.9.9 (2015-11-01) working](https://github.com/anb0s/LogViewer/issues?q=milestone%3Av0.9.9)###
+###[0.9.9 (2016-01-xy) working](https://github.com/anb0s/LogViewer/issues?q=milestone%3Av0.9.9)###
 * [#61: Logviewer does not remove it's preference store PropertyChangeListener](https://github.com/anb0s/LogViewer/issues/61)
 * [#66: change default font fixed width](https://github.com/anb0s/LogViewer/issues/66)
 * [#80: Server returned lastModified <= 0](https://github.com/anb0s/LogViewer/issues/80)
