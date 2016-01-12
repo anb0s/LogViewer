@@ -31,7 +31,7 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 * [#66: change default font fixed width](https://github.com/anb0s/LogViewer/issues/66)
 * ~~[#80: Server returned lastModified <= 0](https://github.com/anb0s/LogViewer/issues/80)~~
 * [#83: Eclipse Mars: cannot locate the resource](https://github.com/anb0s/LogViewer/issues/83)
-* [#85: migration to GitHub](https://github.com/anb0s/LogViewer/issues/85)
+* ~~[#85: migration to GitHub](https://github.com/anb0s/LogViewer/issues/85)~~
 
 ##old history: from source forge:##
 ###0.9.9 (2012-11-20) broken, code lost###
