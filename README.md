@@ -8,13 +8,15 @@ Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack
 
 ## Install
 
-Use the Update Manager or extract zip file to eclipse/dropin folder.
+Eclipse Markeplace: http://marketplace.eclipse.org/content/logviewer
+
+<a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=1066" class="drag" title="Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client"><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png" alt="Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client" /></a>
+
+Alternative use the Update Manager or extract zip file to eclipse/dropin folder.
 
 The update site URL is: http://anb0s.github.io/LogViewer
 
 Install descriptions: https://github.com/anb0s/logviewer/wiki/Install
-
-Eclipse Markeplace: http://marketplace.eclipse.org/content/logviewer
 
 ## Similar software
 Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
