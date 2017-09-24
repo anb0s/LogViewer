@@ -6,6 +6,6 @@
     <property name='p2.atomic.composite.loading' value='true'/>
   </properties>
   <children size='1'>
-    <child location='1.0'/>
+    <child location='0.9'/>
   </children>
 </repository>
