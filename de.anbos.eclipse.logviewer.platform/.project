@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>de.anbos.eclipse.logviewer.update</name>
+	<name>de.anbos.eclipse.logviewer.platform</name>
 	<comment></comment>
 	<projects>
-		<project>de.anbos.eclipse.logviewer.feature</project>
-		<project>de.anbos.eclipse.logviewer.plugin</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>org.eclipse.pde.UpdateSiteBuilder</name>
+			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -19,7 +17,7 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
-		<nature>org.eclipse.pde.UpdateSiteNature</nature>
 	</natures>
 </projectDescription>
