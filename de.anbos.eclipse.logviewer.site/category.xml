@@ -3,9 +3,9 @@
    <feature url="features/de.anbos.eclipse.logviewer.feature_0.9.9.qualifier.jar" id="de.anbos.eclipse.logviewer.feature" version="0.9.9.qualifier">
       <category name="LogViewer-1.x"/>
    </feature>
-   <category-def name="LogViewer-1.x" label="Log Viewer 1.x">
+   <category-def name="LogViewer-1.x" label="LogViewer 1.x">
       <description>
-        LogViewer 1.x Releases
+         LogViewer 1.x Releases
       </description>
    </category-def>
 </site>

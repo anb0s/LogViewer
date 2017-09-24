@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension point="org.eclipse.ui.views">
-      <category name="Log Viewer" id="logviewer"/>
+      <category name="LogViewer" id="logviewer"/>
       <view
             name="%logviewer.plugin.name"
             icon="icons/logviewer.gif"
@@ -27,7 +27,7 @@
    <extension
       point = "org.eclipse.ui.preferencePages">
        <page id="de.anbos.eclipse.logviewer.plugin.LogViewer.page1"
-	    class="de.anbos.eclipse.logviewer.plugin.preferences.LogViewerPreferences"
+      class="de.anbos.eclipse.logviewer.plugin.preferences.LogViewerPreferences"
             name="%logviewer.properties.main.page.title">
        </page>
        <page id="de.anbos.eclipse.logviewer.plugin.LogViewer.page1.3"
@@ -50,7 +50,7 @@
                menubarPath="File/content"
                style="push"
                toolbarPath="Normal/additions"
-               tooltip="Open the Log Viewer in the current workbench page">
+               tooltip="Open the LogViewer in the current workbench page">
          </action>
       </actionSet>
    </extension>
@@ -82,7 +82,7 @@
                icon="icons/logviewer.gif"
                id="de.anbos.eclipse.logviewer.additions"
                label="%logviewer.action.openwith.name"
-               tooltip="Open the Log Viewer for selected files">
+               tooltip="Open the LogViewer for selected files">
             <visibleWhen
                   checkEnabled="false">
                <with
