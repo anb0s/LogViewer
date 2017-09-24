@@ -3,9 +3,9 @@
 <repository name='LogViewer Release Versions' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.atomic.composite.loading' value='true'/>
-    <property name='p2.timestamp' value='1464890300686'/>
+    <property name='p2.timestamp' value='1478099715027'/>
   </properties>
   <children size='1'>
-    <child location='release'/>
+    <child location='0.9'/>
   </children>
 </repository>
