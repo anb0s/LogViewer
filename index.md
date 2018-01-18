@@ -1,4 +1,4 @@
-# Eclipse Log Viewer [![Build Status](https://travis-ci.org/anb0s/LogViewer.svg)](https://travis-ci.org/anb0s/LogViewer)
+# LogViewer [![Version](https://img.shields.io/github/release/anb0s/LogViewer.svg)](https://github.com/anb0s/LogViewer/releases) [![Issues](https://img.shields.io/github/issues/anb0s/LogViewer.svg)](https://github.com/anb0s/LogViewer/issues) [![Build Status](https://travis-ci.org/anb0s/LogViewer.svg)](https://travis-ci.org/anb0s/LogViewer) [![License](https://img.shields.io/badge/License-EPL%201.0-blue.svg)](https://eclipse.org/org/documents/epl-v10.html)
 Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack Trace, CDT), including syntax coloring with either a regular expression or a word match. It allows you to have multiple logs open concurrently.
 
 <a href="https://eclipse.org/donate/" target="_blank"> <img src="http://www.eclipse.org/donate/images/friendslogo200.jpg" alt="Eclipse Friends" title="Eclipse Friends" border="0" /></a>
@@ -134,3 +134,7 @@ Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 http://sourceforge.net/projects/logfiletools/
 
 ## Thank you jmimo!
+
+License:
+--------
+https://eclipse.org/org/documents/epl-v10.html
