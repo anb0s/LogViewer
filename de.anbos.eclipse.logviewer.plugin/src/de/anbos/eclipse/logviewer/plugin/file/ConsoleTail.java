@@ -174,7 +174,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 		IConsoleManager conMan = conPlugin.getConsoleManager();
 		IConsole[] existing = conMan.getConsoles();
 		for (int i = 0; i < existing.length; i++) {
-			if (name.equals(existing[i].getName())) {
+			if (existing[i].getName().contains(name)) {
 				return existing[i];
 			}
 		}
