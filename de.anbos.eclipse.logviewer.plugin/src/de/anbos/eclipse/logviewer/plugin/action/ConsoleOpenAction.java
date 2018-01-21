@@ -1,17 +1,14 @@
-/*
- * Copyright 2009 - 2010 by Andre Bossert
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. 
- */
+/*******************************************************************************
+ * Copyright (c) 2009 - 2018 by Andre Bossert
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Andre Bossert - initial API and implementation and/or initial documentation
+ *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin.action;
 
@@ -34,7 +31,7 @@ public class ConsoleOpenAction implements IObjectActionDelegate {
 
 	IConsole resource[] = null;
 	IStructuredSelection currentSelection = null;
-	
+
 	/**
 	 * Constructor for EasyExploreAction.
 	 */
@@ -65,7 +62,7 @@ public class ConsoleOpenAction implements IObjectActionDelegate {
 
 			if (resource[i] == null)
 				continue;
-		
+
 			String full_path = resource[i].getClass().toString().replaceFirst("class ", "") + System.getProperty("file.separator") + resource[i].getName();
 			LogViewer view = null;
 
@@ -75,7 +72,7 @@ public class ConsoleOpenAction implements IObjectActionDelegate {
 				e.printStackTrace();
 			}
 
-			view.checkAndOpenFile(LogFileType.LOGFILE_ECLIPSE_CONSOLE, full_path, false);
+			view.checkAndOpenFile(LogFileType.LOGFILE_ECLIPSE_CONSOLE, full_path, null, false);
 		}
 	}
 

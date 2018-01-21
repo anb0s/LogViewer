@@ -1,3 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
+ * Copyright (c) 2012 - 2018 by Andre Bossert
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
+ *    Andre Bossert - extensions
+ *******************************************************************************/
+
 package de.anbos.eclipse.logviewer.plugin;
 
 import java.io.File;
@@ -62,21 +76,6 @@ import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
-
-/*
- * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
 
 public class LogViewer extends ViewPart {
 
@@ -152,7 +151,7 @@ public class LogViewer extends ViewPart {
                     return;
                 }
                 //File file = new File(((String[])event.data)[0]);
-                if (!checkAndOpenFile(LogFileType.LOGFILE_SYSTEM_FILE,((String[])event.data)[0], false))
+                if (!checkAndOpenFile(LogFileType.LOGFILE_SYSTEM_FILE,((String[])event.data)[0], null, false))
                     event.detail = DND.DROP_NONE;
             }
         });
@@ -193,7 +192,7 @@ public class LogViewer extends ViewPart {
                 tab.close();
                 tab.getItem().dispose();
             } catch (IOException e) {
-                logger.logError("unable to remove tab: " + tab.getDocument().getFile().getFileName()); //$NON-NLS-1$
+                logger.logError("unable to remove tab: " + tab.getDocument().getFile().getKey()); //$NON-NLS-1$
             }
         }
         logTab.clear();
@@ -291,7 +290,7 @@ public class LogViewer extends ViewPart {
         if(file == null) {
             return false;
         }
-        return logTab.containsKey(file.getFileName());
+        return logTab.containsKey(file.getKey());
     }
 
     void increaseMonitorCounter() {
@@ -330,7 +329,7 @@ public class LogViewer extends ViewPart {
             increaseMonitorCounter();
     }
 
-    public boolean checkAndOpenFile(LogFileType type, String fullPath, boolean fromAction) {
+    public boolean checkAndOpenFile(LogFileType type, String fullPath, String namePattern, boolean fromAction) {
         File file = new File(fullPath);
         if (!fromAction && file.isDirectory()) {
             FileOpenViewActionDelegate action = new FileOpenViewActionDelegate();
@@ -338,9 +337,9 @@ public class LogViewer extends ViewPart {
             action.run(this, getSite().getShell());
             return action.isFileOpened();
         }else {
-            LogFile logFile = new LogFile(type,fullPath,null,null,true);
+            LogFile logFile = new LogFile(type, fullPath, namePattern, null, true);
             if(!hasLogFile(logFile)) {
-                FileHistoryTracker.getInstance().storeFile(type, fullPath);
+                FileHistoryTracker.getInstance().storeFile(type, fullPath, namePattern);
             }
             // open or show file
             openLogFile(logFile);
@@ -349,18 +348,19 @@ public class LogViewer extends ViewPart {
     }
 
     public void openLogFile(LogFile file) {
-        String key = file.getFileName();
+        String key = file.getKey();
         if(!logTab.containsKey(key)) {
             try {
-                if (file.getTabName().equals(LogViewerPlugin.getResourceString("logviewer.plugin.console.name")))
+                if (file.getNamePattern().equals(LogViewerPlugin.getResourceString("logviewer.plugin.console.name"))) {
                     createConsole();
+                }
                 String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
-                LogDocument document = new LogDocument(file,encoding);
-                TabItem item = new TabItem(tabfolder,0);
+                LogDocument document = new LogDocument(file, encoding);
+                TabItem item = new TabItem(tabfolder, 0);
                 item.setControl(viewer.getControl());
-                item.setText(file.getTabName());
-                item.setToolTipText(file.getFileName());
-                logTab.put(key,new LogFileTab(key,item,document));
+                item.setText(file.getNamePattern());
+                item.setToolTipText(file.getPath());
+                logTab.put(key,new LogFileTab(key, item, document));
                 document.addDocumentListener(documentListener);
 
                 // restore monitor status
@@ -378,7 +378,7 @@ public class LogViewer extends ViewPart {
                 stopTailOnAllFiles.setEnabled(true);
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
-                LogViewerPlugin.getDefault().showErrorMessage(LogViewerPlugin.getResourceString("main.error.open.file",new String[]{file.getFileName()})); //$NON-NLS-1$
+                LogViewerPlugin.getDefault().showErrorMessage(LogViewerPlugin.getResourceString("main.error.open.file",new String[]{file.getPath()})); //$NON-NLS-1$
                 return;
             }
         }
@@ -443,7 +443,7 @@ public class LogViewer extends ViewPart {
 
     public void setCurrentLogFileTabName(String name) {
         getSelectedTab().getItem().setText(name);
-        getSelectedTab().getDocument().getFile().setTabName(name);
+        getSelectedTab().getDocument().getFile().setNamePattern(name);
     }
 
     public void dispose() {
@@ -465,9 +465,7 @@ public class LogViewer extends ViewPart {
     }
 
     public void printDefaultMessage() {
-        // issue 42: isEmpty method is available since java6 according to Sun's API Doc. So, it does not work on java5.
-        //if (getConsole().getDocument().get().isEmpty()) {
-        if (getConsole().getDocument().get().length() == 0) {
+        if (getConsole().getDocument().get().isEmpty()) {
             //getConsoleStream().println("LogViewer started!");
             try {
                 getConsoleStream().write("Paste messages into this console and check rules and filters in LogViewer.\n");

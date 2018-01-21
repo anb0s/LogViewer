@@ -1,3 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
+ * Copyright (c) 2012 - 2018 by Andre Bossert
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
+ *    Andre Bossert - extensions
+ *******************************************************************************/
+
 package de.anbos.eclipse.logviewer.plugin.preferences;
 
 import java.util.Iterator;
@@ -12,21 +26,6 @@ import de.anbos.eclipse.logviewer.plugin.preferences.rule.RulePreferenceData;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.ILogFileToolRule;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.LogToolRuleDesc;
 import de.anbos.eclipse.logviewer.plugin.viewer.rule.RuleFactory;
-
-/*
- * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
 
 public class PreferenceValueConverter {
 
@@ -96,20 +95,21 @@ public class PreferenceValueConverter {
 	}
 
 	public static String asString(HistoryFile historyFile) {
-		return historyFile.getPath() + VALUE_DELIMITER + historyFile.getCount() + VALUE_DELIMITER + historyFile.getType();
+		return historyFile.getPath() + VALUE_DELIMITER + historyFile.getCount() + VALUE_DELIMITER + historyFile.getType()+ VALUE_DELIMITER + historyFile.getNamePattern();
 	}
 
 	public static HistoryFile asHistoryFile(String value) {
-		String str[] = new String[3];
+	    final int numStr = 4;
+		String str[] = new String[numStr];
 		StringTokenizer tokenizer = new StringTokenizer(value,VALUE_DELIMITER);
-		for (int i=0;i<3;i++) {
+		for (int i=0;i<numStr;i++) {
 			if(tokenizer.hasMoreTokens()) {
 				str[i] = tokenizer.nextToken();
 			} else {
 				str[i] = null;
 			}
 		}
-		return new HistoryFile(str[0],asType(str[2]),Integer.parseInt(str[1]));
+		return new HistoryFile(str[0], str[3], asType(str[2]), Integer.parseInt(str[1]));
 	}
 
 	public static String asString(List<?> historyFiles) {
@@ -135,15 +135,15 @@ public class PreferenceValueConverter {
 
 	public static String asString(LogFile logFile) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(logFile.getFileName());
+		buffer.append(logFile.getPath());
 		buffer.append(VALUE_DELIMITER);
-		buffer.append(logFile.getTabName());
+		buffer.append(logFile.getNamePattern());
 		buffer.append(VALUE_DELIMITER);
 		buffer.append(logFile.getEncoding());
 		buffer.append(VALUE_DELIMITER);
 		buffer.append(logFile.getMonitor());
 		buffer.append(VALUE_DELIMITER);
-		buffer.append(logFile.getFileType().toString());
+		buffer.append(logFile.getType().toString());
 		return buffer.toString();
 	}
 
@@ -175,9 +175,7 @@ public class PreferenceValueConverter {
 
 	public static LogFileType asType(String logTypeStr) {
 		LogFileType type = LogFileType.LOGFILE_SYSTEM_FILE;
-		// issue 42: isEmpty method is available since java6 according to Sun's API Doc. So, it does not work on java5.
-		//if (logTypeStr != null && !logTypeStr.isEmpty()) {
-		if ((logTypeStr != null) && (logTypeStr.length() != 0)) {
+		if (logTypeStr != null && !logTypeStr.isEmpty()) {
 			LogFileType[] types = LogFileType.values();
 			for (int i=0;i<types.length;i++) {
 				if (types[i].toString().equals(logTypeStr)) {

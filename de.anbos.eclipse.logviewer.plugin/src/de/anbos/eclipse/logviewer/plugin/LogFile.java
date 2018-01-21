@@ -1,63 +1,69 @@
-package de.anbos.eclipse.logviewer.plugin;
-
-/*
+/*******************************************************************************
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2012 - 2018 by Andre Bossert
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
+ * Contributors:
+ *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
+ *    Andre Bossert - extensions
+ *******************************************************************************/
+
+package de.anbos.eclipse.logviewer.plugin;
 
 public class LogFile {
 
     // Attribute ---------------------------------------------------------------
-    
-	public enum LogFileType{
+
+	public enum LogFileType {
 		LOGFILE_SYSTEM_FILE,
 		LOGFILE_ECLIPSE_CONSOLE,
 		LOGFILE_STREAM
 	};
 
-    private String fileName;
-    private LogFileType fileType;
-    private String tabName;
+    private String path;
+    private LogFileType type;
+    private String namePattern;
     private String encoding;
     private boolean monitor;
-    
+
     // Constructor -------------------------------------------------------------
-    
-    public LogFile(LogFileType fileType, String fileName, String tabName, String encoding, boolean monitor) {
-    	this.fileType = fileType;
-        this.fileName = fileName;
-        setTabName(tabName);
+
+    public LogFile(LogFileType type, String path, String namePattern, String encoding, boolean monitor) {
+    	this.type = type;
+        this.path = path;
+        setNamePattern(namePattern);
         setEncoding(encoding);
         setMonitor(monitor);
     }
-    
+
     // Public ------------------------------------------------------------------
 
-    public LogFileType getFileType() {
-		return fileType;
+    public LogFileType getType() {
+		return type;
 	}
-    
-    public String getFileName() {
-        return fileName;
+
+    public String getPath() {
+        return path;
     }
 
-	public String getTabName() {
-        return tabName;
+	public String getNamePattern() {
+        return namePattern;
     }
 
     public String getEncoding() {
 		return encoding;
 	}
+
+    public String getKey() {
+        switch(type) {
+            case LOGFILE_SYSTEM_FILE: return type.toString() + System.getProperty("file.separator") + namePattern;
+            default: return path;
+        }
+    }
 
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
@@ -67,17 +73,20 @@ public class LogFile {
         return monitor;
     }
 
-    public void setTabName(String tabName) {
-		// issue 42: isEmpty method is available since java6 according to Sun's API Doc. So, it does not work on java5.
-        //if (tabName == null || tabName.isEmpty()) {
-    	if ((tabName == null) || (tabName.length() == 0)) {
-        	this.tabName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")) + 1);
+    public String getName() {
+        int index = path.lastIndexOf(System.getProperty("file.separator"));
+        return index != -1 ? path.substring(index + 1) : path;
+    }
+
+    public void setNamePattern(String namePattern) {
+        if ((namePattern == null) || namePattern.isEmpty()) {
+        	this.namePattern = getName();
         } else {
-        	this.tabName = tabName;
+        	this.namePattern = namePattern;
         }
     }
 
     public void setMonitor(boolean monitor) {
     	this.monitor = monitor;
-    }    
+    }
 }

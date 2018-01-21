@@ -1,17 +1,14 @@
-/*
- * Copyright 2009 - 2010 by Andre Bossert
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. 
- */
+/*******************************************************************************
+ * Copyright (c) 2009 - 2018 by Andre Bossert
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Andre Bossert - initial API and implementation and/or initial documentation
+ *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin.action.delegate;
 
@@ -45,16 +42,17 @@ public class FileOpenViewActionDelegate implements ILogViewerActionDelegate {
 	public boolean isFileOpened() {
 		return fileOpened;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.anbos.eclipse.logviewer.plugin.action.ILogfileAction#run(de.anbos.eclipse.logviewer.plugin.LogViewer, org.eclipse.swt.widgets.Shell)
 	 */
 	public void run(LogViewer view, Shell shell) {
 
 		fileOpened = false;
-		
+
 		// log file type
 		String typeStr = null;
+		String nameStr = null;
 		type = LogFileType.LOGFILE_SYSTEM_FILE;
 
 		/*
@@ -74,7 +72,7 @@ public class FileOpenViewActionDelegate implements ILogViewerActionDelegate {
 		*/
 
 		if (type == LogFileType.LOGFILE_SYSTEM_FILE) {
-		    // load filter extensions		    
+		    // load filter extensions
 			String filterExtensions = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_FILTER_EXTENSIONS);
 			// opening file(s) in log view
 		    FileDialog dialog = new FileDialog(shell,SWT.OPEN|SWT.MULTI);
@@ -107,13 +105,13 @@ public class FileOpenViewActionDelegate implements ILogViewerActionDelegate {
 		    	String selectedFiles[] = dialog.getFileNames();
 		    	for (int i=0;i<selectedFiles.length;i++) {
 		    		String fileStr = path.endsWith(File.separator) ? path + selectedFiles[i] : path + File.separator + selectedFiles[i];
-		    		if (!view.checkAndOpenFile(type,fileStr, true))
+		    		if (!view.checkAndOpenFile(type,fileStr, null, true))
 		    	        fileOpened = true;
 		    	}
 		    }
 		} else if (type == LogFileType.LOGFILE_ECLIPSE_CONSOLE) {
-    		if (!view.checkAndOpenFile(type, typeStr, true))
-    	        fileOpened = true;			
+    		if (!view.checkAndOpenFile(type, typeStr, nameStr, true))
+    	        fileOpened = true;
 		}
 	}
 }

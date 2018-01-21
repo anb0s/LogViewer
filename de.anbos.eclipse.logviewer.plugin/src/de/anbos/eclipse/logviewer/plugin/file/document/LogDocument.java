@@ -1,17 +1,16 @@
-/*
+/*******************************************************************************
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2012 - 2018 by Andre Bossert
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
+ * Contributors:
+ *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
+ *    Andre Bossert - extensions
+ *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin.file.document;
 
@@ -51,8 +50,9 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 
 	public LogDocument(LogFile file, String encoding) throws SecurityException, IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, PartInitException {
 		super();
-		if (file.getEncoding() == null)
+		if (file.getEncoding() == null) {
 			file.setEncoding(encoding);
+		}
 		this.file = file;
 		this.encoding = file.getEncoding();
 		this.charset = Charset.forName(file.getEncoding());
@@ -62,7 +62,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		setTextStore(new GapTextStore(50, 300, 1f));
 		setLineTracker(new DefaultLineTracker());
 		completeInitialization();
-		reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+		reader = new BackgroundReader(file.getType(), file.getPath(), file.getNamePattern(), charset,this);
 	}
 
 	// Public ------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		this.encoding = encoding;
 		this.charset = Charset.forName(encoding);
 		try {
-			reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+			reader = new BackgroundReader(file.getType(), file.getPath(), file.getNamePattern(), charset, this);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,7 +122,7 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 		getStore().set("");
 		getTracker().set("");
 		try {
-			reader = new BackgroundReader(file.getFileType(),file.getFileName(),charset,this);
+			reader = new BackgroundReader(file.getType(), file.getPath(), file.getNamePattern(), charset, this);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
