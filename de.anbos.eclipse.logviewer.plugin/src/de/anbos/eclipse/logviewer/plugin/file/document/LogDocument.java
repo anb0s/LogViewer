@@ -263,4 +263,8 @@ public class LogDocument extends AbstractDocument implements IFileChangedListene
 			}
 		}
 	}
+
+	public BackgroundReader getReader() {
+		return reader;
+	}
 }

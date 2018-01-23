@@ -18,9 +18,11 @@ package de.anbos.eclipse.logviewer.plugin.file;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
@@ -49,6 +51,7 @@ public class FileTail implements Runnable {
     private boolean isFirstTimeRead;
 
     private int bufferCapacity;
+    private ByteBuffer mappedBuffer;
 
     // Constructor -------------------------------------------------------------
 
@@ -113,6 +116,11 @@ public class FileTail implements Runnable {
             try {
                 if(file != null) {
                     file.close();
+                    
+                    if(isRunning==false && mappedBuffer!=null)    
+					{
+						stopFileMapping(mappedBuffer);
+					}
                 }
             } catch(Exception e) {
                 // ignore this
@@ -120,6 +128,15 @@ public class FileTail implements Runnable {
         }
         isRunning = false;
     }
+
+	public void stopFileMapping(Buffer buffer)throws Exception {
+		Method cleaner = buffer.getClass().getMethod("cleaner");
+		cleaner.setAccessible(true);
+		Method clean = Class.forName("sun.misc.Cleaner").getMethod("clean");
+		clean.setAccessible(true);
+		clean.invoke(cleaner.invoke(buffer));
+		buffer=null;
+	}
 
     // Private -----------------------------------------------------------------
 
@@ -169,17 +186,21 @@ public class FileTail implements Runnable {
                     startPosition = endPosition - INITIAL_LOAD_SIZE;
                     size = INITIAL_LOAD_SIZE;
                 }
-                MappedByteBuffer mappedBuffer = channel.map(MapMode.READ_ONLY, startPosition, size);
+                mappedBuffer = channel.map(MapMode.READ_ONLY, startPosition, size);
                 CharBuffer mappedChars = decoder.decode(mappedBuffer);
                 channel.position(endPosition);
                 listener.fileChanged(mappedChars.array(), true);
             }
             return;
         }
-        ByteBuffer buffer = ByteBuffer.allocate(bufferCapacity);
-        channel.read(buffer);
-        buffer.flip();
-        CharBuffer chars = decoder.decode(buffer);
+        mappedBuffer = ByteBuffer.allocate(bufferCapacity);
+        channel.read(mappedBuffer);
+        mappedBuffer.flip();
+        CharBuffer chars = decoder.decode(mappedBuffer);
         listener.fileChanged(chars.array(),false);
     }
+
+	public Buffer getBuffer() {
+		return mappedBuffer;
+	}
 }

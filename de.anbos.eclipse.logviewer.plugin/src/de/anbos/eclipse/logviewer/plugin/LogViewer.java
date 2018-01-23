@@ -16,6 +16,8 @@ package de.anbos.eclipse.logviewer.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.Buffer;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +44,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabFolder;
@@ -50,11 +53,17 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IOConsole;
+import org.eclipse.ui.console.IOConsoleOutputStream;
+import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.part.ViewPart;
 
 import de.anbos.eclipse.logviewer.plugin.LogFile.LogFileType;
 import de.anbos.eclipse.logviewer.plugin.action.ClearHistoryAction;
 import de.anbos.eclipse.logviewer.plugin.action.CloseAllFilesViewAction;
+import de.anbos.eclipse.logviewer.plugin.action.FileClearAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileCloseViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileEncondingViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.FileOpenViewAction;
@@ -66,16 +75,12 @@ import de.anbos.eclipse.logviewer.plugin.action.StopTailOnAllFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.StopTailOnCurrentFileViewAction;
 import de.anbos.eclipse.logviewer.plugin.action.TabRenameAction;
 import de.anbos.eclipse.logviewer.plugin.action.delegate.FileOpenViewActionDelegate;
+import de.anbos.eclipse.logviewer.plugin.file.FileTail;
 import de.anbos.eclipse.logviewer.plugin.file.document.LogDocument;
 import de.anbos.eclipse.logviewer.plugin.preferences.FileHistoryTracker;
 import de.anbos.eclipse.logviewer.plugin.preferences.PreferenceValueConverter;
 import de.anbos.eclipse.logviewer.plugin.ui.menu.LocalPullDownMenu;
 import de.anbos.eclipse.logviewer.plugin.viewer.LogFileViewer;
-
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IOConsole;
-import org.eclipse.ui.console.IOConsoleOutputStream;
 
 public class LogViewer extends ViewPart {
 
@@ -108,6 +113,7 @@ public class LogViewer extends ViewPart {
     private StopTailOnAllFileViewAction stopTailOnAllFiles;
     private FileEncondingViewAction fileEncodingAction;
     private TabRenameAction tabRenameAction;
+    private FileClearAction fileClearAction;
 
     private int monitorCounter;
     private int monitorCounterMax;
@@ -172,6 +178,7 @@ public class LogViewer extends ViewPart {
         } catch(IOException e) {
             logger.logError("unable to remove the current; active tab"); //$NON-NLS-1$
         }
+       
         int index = tabfolder.getSelectionIndex();
         getSelectedItem().dispose();
         if (!greyAllOutIfNoFiles()) {
@@ -183,7 +190,38 @@ public class LogViewer extends ViewPart {
         }
     }
 
-    public void closeAllLogFiles() {
+	public void clearCurrentLogFile() {
+		try {
+			LogFileType type = getSelectedTab().getDocument().getFile().getType();
+			if (type == LogFileType.LOGFILE_ECLIPSE_CONSOLE) {
+
+				final IConsole con = getSelectedTab().getDocument().getReader().getConsoleTail().getConsole();
+				if (con instanceof TextConsole) {
+					Display.getDefault().syncExec(new Runnable() {
+						public void run() {
+							((TextConsole) con).clearConsole();
+						}
+					});
+				} else {
+					logger.logWarning("Console" + "[ " + con.getName() + " ]" + " clear not supported");//$NON-NLS-1$
+				}
+			} else {
+				FileTail file = getSelectedTab().getDocument().getReader().getFileTail();
+				Buffer buffer = file.getBuffer();
+				if (buffer != null) {
+					file.stopFileMapping(buffer);
+				}
+				PrintWriter pw = new PrintWriter(getCurrentLogFilePath());
+				pw.write(" ");
+				pw.close();
+			}
+		} catch (Exception e) {
+			logger.logError("unable to clear selected file: " + getCurrentLogFilePath()); //$NON-NLS-1$
+		}
+		refreshCurrentLogFile();
+	}
+
+	public void closeAllLogFiles() {
         Iterator<String> keyIterator = logTab.keySet().iterator();
         while(keyIterator.hasNext()) {
             Object key = keyIterator.next();
@@ -264,6 +302,7 @@ public class LogViewer extends ViewPart {
             startTailOnAllFiles.setEnabled(false);
             stopTailOnAllFiles.setEnabled(false);
             tabRenameAction.setEnabled(false);
+            fileClearAction.setEnabled(false);
             resetMonitorCounter();
             return true;
         }
@@ -352,15 +391,16 @@ public class LogViewer extends ViewPart {
         if(!logTab.containsKey(key)) {
             try {
                 if (file.getNamePattern().equals(LogViewerPlugin.getResourceString("logviewer.plugin.console.name"))) {
-                    createConsole();
+                	 createConsole();
                 }
+                   
                 String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
-                LogDocument document = new LogDocument(file, encoding);
-                TabItem item = new TabItem(tabfolder, 0);
+                LogDocument document = new LogDocument(file,encoding);
+                TabItem item = new TabItem(tabfolder,0);
                 item.setControl(viewer.getControl());
                 item.setText(file.getNamePattern());
                 item.setToolTipText(file.getPath());
-                logTab.put(key,new LogFileTab(key, item, document));
+                logTab.put(key,new LogFileTab(key,item,document));
                 document.addDocumentListener(documentListener);
 
                 // restore monitor status
@@ -376,6 +416,7 @@ public class LogViewer extends ViewPart {
                 tabRenameAction.setEnabled(true);
                 startTailOnAllFiles.setEnabled(true);
                 stopTailOnAllFiles.setEnabled(true);
+                fileClearAction.setEnabled(true);
             } catch(Exception e) {
                 logger.logError("unable to open the selected logfile",e); //$NON-NLS-1$
                 LogViewerPlugin.getDefault().showErrorMessage(LogViewerPlugin.getResourceString("main.error.open.file",new String[]{file.getPath()})); //$NON-NLS-1$
@@ -446,6 +487,10 @@ public class LogViewer extends ViewPart {
         getSelectedTab().getDocument().getFile().setNamePattern(name);
     }
 
+    public String getCurrentLogFilePath() {
+        return  getSelectedTab().getDocument().getFile().getPath();
+    }
+    
     public void dispose() {
         viewer.removeListeners();
         storeAllCurrentlyOpenFiles();
@@ -504,6 +549,7 @@ public class LogViewer extends ViewPart {
         menu.addAction(fileOpenAction);
         menu.addFilelist();
         menu.addAction(clearHistoryAction);
+        menu.addAction(fileClearAction);
         menu.addSeparator();
         menu.addAction(refreshCurrentFileAction);
         menu.addAction(startTailOnCurrentFile);
@@ -527,6 +573,7 @@ public class LogViewer extends ViewPart {
         manager.add(startTailOnCurrentFile);
         manager.add(stopTailOnCurrentFile);
         manager.add(fileCloseAction);
+        manager.add(fileClearAction);
         manager.add(new Separator());
         manager.add(fileEncodingAction);
         manager.add(tabRenameAction);
@@ -536,6 +583,7 @@ public class LogViewer extends ViewPart {
     private void fillLocalToolBar(IToolBarManager manager) {
         manager.add(fileOpenAction);
         manager.add(preferencesAction);
+        manager.add(fileClearAction);
         manager.add(new Separator());
         manager.add(refreshCurrentFileAction);
         manager.add(startTailOnCurrentFile);
@@ -624,6 +672,9 @@ public class LogViewer extends ViewPart {
             // tab rename action
             tabRenameAction = new TabRenameAction(this,parent.getShell());
             tabRenameAction.setEnabled(false);
+            // clear file
+            fileClearAction = new FileClearAction(this,parent.getShell());
+            fileClearAction.setEnabled(true);
     }
 
     private void storeAllCurrentlyOpenFiles() {

@@ -54,6 +54,8 @@ public interface ILogViewerConstants {
 	public static final String IMG_COPY_ACTIVE				= "IMG_COPY_ACTIVE"; //$NON-NLS-1$
 	public static final String IMG_COPY_PASSIVE				= "IMG_COPY_PASSIVE"; //$NON-NLS-1$
 	public static final String IMG_LOG_VIEWER				= "IMG_LOG_VIEWER";
+	public static final String IMG_FILE_CLEAR_ACTIVE		= "IMG_CLEAR_ACTIVE"; //$NON-NLS-1$
+	public static final String IMG_FILE_CLEAR_PASSIVE		= "IMG_CLEAR_PASSIVE"; //$NON-NLS-1$
 	
 	// Preferences -------------------------------------------------------------
 	

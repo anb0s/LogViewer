@@ -93,8 +93,11 @@ public class UIImages {
         declareRegistryImage(ILogViewerConstants.IMG_RENAME_ACTIVE,			"active/rename_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_RENAME_PASSIVE,		"passive/rename_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_COPY_ACTIVE,			"active/copy_active.gif"); //$NON-NLS-1$
-        declareRegistryImage(ILogViewerConstants.IMG_COPY_PASSIVE,			"active/copy_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_COPY_PASSIVE,			"passive/copy_passive.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_FILE_CLEAR_ACTIVE,		"active/clear_active.gif"); //$NON-NLS-1$
+        declareRegistryImage(ILogViewerConstants.IMG_FILE_CLEAR_PASSIVE,	"passive/clear_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_LOG_VIEWER,			"logviewer.gif");
+
         return imageRegistry;
     }
     
