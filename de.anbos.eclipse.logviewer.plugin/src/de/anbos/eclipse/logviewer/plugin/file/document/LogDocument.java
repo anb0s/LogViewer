@@ -10,6 +10,8 @@
  * Contributors:
  *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
  *    Andre Bossert - extensions
+ *    Artur Wozniak - clear file
+ *
  *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin.file.document;

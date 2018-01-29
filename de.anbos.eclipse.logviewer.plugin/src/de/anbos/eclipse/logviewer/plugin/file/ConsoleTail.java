@@ -1,13 +1,15 @@
 /*******************************************************************************
  * Copyright (c) 2009 - 2018 by Andre Bossert
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *    Andre Bossert - initial API and implementation and/or initial documentation
+ *    Artur Wozniak - clear file
+ *
  *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin.file;
@@ -42,7 +44,7 @@ import de.anbos.eclipse.logviewer.plugin.ResourceUtils;
 
 public class ConsoleTail implements IDocumentListener, Runnable {
 
-    private Logger logger;	
+    private Logger logger;
 	private String path;
 	private String namePattern;
 	private IFileChangedListener listener;
@@ -95,7 +97,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 	public String getNamePattern() {
 		return namePattern;
 	}
-	
+
 	public String getClassName() {
 		int idx = path.indexOf(System.getProperty("file.separator"));
 		return idx != -1 ? path.substring(0, idx) : path;
@@ -109,7 +111,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 		listener.fileChanged(event.getText().toCharArray(), isFirstTimeRead);
 		isFirstTimeRead = false;
 	}
-	
+
 	public synchronized void run() {
 		isRunning = true;
 		try {
@@ -123,7 +125,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 					event.fText = doc.get();
 					documentAboutToBeChanged(event);
 					documentChanged(event);
-				}			
+				}
 			} else {
 				throw new ThreadInterruptedException("document was null"); //$NON-NLS-1$
 			}
@@ -142,7 +144,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 			try {
 				if(doc != null) {
 					doc.removeDocumentListener(this);
-					isFirstTimeRead = true;					
+					isFirstTimeRead = true;
 				}
 			} catch(Exception e) {
 				// ignore this
@@ -178,7 +180,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 		}
 		throw new ThreadInterruptedException("no console found"); //$NON-NLS-1$
 	}
-	
+
 	private IConsole findConsole() throws FileNotFoundException {
 		ConsolePlugin conPlugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = conPlugin.getConsoleManager();
@@ -217,12 +219,12 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 		//return null;
 	}
 	*/
-	
+
 	private IDocument getConsoleDocument() throws FileNotFoundException {
 		if (con != null) {
 			if(con instanceof TextConsole) {
 				return ((TextConsole)con).getDocument();
-			} else {				
+			} else {
 				// Now open the view and console in UI-Thread
 				UIJob uiJob = new UIJob("Update UI") {
 					@Override
@@ -234,7 +236,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 							e.printStackTrace();
 						}
 						if (view != null) {
-							// show it 
+							// show it
 							view.display(con);
 					        IViewPart vp =(IViewPart)view;
 					        if (vp instanceof PageBookView) {
@@ -249,7 +251,7 @@ public class ConsoleTail implements IDocumentListener, Runnable {
 				};
 				uiJob.schedule();
 	            if (viewer != null)
-	            	return viewer.getDocument();				
+	            	return viewer.getDocument();
 			}
 		}
 		throw new FileNotFoundException("no document found");

@@ -10,6 +10,8 @@
  * Contributors:
  *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
  *    Andre Bossert - extensions
+ *    Artur Wozniak - clear file
+ *
  *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin;
@@ -178,7 +180,7 @@ public class LogViewer extends ViewPart {
         } catch(IOException e) {
             logger.logError("unable to remove the current; active tab"); //$NON-NLS-1$
         }
-       
+
         int index = tabfolder.getSelectionIndex();
         getSelectedItem().dispose();
         if (!greyAllOutIfNoFiles()) {
@@ -225,7 +227,7 @@ public class LogViewer extends ViewPart {
         Iterator<String> keyIterator = logTab.keySet().iterator();
         while(keyIterator.hasNext()) {
             Object key = keyIterator.next();
-            LogFileTab tab = (LogFileTab)logTab.get(key);
+            LogFileTab tab = logTab.get(key);
             try {
                 tab.close();
                 tab.getItem().dispose();
@@ -252,7 +254,7 @@ public class LogViewer extends ViewPart {
         Iterator<String> keyIterator = logTab.keySet().iterator();
         while(keyIterator.hasNext()) {
             Object key = keyIterator.next();
-            LogFileTab tab = (LogFileTab)logTab.get(key);
+            LogFileTab tab = logTab.get(key);
             tab.getDocument().setMonitor(true);
         }
         setMonitorCounterToMax();
@@ -263,7 +265,7 @@ public class LogViewer extends ViewPart {
         Iterator<String> keyIterator = logTab.keySet().iterator();
         while(keyIterator.hasNext()) {
             Object key = keyIterator.next();
-            LogFileTab tab = (LogFileTab)logTab.get(key);
+            LogFileTab tab = logTab.get(key);
             tab.getDocument().setMonitor(false);
 
         }
@@ -393,7 +395,7 @@ public class LogViewer extends ViewPart {
                 if (file.getNamePattern().equals(LogViewerPlugin.getResourceString("logviewer.plugin.console.name"))) {
                 	 createConsole();
                 }
-                   
+
                 String encoding = LogViewerPlugin.getDefault().getPreferenceStore().getString(ILogViewerConstants.PREF_ENCODING);
                 LogDocument document = new LogDocument(file,encoding);
                 TabItem item = new TabItem(tabfolder,0);
@@ -424,7 +426,7 @@ public class LogViewer extends ViewPart {
             }
         }
         // show active document
-        LogFileTab tab = (LogFileTab)logTab.get(key);
+        LogFileTab tab = logTab.get(key);
         try {
             showDocument(tab.getDocument(),null,0,true);
             tabfolder.setSelection(new TabItem[] {tab.getItem()});
@@ -466,7 +468,7 @@ public class LogViewer extends ViewPart {
      * the actual viewer is returned if an adapter of type
      * FindReplaceTarget is searched
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Object getAdapter(Class adapter) {
         Object object = super.getAdapter(adapter);
         if(object != null) {
@@ -490,7 +492,7 @@ public class LogViewer extends ViewPart {
     public String getCurrentLogFilePath() {
         return  getSelectedTab().getDocument().getFile().getPath();
     }
-    
+
     public void dispose() {
         viewer.removeListeners();
         storeAllCurrentlyOpenFiles();
@@ -612,7 +614,7 @@ public class LogViewer extends ViewPart {
     private LogFileTab getSelectedTab(TabItem item) {
         if(item != null) {
             for(Iterator<LogFileTab> iter = logTab.values().iterator(); iter.hasNext();) {
-                LogFileTab logTab = (LogFileTab)iter.next();
+                LogFileTab logTab = iter.next();
                 if(logTab.getItem() == item) {
                     return logTab;
                 }
@@ -682,7 +684,7 @@ public class LogViewer extends ViewPart {
         Iterator<String> keyIterator = logTab.keySet().iterator();
         while(keyIterator.hasNext()) {
             Object key = keyIterator.next();
-            LogFileTab tab = (LogFileTab)logTab.get(key);
+            LogFileTab tab = logTab.get(key);
             LogFile logFile = tab.getDocument().getFile();
             fileList.add(logFile);
         }
@@ -736,7 +738,7 @@ public class LogViewer extends ViewPart {
                         Iterator<String> keyIterator = logTab.keySet().iterator();
                         while(keyIterator.hasNext()) {
                             Object key = keyIterator.next();
-                            LogFileTab newTab = (LogFileTab)logTab.get(key);
+                            LogFileTab newTab = logTab.get(key);
                             if (event.getDocument() == newTab.getDocument()) {
                                 showDocument(newTab.getDocument(),null,0,true);
                                 tabfolder.setSelection(new TabItem[] {newTab.getItem()});

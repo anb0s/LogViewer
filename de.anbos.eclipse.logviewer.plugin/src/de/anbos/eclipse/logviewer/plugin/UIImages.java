@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
+ * Copyright (c) 2012 - 2018 by Andre Bossert
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
+ *    Andre Bossert - extensions
+ *    Artur Wozniak - clear file
+ *
+ *******************************************************************************/
+
 package de.anbos.eclipse.logviewer.plugin;
 
 import java.net.MalformedURLException;
@@ -7,56 +23,41 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.widgets.Display;
 
-/*
- * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
-
 public class UIImages {
 
     // Attribute ---------------------------------------------------------------
-    
+
     private static URL ICON_BASE_URL = null;
-    
+
     private static ImageRegistry imageRegistry = null;
-    
+
     // Constructor -------------------------------------------------------------
-    
+
     public UIImages() {
     }
-    
+
     // Static ------------------------------------------------------------------
-    
+
     static  {
         String pathSuffix = "icons/"; //$NON-NLS-1$
         try {
             ICON_BASE_URL = new URL(LogViewerPlugin.getDefault().getBundle().getEntry("/"), pathSuffix); //$NON-NLS-1$
         } catch(MalformedURLException ex) { }
 	}
-    
+
     public static ImageDescriptor getImageDescriptor(String key) {
         return getImageRegistry().getDescriptor(key);
     }
-    
+
     // Private -----------------------------------------------------------------
-    
+
     private static ImageRegistry getImageRegistry() {
         if(imageRegistry == null) {
             initializeImageRegistry();
         }
         return imageRegistry;
     }
-    
+
     private static ImageRegistry initializeImageRegistry() {
         Display display = Display.getCurrent();
         if(display == null) {
@@ -64,7 +65,7 @@ public class UIImages {
         }
         imageRegistry = new ImageRegistry(display);
         // register images
-        
+
         declareRegistryImage(ILogViewerConstants.IMG_OPEN_FILE_ACTIVE,		"active/open_active.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_OPEN_FILE_PASSIVE,		"passive/open_passive.gif"); //$NON-NLS-1$
         declareRegistryImage(ILogViewerConstants.IMG_CLEAR_HISTORY_ACTIVE,	"active/removeall_active.gif"); //$NON-NLS-1$
@@ -100,7 +101,7 @@ public class UIImages {
 
         return imageRegistry;
     }
-    
+
     private static void declareRegistryImage(String key, String path) {
         ImageDescriptor desc = ImageDescriptor.getMissingImageDescriptor();
         try {
@@ -110,7 +111,7 @@ public class UIImages {
         }
         imageRegistry.put(key, desc);
 	}
-    
+
     private static URL makeIconFileURL(String iconPath) throws MalformedURLException {
         if(ICON_BASE_URL == null) {
             	throw new MalformedURLException();

@@ -1,24 +1,24 @@
-/*
+/*******************************************************************************
  * Copyright (c) 2007 - 2011 by Michael Mimo Moratti
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2012 - 2018 by Andre Bossert
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions
- * and limitations under the License.
- */
+ * Contributors:
+ *    Michael Mimo Moratti - initial API and implementation and/or initial documentation
+ *    Andre Bossert - extensions
+ *    Artur Wozniak - clear file
+ *
+ *******************************************************************************/
 
 package de.anbos.eclipse.logviewer.plugin.file;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -101,7 +101,7 @@ public class FileTail implements Runnable {
         	// no exeption if file not found, because it's predictable
         	// see Issue 55: Improve FileTail's exception handling
             //logger.logError(fnf);
-            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.notfound",new String[]{filePath}).toCharArray(),true);        	
+            listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.notfound",new String[]{filePath}).toCharArray(),true);
         } catch(ThreadInterruptedException tie) {
             logger.logError(tie);
             listener.fileChanged(LogViewerPlugin.getResourceString("tail.loading.file.error",new String[]{filePath}).toCharArray(),true);
@@ -116,8 +116,8 @@ public class FileTail implements Runnable {
             try {
                 if(file != null) {
                     file.close();
-                    
-                    if(isRunning==false && mappedBuffer!=null)    
+
+                    if(isRunning==false && mappedBuffer!=null)
 					{
 						stopFileMapping(mappedBuffer);
 					}
@@ -141,7 +141,7 @@ public class FileTail implements Runnable {
     // Private -----------------------------------------------------------------
 
     private synchronized RandomAccessFile openFile() throws ThreadInterruptedException, FileNotFoundException {
-        boolean firstExec = true;        
+        boolean firstExec = true;
         while(isRunning) {
             try {
                 RandomAccessFile file = new RandomAccessFile(filePath,"r"); //$NON-NLS-1$
