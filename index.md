@@ -18,6 +18,9 @@ The update site URL is: http://anb0s.github.io/LogViewer
 
 Install descriptions: https://github.com/anb0s/logviewer/wiki/Install
 
+## Developer Guide
+https://github.com/anb0s/LogViewer/wiki/How-to-build
+
 ## Similar software
 Otros log viewer/parser: https://github.com/otros-systems/otroslogviewer
 
