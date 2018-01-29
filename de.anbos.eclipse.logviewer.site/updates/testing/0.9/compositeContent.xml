@@ -2,11 +2,12 @@
 <?compositeMetadataRepository version='1.0.0'?>
 <repository name='LogViewer 0.9' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1516532110251'/>
+    <property name='p2.timestamp' value='1517235418240'/>
     <property name='p2.atomic.composite.loading' value='true'/>
   </properties>
-  <children size='2'>
+  <children size='3'>
     <child location='0.9.9.v20170924-1224'/>
     <child location='0.9.9.v20180121-1054'/>
+    <child location='0.9.9.v20180129-1416'/>
   </children>
 </repository>
