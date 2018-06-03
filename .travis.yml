@@ -1,4 +1,5 @@
 language: java
+
 jdk:
   - openjdk8
   - oraclejdk8
@@ -7,5 +8,7 @@ jdk:
 env:
   - ECLIPSE_TARGET_PLATFORM=Eclipse-4.7
   - ECLIPSE_TARGET_PLATFORM=Eclipse-4.8
+
+install: true
 
 script: mvn -Dtarget.platform=$ECLIPSE_TARGET_PLATFORM clean verify
