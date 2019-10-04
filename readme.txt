@@ -20,4 +20,4 @@ http://blog.vogella.com/2013/01/03/tycho-advanced/
 
 24.09.2017 anb0s
 
-license: https://eclipse.org/org/documents/epl-v10.html
+license: https://www.eclipse.org/legal/epl-2.0
