@@ -1,3 +1,5 @@
+<span style="color:red">*Project is discontinued and not maintained anymore!*</span>
+
 # LogViewer [![Version](https://img.shields.io/github/release/anb0s/LogViewer.svg)](https://github.com/anb0s/LogViewer/releases) [![Issues](https://img.shields.io/github/issues/anb0s/LogViewer.svg)](https://github.com/anb0s/LogViewer/issues) [![Build Status](https://app.travis-ci.com/anb0s/LogViewer.svg?branch=master)](https://app.travis-ci.com/anb0s/LogViewer) [![License](https://img.shields.io/badge/License-EPL%202.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0)
 Eclipse Plug-in for tailing log files and eclipse consoles (e.g. SVN, Java Stack Trace, CDT), including syntax coloring with either a regular expression or a word match. It allows you to have multiple logs open concurrently.
 
